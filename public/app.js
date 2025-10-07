@@ -1,13 +1,12 @@
 "use strict";
 
-const button = document.getElementById('loadMeals');
-const container = document.getElementById('mealsContainer');
-
-const form = document.querySelector("#ingredient-form");
-    const ingredient = document.querySelector("#ingredient-input");
-
-
 document.addEventListener("DOMContentLoaded", () => {
+    const form = document.querySelector("#ingredient-form");
+    const ingredient = document.querySelector("#ingredient-input");
+    
+    const button = document.getElementById('loadMeals');
+    const container = document.getElementById('mealsContainer');
+
     ingredient.addEventListener("input", () => {
         const inputIngredient = ingredient.value.trim();
         
@@ -52,8 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             });
         } catch (error) {
-                container.innerHTML = `<p>Error: ${error}</p>`;
+            container.innerHTML = `<p>Error: ${error}</p>`;
         }
     });
-
 });
