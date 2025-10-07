@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const button = document.getElementById('loadMeals');
     const container = document.getElementById('mealsContainer');
 
+    // display validity error message while typing
     ingredient.addEventListener("input", () => {
         const inputIngredient = ingredient.value.trim();
         
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // pass valid input to api
     form.addEventListener("submit", (event) => {
         event.preventDefault();
 
