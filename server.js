@@ -1,7 +1,7 @@
 import express from "express"; // if using ES modules
 import OpenAI from "openai";
 import {} from "dotenv/config";
-import recipes from "./recipes.json" with { type: "json" };
+import recipes from "./public/recipes.json" with { type: "json" };
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -39,7 +39,7 @@ const response = await client.responses.create({
       content: [
         {
           type: "input_text",
-          text: "Modify the recipe but substitute the chopped tomatoes with something else in the same JSON format", //soft code text
+          text: "Modify the recipe but substitute the basil with something else in the same JSON format", //soft code text
         },
         {
           type: "input_text",
