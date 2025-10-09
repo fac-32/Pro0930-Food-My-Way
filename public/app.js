@@ -10,6 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ingredientList = document.querySelector("#recipe-ingredients");
     const instructions = document.querySelector("#recipe-instructions");
 
+    const dropdown = document.querySelector("#target-ingredient");
+
+
     // display validity error message while typing
     ingredient.addEventListener("input", () => {
         const inputIngredient = ingredient.value.trim();
@@ -98,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // TEST BUTTON : display recipe and drop down on click
     button.addEventListener("click", () => {
-        displayRecipe(formatRecipe(recipeObject), recipeTitle, ingredientList, instructions);
+        displayRecipe(formatRecipe(recipeObject), recipeTitle, ingredientList, instructions, dropdown);
     });    
 });
 
@@ -122,16 +125,26 @@ function formatRecipe(unformatted) {
 }
 
 // fill html containers with details from recipe object
-function displayRecipe(recipe, title, ingredients, instructions) {
+function displayRecipe(recipe, title, ingredients, instructions, dropdown) {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
+
+    // clear previous dropdown/selector options
+    dropdown.textContent="";
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
         const amount = recipe.ingredients[i][0];
         const name = recipe.ingredients[i][1];
 
+        // add ingredient with corresponding amount to the list
         const ingredientItem = document.createElement("li");
         ingredientItem.textContent = `${amount} ${name}`;
         ingredients.appendChild(ingredientItem);
+
+        // add ingredient name to dropdown selector tag
+        const ingredientOption = document.createElement("option");
+        ingredientOption.setAttribute("value", name);
+        ingredientOption.textContent = name;
+        dropdown.appendChild(ingredientOption);
     }
 }
