@@ -1,7 +1,7 @@
 "use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector("#ingredient-form");
+    const ingredientForm = document.querySelector("#ingredient-form");
     const ingredient = document.querySelector("#ingredient-input");
 
     const container = document.getElementById('mealsContainer');
@@ -9,8 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const recipeTitle = document.querySelector("#recipe-title");
     const ingredientList = document.querySelector("#recipe-ingredients");
     const instructions = document.querySelector("#recipe-instructions");
-
+    
     const dropdown = document.querySelector("#target-ingredient");
+    const substituteForm = document.querySelector("#substitute-form");
 
 
     // display validity error message while typing
@@ -27,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // pass valid input to backend
-    form.addEventListener("submit", async (event) => {
+    ingredientForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         // when validation has passed route to backend
@@ -58,8 +59,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // test button
-    const button = document.getElementById('recipe-button');
+    // placeholder for routing to the backend which calls OpenAI
+    substituteForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // TO DO: check if selection is valid, fetch improved recipe from backend, and display it
+        console.log(`you want to substitute ${dropdown.value}?`); // debug message
+
+    });
+
+    // mock recipe for testing format and display functions
     const recipeString = 
         `{  "meals": 
             [{  "idMeal":"52772",
@@ -98,8 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }]
         }`
     const recipeObject = JSON.parse(recipeString); // make test recipe object
-
-    // TEST BUTTON : display recipe and drop down on click
+    const button = document.getElementById('recipe-button'); // test button
+    // test to display recipe and drop down on click
     button.addEventListener("click", () => {
         displayRecipe(formatRecipe(recipeObject), recipeTitle, ingredientList, instructions, dropdown);
     });    
