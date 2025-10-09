@@ -24,11 +24,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 // test
 const publicPath = path.join(__dirname, 'public');
 console.log('Serving static files from:', publicPath);
-// Basic route
+// Route to serve index.html
 // app.get('/', (req, res) => {
-//   res.send('Hello from Express backend!');
-// });
+//   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+//});
 
+// Fetch meals from MealDB API
+app.get('/api/meals', async (req, res) => {
+  try {
+    const response = await fetch(
+      'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast'
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch meals' });
+  }
+});
 
 // Import and use routes
 app.use('/api', openaiRoutes);
