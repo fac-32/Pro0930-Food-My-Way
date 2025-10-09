@@ -20,40 +20,58 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // pass valid input to api
-    form.addEventListener("submit", (event) => {
+    // pass valid input to backend
+    form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
+        // when validation has passed route to backend
         if ( ingredient.checkValidity() ) {
-            console.log("valid input will be routed to backend");
-            // when validation has passed
-            // route to backend e.g. fetch(`/recipe?ingredient=${ingredient.value}`)
+            try {
+                const response = await fetch(`/api/meals?ingredient=${encodeURIComponent(ingredient.value)}`); // calls backend
+                const data = await response.json();
 
+                container.innerHTML = ''; // clear previous
+                data.meals.slice(0, 4).forEach(meal => {
+
+                const card = document.createElement('div');
+                card.classList.add('meal-card');
+                card.innerHTML = `
+                        <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                        <h3>${meal.strMeal}</h3>
+                        `;
+
+                container.appendChild(card);
+                
+                });
+            } catch (error) {
+                container.innerHTML = `<p>Error: ${error}</p>`;
+            }
         } else {
+            // display custom failed validity message
             ingredient.reportValidity();
         }
     });
 
-    button.addEventListener('click', async () => {
-        try {
-            const response = await fetch('/api/meals'); // calls your backend
-            const data = await response.json();
+    // button.addEventListener('click', async () => {
+    //     try {
+    //         const response = await fetch('/api/meals'); // calls your backend
+    //         const data = await response.json();
 
-            container.innerHTML = ''; // clear previous
-            data.meals.slice(0, 4).forEach(meal => {
+    //         container.innerHTML = ''; // clear previous
+    //         data.meals.slice(0, 4).forEach(meal => {
 
-            const card = document.createElement('div');
-            card.classList.add('meal-card');
-            card.innerHTML = `
-                    <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-                    <h3>${meal.strMeal}</h3>
-                    `;
+    //         const card = document.createElement('div');
+    //         card.classList.add('meal-card');
+    //         card.innerHTML = `
+    //                 <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+    //                 <h3>${meal.strMeal}</h3>
+    //                 `;
 
-            container.appendChild(card);
+    //         container.appendChild(card);
             
-            });
-        } catch (error) {
-            container.innerHTML = `<p>Error: ${error}</p>`;
-        }
-    });
+    //         });
+    //     } catch (error) {
+    //         container.innerHTML = `<p>Error: ${error}</p>`;
+    //     }
+    // });
 });
