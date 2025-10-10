@@ -3,6 +3,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import openaiRoutes from './routes/openai_api.js';
+import OpenAI from "openai";
+import {} from "dotenv/config";
+import recipes from "./public/recipes.json" with { type: "json" };
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +22,9 @@ app.use(express.json());
 //app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from public folder
+const apiKey = process.env.OPENAI_API_KEY;
+
+// Middleware to serve static files from "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
 // test
@@ -46,6 +52,37 @@ app.get('/api/meals', async (req, res) => {
 app.use('/api', openaiRoutes);
 
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+// app.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// });
+
+// async function getRecipes() {
+//   const response = await fetch('./recipes.json')
+//   const recipes = await response.json()
+// console.log(JSON.stringify(recipes));
+// }
+
+// getRecipes()
+
+const client = new OpenAI();
+
+const response = await client.responses.create({
+  model: "gpt-4o",
+  input: [
+    {
+      role: "user",
+      content: [
+        {
+          type: "input_text",
+          text: "Modify the recipe but substitute the basil with something else in the same JSON format", //soft code text
+        },
+        {
+          type: "input_text",
+          text: JSON.stringify(recipes),
+        },
+      ],
+    },
+  ],
 });
+
+console.log(response.output_text);
