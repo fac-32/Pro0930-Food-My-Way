@@ -46,6 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
                     <h3>${meal.strMeal}</h3>
                     `;
+                    card.addEventListener('click', () => {
+        console.log(meal); // logs the clicked meal object
+        return meal; // returning doesn't have a visible effect here, but useful if you want to use it in another function
+      });
 
             container.appendChild(card);
             

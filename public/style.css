@@ -10,11 +10,9 @@
 .meal-card {
   background: white;
   overflow: hidden;
+  cursor: pointer;
 }
-/* 
-.meal-card:hover {
-  transform: scale(1.05);
-} */
+
 
 .meal-card img {
   width: 100%;
@@ -22,9 +20,3 @@
   object-fit: cover;
 }
 
-/* .meal-card h3 {
-  margin: 0;
-  padding: 10px;
-  font-size: 1.1rem;
-} */
-    
