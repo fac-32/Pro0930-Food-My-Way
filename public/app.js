@@ -118,16 +118,15 @@ document.addEventListener("DOMContentLoaded", () => {
 function formatRecipe(unformatted) {
     const recipe = {
         title: unformatted.meals[0].strMeal,
+        amounts: [],
         ingredients: [],
         instructions: unformatted.meals[0].strInstructions
     };
 
     // loop breaks when the value of the ingredient is null or ""
     for ( let i = 1; i <= 20 && unformatted.meals[0][`strIngredient${i}`]; i++ ) {
-        recipe.ingredients.push([
-                unformatted.meals[0][`strMeasure${i}`].toLowerCase(), 
-                unformatted.meals[0][`strIngredient${i}`].toLowerCase()
-            ]);
+        recipe.amounts.push(unformatted.meals[0][`strMeasure${i}`].toLowerCase());
+        recipe.ingredients.push(unformatted.meals[0][`strIngredient${i}`].toLowerCase());
     }
 
     return recipe;
@@ -138,12 +137,13 @@ function displayRecipe(recipe, title, ingredients, instructions, dropdown) {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
-    // clear previous dropdown/selector options
-    dropdown.textContent="";
+    // clear previous recipe and dropdown/selector options
+    dropdown.textContent = "";
+    ingredients.textContent = "";
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
-        const amount = recipe.ingredients[i][0];
-        const name = recipe.ingredients[i][1];
+        const amount = recipe.amounts[i];
+        const name = recipe.ingredients[i];
 
         // add ingredient with corresponding amount to the list
         const ingredientItem = document.createElement("li");
