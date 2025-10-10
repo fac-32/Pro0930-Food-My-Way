@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food My Way!</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>Food My Way!</h1>
-      <h1>Meals with Chicken Breast</h1>
-    <button id="loadMeals">Load Meals</button>
-    <ul id="mealsContainer" class="meals-grid"></ul>
-    <script src="app.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Food My Way</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
 
-    <form id="ingredient-form">
-        <label for="ingredient">search by ingredient</label>
-        <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
-        <button type="submit">go!</button>
-    </form>
+    <body>
+        <script src="app.js"></script>
 
-  <!--Open AI API --> 
-  <h1>OpenAI API</h1>
-    <textarea id="subIngredients" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
-    <br>
-    <button id="getSubRecipe">Get substituted recipe</button>
-    
-    <div id="subIngredients">
-        <h2>Ingredient:</h2>
-        <p id="disp-sub-recipe">Recipe to appear here..</p>
-    </div>
+        <h1>Food My Way</h1>
+        
+        <form id="ingredient-form">
+            <label for="ingredient">search by ingredient</label>
+            <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
+            <button type="submit">go!</button>
+        </form>
 
-    <script type="module" src="substituteRecipe.js"></script>
-</body>
+        <ul id="mealsContainer" class="meals-grid"></ul>
+
+        <button type="button" id="recipe-button">display recipe</button> <!--test button-->
+        <div id="recipe-container">
+            <div id="recipe-title"></div>
+            <ul id="recipe-ingredients"></ul>
+            <div id="recipe-instructions"></div>
+        </div>
+
+        <form id="substitute-form">
+            <select id="target-ingredient" name="target">
+                <option>-- target ingredient --</option>
+            </select>
+            <button type="submit">find substitute</button>
+        </form>
+
+        <!--Open AI API --> 
+        <h1>OpenAI API</h1>
+        <textarea id="subIngredients" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
+        <br>
+        <button id="getSubRecipe">Get substituted recipe</button>
+
+        <div id="subIngredients">
+            <h2>Ingredient:</h2>
+            <p id="disp-sub-recipe">Recipe to appear here..</p>
+        </div>
+
+        <script type="module" src="substituteRecipe.js"></script>
+    </body>
 </html>

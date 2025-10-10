@@ -38,10 +38,12 @@ console.log('Serving static files from:', publicPath);
 // Fetch meals from MealDB API
 app.get('/api/meals', async (req, res) => {
   try {
-    const response = await fetch(
-      'https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast'
-    );
+    // previously used fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${req.query.ingredient}`)
+    const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${req.query.ingredient}`);
     const data = await response.json();
+    
+    // TO DO: handle when data is { meals: null } and no recipes are found
+
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch meals' });
