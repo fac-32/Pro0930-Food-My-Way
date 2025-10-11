@@ -7,6 +7,8 @@ import OpenAI from "openai";
 import {} from "dotenv/config";
 import recipes from "./public/recipes.json" with { type: "json" };
 
+// please merge
+
 // Load environment variables
 dotenv.config();
 
