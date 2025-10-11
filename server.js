@@ -83,7 +83,7 @@ app.listen(PORT, () => {
 
 const client = new OpenAI();
 
-const response = await client.responses.create({
+const reply = await client.responses.create({
   model: "gpt-4o",
   input: [
     {
@@ -102,4 +102,4 @@ const response = await client.responses.create({
   ],
 });
 
-console.log(response.output_text);
+console.log(reply.output_text);
