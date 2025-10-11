@@ -54,9 +54,9 @@ app.get('/api/meals', async (req, res) => {
 app.use('/api', openaiRoutes);
 
 // Start the server
-// app.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
 
 // async function getRecipes() {
 //   const response = await fetch('./recipes.json')
