@@ -70,9 +70,7 @@ app.get('/api/meals', async (req, res) => {
 // Import and use routes
 app.use('/api', openaiRoutes);
 
-
 // Start the server
-
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
@@ -85,7 +83,7 @@ app.listen(PORT, () => {
 
 // getRecipes()
 
-/* const client = new OpenAI();
+const client = new OpenAI();
 
 const reply = await client.responses.create({
   model: "gpt-4o",
@@ -106,6 +104,4 @@ const reply = await client.responses.create({
   ],
 });
 
-
 console.log(reply.output_text);
-
