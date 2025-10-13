@@ -8,8 +8,6 @@
     </head>
 
     <body>
-        <script src="app.js"></script>
-
         <h1>Food My Way</h1>
         
         <form id="ingredient-form">
@@ -35,16 +33,18 @@
         </form>
 
         <!--Open AI API --> 
-        <h1>OpenAI API</h1>
-        <textarea id="ingredientInput" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
+        <h1>Modified recipe:</h1>
+<!--         <textarea id="ingredientInput" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
         <br>
         <button id="generateRecipeBtn">Get substituted recipe</button>
 
         <div id="recipeResultContainer">
-            <h2>Ingredient:</h2>
+            <h2>Modified recipe:</h2>
             <p id="recipeOutput">Recipe to appear here..</p>
-        </div>
-
+        </div> -->
+        <p id="substituted-recipe">Recipe to appear here..</p>        
+        <!-- Load scripts as modules -->
+        <script type="module" src="app.js"></script>
         <script type="module" src="recipeSubstitution.js"></script>
     </body>
 </html>
