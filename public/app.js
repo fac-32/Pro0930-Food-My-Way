@@ -4,6 +4,7 @@
 import { setSelectedRecipe, getSelectedRecipe, hasSelectedRecipe } from './recipeState.js';
 
 document.addEventListener("DOMContentLoaded", () => {
+    // DOM element references
     const ingredientForm = document.querySelector("#ingredient-form");
     const ingredient = document.querySelector("#ingredient-input");
 
@@ -30,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // pass valid input to backend
+    // Search for meals if passed validation
     ingredientForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -49,7 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
                             <h3>${meal.strMeal}</h3>
                             `;
-                    // Make Meal Cards Clickable:
                     // Add click handler to select recipe by clicking the meal card and display details
                     card.addEventListener('click', async () => {
                         // Fetch full recipe details using meal ID
@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         const recipe = formatRecipe(recipeData);
                         // Store in shared state module
                         setSelectedRecipe(recipe);
-
                         displayRecipe(recipe, recipeTitle, ingredientList, instructions, dropdown);
                     });
                     
@@ -74,15 +73,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // pass the selected recipe and ingredient to OpenAI -> routing to the backend which calls OpenAI
+    // Handle substitution request
+    // pass the selected recipe and ingredient to openai_api route -> routing to the backend which calls OpenAI
     substituteForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // Get recipe from shared state
-        const selectedRecipe = getSelectedRecipe();
-
-        //console.log(`you want to substitute ${dropdown.value}?`); // debug message
-
+        // Check recipe selected and valid ingredient chosen
         if (!hasSelectedRecipe()) {
             alert('Please select a recipe first');
             return;
@@ -96,15 +92,15 @@ document.addEventListener("DOMContentLoaded", () => {
         // Dispatch event for other modules to handle
         const substitutionEvent = new CustomEvent('recipe-substitution-requested', {
             detail: {
-                recipe: selectedRecipe,
+                recipe: getSelectedRecipe(),
                 targetIngredient: targetIngredient
             }
         });
         document.dispatchEvent(substitutionEvent);
-
     });   
 });
 
+// Format recipe data from API response
 // return recipe as an object with only the values we want to use/display
 function formatRecipe(unformatted) {
     const recipe = {
@@ -123,14 +119,15 @@ function formatRecipe(unformatted) {
     return recipe;
 }
 
+// Display recipe in the UI
 // fill html containers with details from recipe object
 function displayRecipe(recipe, title, ingredients, instructions, dropdown) {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
     // clear previous recipe and dropdown/selector options
-    dropdown.textContent = "";
-    ingredients.textContent = "";
+    dropdown.innerHTML = '<option>-- target ingredient --</option>';
+    ingredients.innerHTML = '';
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
         const amount = recipe.amounts[i];

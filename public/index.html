@@ -10,21 +10,24 @@
     <body>
         <h1>Food My Way</h1>
         
+        <!-- Search Section -->
         <form id="ingredient-form">
             <label for="ingredient">search by ingredient</label>
             <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
             <button type="submit">go!</button>
         </form>
 
+        <!-- Meal Results -->
         <ul id="mealsContainer" class="meals-grid"></ul>
 
-        <!-- <button type="button" id="recipe-button">display recipe</button> test button -->
+        <!-- Recipe Display -->
         <div id="recipe-container">
             <div id="recipe-title"></div>
             <ul id="recipe-ingredients"></ul>
             <div id="recipe-instructions"></div>
         </div>
 
+         <!-- Substitution Section -->
         <form id="substitute-form">
             <select id="target-ingredient" name="target">
                 <option>-- target ingredient --</option>
@@ -32,17 +35,10 @@
             <button type="submit">find substitute</button>
         </form>
 
-        <!--Open AI API --> 
+        <!-- Modified Recipe Output -->
         <h1>Modified recipe:</h1>
-<!--         <textarea id="ingredientInput" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
-        <br>
-        <button id="generateRecipeBtn">Get substituted recipe</button>
-
-        <div id="recipeResultContainer">
-            <h2>Modified recipe:</h2>
-            <p id="recipeOutput">Recipe to appear here..</p>
-        </div> -->
-        <p id="substituted-recipe">Recipe to appear here..</p>        
+        <p id="substituted-recipe">Recipe will appear here...</p>   
+             
         <!-- Load scripts as modules -->
         <script type="module" src="app.js"></script>
         <script type="module" src="recipeSubstitution.js"></script>

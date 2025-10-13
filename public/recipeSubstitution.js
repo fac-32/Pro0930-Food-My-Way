@@ -1,19 +1,13 @@
-// public/substituteRecipe.js
+// public/recipeSubstitution.js
 //  Client-side JavaScript to interact with the OpenAI API via the backend
 
-// import testrecipe
-import testRecipes from './testRecipes.json' with { type: 'json' };
-import { getSelectedRecipe } from './recipeState.js';
 
 // Get references to DOM elements
-// const generateRecipeBtn = document.getElementById('generateRecipeBtn');
-// const ingredientInput = document.getElementById('ingredientInput');
 const recipeOutput = document.getElementById('substituted-recipe');
 
 // Listen for substitution requests from app.js
 document.addEventListener('recipe-substitution-requested', async (event) => {
     const { recipe, targetIngredient } = event.detail;
-    
     await generateSubstitutedRecipe(recipe, targetIngredient, '');
 });
 
@@ -40,7 +34,7 @@ generateRecipeBtn.addEventListener('click', async () => {
     
 }); */
 
-// Shared function to call OpenAI API
+// Call OpenAI API for recipe substitution
 async function generateSubstitutedRecipe(recipe, ingredientToSubstitute, substitutionIngredient) {
     recipeOutput.textContent = 'Loading...';
     
