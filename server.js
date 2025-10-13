@@ -3,11 +3,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import openaiRoutes from './routes/openai_api.js';
-//import OpenAI from "openai";
+import mealByIdRoutes from './routes/mealById.js';
 import {} from "dotenv/config";
-//import recipes from "./public/recipes.json" with { type: "json" };
-//console.log('openaiRoutes loaded:', openaiRoutes);
-//console.log('openaiRoutes type:', typeof openaiRoutes);
+
 
 // Load environment variables
 dotenv.config();
@@ -57,6 +55,7 @@ app.get('/api/meals', async (req, res) => {
 });
 
 // Import and use routes
+app.use('/api/meals', mealByIdRoutes);  // Mount the meal by ID route
 app.use('/api/openai', openaiRoutes);
 
 // Start the server
