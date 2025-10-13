@@ -5,26 +5,27 @@
 import testRecipes from './testRecipes.json' with { type: 'json' };
 
 // Get references to DOM elements
-const getSubRecipe = document.getElementById('getSubRecipe');
-const subIngredients = document.getElementById('subIngredients');
-const subRecipe = document.getElementById('disp-sub-recipe');
+const generateRecipeBtn = document.getElementById('generateRecipeBtn');
+const ingredientInput = document.getElementById('ingredientInput');
+const recipeOutput = document.getElementById('recipeOutput');
 
 // Add event listener to button
-getSubRecipe.addEventListener('click', async () => {
-    const userPrompt = subIngredients.value;
+generateRecipeBtn.addEventListener('click', async () => {
+    const userPrompt = ingredientInput.value;
     
     if (!userPrompt) {
-        subRecipe.textContent = 'Please select an ingredient to generate a new recipe.';
+        recipeOutput.textContent = 'Please select an ingredient to generate a new recipe.';
         return;
     }
     
     console.log('User selected ingredient to substitute:', userPrompt);
     console.log('Original Recipe:', testRecipes.meals[0].strInstructions);
-    subRecipe.textContent = 'Loading...';
-    const substitutionIngredient = 'a suitable substitute';  // Hardcoded fallback
+    recipeOutput.textContent = 'Loading...';
+    const substitutionIngredient = ''; // Hardcoded fallback
+    
     try {
         // Send POST request to backend API endpoint
-        const response = await fetch('/api/openai_api', {
+        const response = await fetch('/api/openai/substitute', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -39,11 +40,11 @@ getSubRecipe.addEventListener('click', async () => {
         
         if (response.ok) {
             // Display the structured response from OpenAI
-            subRecipe.textContent = data.newRecipe;
+            recipeOutput.textContent = data.newRecipe;
         } else {
-            subRecipe.textContent = `Error: ${data.error}`;
+            recipeOutput.textContent = `Error: ${data.error}`;
         }
     } catch (error) {
-        subRecipe.textContent = `Request failed: ${error.message}`;
+        recipeOutput.textContent = `Request failed: ${error.message}`;
     }
 });

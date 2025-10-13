@@ -1,5 +1,5 @@
 // Middleware to string together a prompt in request body
-function createPromptForSubIng(req, res, next) {
+function formatRecipePrompt(req, res, next) {
     const { prompt } = req.body;
     const { subIngredient } = req.body;
 
@@ -10,4 +10,4 @@ function createPromptForSubIng(req, res, next) {
     next();
 }
 
-export  { createPromptForSubIng };
+export  { formatRecipePrompt };

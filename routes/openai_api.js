@@ -3,13 +3,13 @@
 
 import { Router } from 'express';
 const router = Router();
-import { createPromptForSubIng } from '../middleware/createPromptForSubIng.js';
+import { formatRecipePrompt } from '../middleware/formatRecipePrompt.js';
 import { generateRecipeSubstitution } from '../controllers/openaiController.js';
 
-// POST endpoint for OpenAI requests
+// POST endpoint for OpenAI requests:  /api/openai/substitute
 // Uses validation middleware, then calls controller
-//router.post('/openai_api', createPromptForSubIng, handleOpenAIRequest);
-router.post('/openai_api', generateRecipeSubstitution);
+//router.post('/openai_api', formatRecipePrompt, handleOpenAIRequest);
+router.post('/substitute', generateRecipeSubstitution);
 
 
 export default router;

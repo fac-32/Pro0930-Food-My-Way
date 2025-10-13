@@ -36,15 +36,15 @@
 
         <!--Open AI API --> 
         <h1>OpenAI API</h1>
-        <textarea id="subIngredients" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
+        <textarea id="ingredientInput" rows="4" cols="50" placeholder="Ingredient to substitute..."></textarea>
         <br>
-        <button id="getSubRecipe">Get substituted recipe</button>
+        <button id="generateRecipeBtn">Get substituted recipe</button>
 
-        <div id="subIngredients">
+        <div id="recipeResultContainer">
             <h2>Ingredient:</h2>
-            <p id="disp-sub-recipe">Recipe to appear here..</p>
+            <p id="recipeOutput">Recipe to appear here..</p>
         </div>
 
-        <script type="module" src="substituteRecipe.js"></script>
+        <script type="module" src="recipeSubstitution.js"></script>
     </body>
 </html>
