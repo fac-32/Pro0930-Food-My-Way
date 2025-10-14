@@ -14,8 +14,10 @@ const client = new OpenAI({
 async function generateRecipeSubstitution(req, res) {
     const { originalRecipe, ingredientToSubstitute, substitutionIngredient } = req.body;
     
+     console.log('generateRecipeSubstitution called!');
+     
     // Use provided substitute or let AI suggest one
-    const substitute = substitutionIngredient || 'a suitable healthy substitute';
+    const substitute = substitutionIngredient || 'a suitable healthy alternative';
     
     // Format the prompt for recipe substitution
     const prompt = `You are a professional chef and recipe developer. 
@@ -23,11 +25,11 @@ async function generateRecipeSubstitution(req, res) {
 Given this original recipe:
 ${originalRecipe}
 
-Please create a similar recipe where you substitute "${ingredientToSubstitute}" with "${substitutionIngredient}". 
+Please create a similar recipe where you substitute "${ingredientToSubstitute}" with "${substitute}". 
 
 Maintain the same cooking style and format, but adjust quantities and cooking instructions as needed for the substitution. Provide the complete modified recipe.`;
     
-console.log('Generated Prompt:', prompt);
+//console.log('Generated Prompt:', prompt);
     try {
         // Make the OpenAI API call
         const response = await client.chat.completions.create({
@@ -39,7 +41,7 @@ console.log('Generated Prompt:', prompt);
                 },
                 { 
                     role: "user", 
-                    content: prompt 
+                    content: prompt //JSON.stringify(prompt)
                 }
             ],
             max_tokens: 1000,
