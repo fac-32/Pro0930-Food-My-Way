@@ -7,6 +7,16 @@ import mealByIdRoutes from './routes/mealById.js';
 import {} from "dotenv/config";
 
 
+// Remember to call client.connect() before using the database
+// This is typically done once when your server starts
+
+// Example in your main server file:
+import { client } from './db/client.js';
+
+await client.connect();
+console.log('Connected to MongoDB!');
+
+    
 // Load environment variables
 dotenv.config();
 
@@ -58,8 +68,38 @@ app.get('/api/meals', async (req, res) => {
 app.use('/api/meals', mealByIdRoutes);  // Mount the meal by ID route
 app.use('/api/openai', openaiRoutes);
 
-// Start the server
-app.listen(PORT, () => {
+async function startServer() {
+  try {
+    //connects to client
+    await client.connect();
+    console.log("Connected to MongoDB!");
+    // Send a ping to confirm a successful connection
+    await client.db("testing").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!",
+    );
+
+    //used to start the server and listens for requests
+    app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+  } catch (error) {
+    console.error("Failed to connect to MongoDB:", error);
+    process.exit(1);
+  }
+}
+
+// Mongo session closed when local dev server is stopped (and some deployment platforms)
+process.on("SIGINT", async () => {
+  await client.close();
+  console.log("MongoDB connection closed");
+  process.exit(0);
+});
+
+startServer();
+
+// Start the server
+// app.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// });
 
