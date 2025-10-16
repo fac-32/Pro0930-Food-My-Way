@@ -33,7 +33,7 @@ Maintain the same cooking style and format, but adjust quantities and cooking in
     try {
         // Make the OpenAI API call
         const response = await client.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4o",
             messages: [
                 { 
                     role: "system", 
@@ -44,13 +44,41 @@ Maintain the same cooking style and format, but adjust quantities and cooking in
                     content: prompt //JSON.stringify(prompt)
                 }
             ],
+            response_format: {
+                type: "json_schema",
+                json_schema: {
+                    name: "recipe_schema",
+                    schema: {
+                        type: "object",
+                        properties: {
+                            title: { type: "string" },
+                            amounts: { 
+                                type: "array", 
+                                items: { type: "string" }, 
+                                description: "each item must contain only the quantities with units and no ingredient names" 
+                            },
+                            ingredients: { 
+                                type: "array", 
+                                items: { type: "string" }, 
+                                description: "each item must contain only the ingredient name with no quantities" 
+                            },
+                            instructions: { 
+                                type: "string", 
+                                description: "must be a single unbroken paragraph of plain text instructions without line breaks or step numbers" 
+                            }
+                        },
+                        required: ["title", "amounts", "ingredients", "instructions"],
+                        additionalProperties: false
+                    }
+                }
+            },
             max_tokens: 1000,
             temperature: 0.7
         });
         
         // Extract the recipe from response
         const substitutedRecipe = response.choices[0].message.content.trim();
-        
+        console.log(substitutedRecipe);
         // Send structured response back to frontend
         res.json({ 
             success: true,
