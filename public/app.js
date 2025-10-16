@@ -121,7 +121,7 @@ function formatRecipe(unformatted) {
 
 // Display recipe in the UI
 // fill html containers with details from recipe object
-function displayRecipe(recipe, title, ingredients, instructions, dropdown) {
+function displayRecipe(recipe, title, ingredients, instructions, dropdown="") {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
@@ -138,10 +138,12 @@ function displayRecipe(recipe, title, ingredients, instructions, dropdown) {
         ingredientItem.textContent = `${amount} ${name}`;
         ingredients.appendChild(ingredientItem);
 
-        // add ingredient name to dropdown selector tag
-        const ingredientOption = document.createElement("option");
-        ingredientOption.setAttribute("value", name);
-        ingredientOption.textContent = name;
-        dropdown.appendChild(ingredientOption);
+        if ( dropdown ) {
+            // add ingredient name to dropdown selector tag
+            const ingredientOption = document.createElement("option");
+            ingredientOption.setAttribute("value", name);
+            ingredientOption.textContent = name;
+            dropdown.appendChild(ingredientOption);
+        }
     }
 }
