@@ -78,7 +78,7 @@ Maintain the same cooking style and format, but adjust quantities and cooking in
         
         // Extract the recipe from response
         const substitutedRecipe = response.choices[0].message.content.trim();
-        console.log(substitutedRecipe);
+
         // Send structured response back to frontend
         res.json({ 
             success: true,
