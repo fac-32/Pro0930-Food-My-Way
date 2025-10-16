@@ -54,12 +54,12 @@ Maintain the same cooking style and format, but adjust quantities and cooking in
                             title: { type: "string" },
                             amounts: { 
                                 type: "array", 
-                                items: { type: "string" }, 
-                                description: "each item must contain only the quantities with units and no ingredient names" 
+                                items: { type: "string", pattern: "^[\-a-z0-9\s\.]+$" }, 
+                                description: "each item must contain only the quantities with units (use shorthand e.g. tbs and tsp) and no ingredient names" 
                             },
                             ingredients: { 
                                 type: "array", 
-                                items: { type: "string" }, 
+                                items: { type: "string", pattern: "^[\-a-z\s]+$" }, 
                                 description: "each item must contain only the ingredient name with no quantities" 
                             },
                             instructions: { 
