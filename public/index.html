@@ -21,11 +21,11 @@
         <ul id="mealsContainer" class="meals-grid"></ul>
 
         <!-- Recipe Display -->
-        <div id="recipe-container">
+        <section id="recipe-container" class="recipe-display">
             <div id="recipe-title"></div>
             <ul id="recipe-ingredients"></ul>
             <div id="recipe-instructions"></div>
-        </div>
+        </section>
 
          <!-- Substitution Section -->
         <form id="substitute-form">
@@ -35,9 +35,13 @@
             <button type="submit">find substitute</button>
         </form>
 
-        <!-- Modified Recipe Output -->
-        <h1>Modified recipe:</h1>
-        <p id="substituted-recipe">Recipe will appear here...</p>   
+        <!-- New Recipe Display -->
+        <section id="new-recipe-container" class="recipe-display">
+            <div id="new-recipe-title"></div>
+            <div id="substitution-reasoning"></div>
+            <ul id="new-recipe-ingredients"></ul>
+            <div id="new-recipe-instructions"></div>
+        </section>
              
         <!-- Load scripts as modules -->
         <script type="module" src="app.js"></script>
