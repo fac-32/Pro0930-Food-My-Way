@@ -104,18 +104,15 @@ document.addEventListener("DOMContentLoaded", () => {
     
     saveForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        console.log(getSelectedRecipe());
 
-        const saveTitle = saveTitleInput.value.trim().toLowerCase();
-        console.log(saveTitle);
         try {
             const response = await fetch("/recipe/create", {
                 method: "POST",
-                body: JSON.stringify({ saveTitle }),
+                body: JSON.stringify(getSelectedRecipe()),
                 headers: { "Content-Type": "application/json" }
             });
-
             const data = await response.json();
-            console.log("post complete, here is the data", data);
         } catch ( error ) {
             console.error(`Error saving recipe: ${error}`);
         }
