@@ -8,17 +8,7 @@ router.post("/create", (req, res) => {
   createRecipe({
     recipe: recipeTitle,
   });
-  res.send(`
-    <html>
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>Mongo page</title>
-        <link rel="stylesheet" href="/style.css" />
-        </head>
-        <h1 class="style">Thank you for saving a recipe ${recipeTitle}</h1>
-        <button class="style" onClick="location.href='/'">Home</button>
-    </html>`);
+  res.json({ message: `Your recipe for ${recipeTitle} has been saved!` });
 });
 
 export { router as recipeRoutes };

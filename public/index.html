@@ -27,11 +27,16 @@
             <div id="recipe-instructions"></div>
         </section>
 
-        <form action="/recipe/create" method="POST" class="style">
+        <form id="save-recipe-form">
+            <label for="saveTitle">recipe name:</label>
+            <input type="text" id="save-recipe-name" name="saveTitle" required>
+            <button type="submit">save!</button>
+        </form>
+        <!-- <form action="/recipe/create" method="POST" class="style">
             <label for="name">Add recipe name:</label>
             <input type="text" id="name" name="recipeTitle" class="style" required />
             <button type="submit">Save recipe</button>
-        </form>
+        </form> -->
 
          <!-- Substitution Section -->
         <form id="substitute-form">

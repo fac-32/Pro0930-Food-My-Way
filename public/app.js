@@ -17,6 +17,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ingredientDropdown = document.querySelector("#target-ingredient");
     const substituteForm = document.querySelector("#substitute-form");
 
+    const saveForm = document.querySelector("#save-recipe-form");
+    const saveTitleInput = document.querySelector("#save-recipe-name");
+
 
     // display validity error message while typing
     ingredient.addEventListener("input", () => {
@@ -97,7 +100,27 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         document.dispatchEvent(substitutionEvent);
-    });   
+    }); 
+    
+    saveForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const saveTitle = saveTitleInput.value.trim().toLowerCase();
+        console.log(saveTitle);
+        try {
+            const response = await fetch("/recipe/create", {
+                method: "POST",
+                body: JSON.stringify({ saveTitle }),
+                headers: { "Content-Type": "application/json" }
+            });
+
+            const data = await response.json();
+            console.log("post complete, here is the data", data);
+        } catch ( error ) {
+            console.error(`Error saving recipe: ${error}`);
+        }
+
+    });
 });
 
 // Format recipe data from API response
