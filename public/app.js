@@ -4,7 +4,7 @@
 import { getOriginalRecipe, setOriginalRecipe, hasOriginalRecipe, getGeneratedRecipe, hasGeneratedRecipe } from './recipeState.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // DOM element references
+    // DOM element references for index.html
     const ingredientForm = document.querySelector("#ingredient-form");
     const ingredient = document.querySelector("#ingredient-input");
 
@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const substituteForm = document.querySelector("#substitute-form");
 
     const saveForm = document.querySelector("#save-recipe-form");
+
+    // DOM element references for database.html
+    const savedRecipes = document.querySelector("#saved-recipes");
 
 
     // display validity error message while typing
