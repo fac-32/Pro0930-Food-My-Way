@@ -27,6 +27,12 @@
             <div id="recipe-instructions"></div>
         </section>
 
+        <form action="/recipe/create" method="POST" class="style">
+            <label for="name">Add recipe name:</label>
+            <input type="text" id="name" name="recipeTitle" class="style" required />
+            <button type="submit">Save recipe</button>
+        </form>
+
          <!-- Substitution Section -->
         <form id="substitute-form">
             <select id="target-ingredient" name="target">
