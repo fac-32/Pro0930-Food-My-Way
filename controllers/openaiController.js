@@ -65,7 +65,8 @@ Maintain the same cooking style and format, but adjust quantities and cooking in
                             instructions: { 
                                 type: "string", 
                                 description: "must be a single unbroken paragraph of plain text instructions without line breaks or step numbers" 
-                            }
+                            },
+                            justification: { type: "string", description: "explain the substitution made and why it is suitable" }
                         },
                         required: ["title", "amounts", "ingredients", "instructions"],
                         additionalProperties: false

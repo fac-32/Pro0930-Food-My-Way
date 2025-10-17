@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ingredientList = document.querySelector("#recipe-ingredients");
     const instructions = document.querySelector("#recipe-instructions");
     
-    const dropdown = document.querySelector("#target-ingredient");
+    const ingredientDropdown = document.querySelector("#target-ingredient");
     const substituteForm = document.querySelector("#substitute-form");
 
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const recipe = formatRecipe(recipeData);
                         // Store in shared state module
                         setSelectedRecipe(recipe);
-                        displayRecipe(recipe, recipeTitle, ingredientList, instructions, dropdown);
+                        displayRecipe(recipe, recipeTitle, ingredientList, instructions, ingredientDropdown);
                     });
                     
                     container.appendChild(card);
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             alert('Please select a recipe first');
             return;
         }
-        const targetIngredient = dropdown.value;
+        const targetIngredient = ingredientDropdown.value;
         if (!targetIngredient || targetIngredient === '-- target ingredient --') {
             alert('Please select an ingredient to substitute');
             return;
@@ -121,7 +121,7 @@ function formatRecipe(unformatted) {
 
 // Display recipe in the UI
 // fill html containers with details from recipe object
-export function displayRecipe(recipe, title, ingredients, instructions, dropdown="") {
+export function displayRecipe(recipe, title, ingredients, instructions, dropdown="", reasoning="") {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
@@ -139,6 +139,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
         ingredientItem.textContent = `${amount} ${name}`;
         ingredients.appendChild(ingredientItem);
 
+        // if drop-down tag is provided, populate it with ingredient options
         if ( dropdown ) {
             // add ingredient name to dropdown selector tag
             const ingredientOption = document.createElement("option");
@@ -146,5 +147,13 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
             ingredientOption.textContent = name;
             dropdown.appendChild(ingredientOption);
         }
+    }
+
+    // if reasoning tag is provided, populate it with the openai's justification for the substitution
+    if ( reasoning ) {
+        const justification = document.createElement("div");
+        justification.textContent = recipe.justification;
+
+        reasoning.appendChild(justification);
     }
 }

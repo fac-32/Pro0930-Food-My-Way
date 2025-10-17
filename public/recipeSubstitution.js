@@ -4,6 +4,7 @@
 import { displayRecipe } from "./app.js";
 
 const newRecipeTitle = document.querySelector("#new-recipe-title");
+const substitutionReasoning = document.querySelector("#substitution-reasoning");
 const newIngredientList = document.querySelector("#new-recipe-ingredients");
 const newInstructions = document.querySelector("#new-recipe-instructions");
 
@@ -60,7 +61,7 @@ async function generateSubstitutedRecipe(recipe, ingredientToSubstitute, substit
         const data = await response.json();
         
         if (response.ok) {
-            displayRecipe(JSON.parse(data.newRecipe), newRecipeTitle, newIngredientList, newInstructions);
+            displayRecipe(JSON.parse(data.newRecipe), newRecipeTitle, newIngredientList, newInstructions, undefined, substitutionReasoning);
         } else {
             recipeOutput.textContent = `Error: ${data.error}`;
         }
