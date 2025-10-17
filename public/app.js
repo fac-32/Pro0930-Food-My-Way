@@ -34,6 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Search for meals if passed validation
     ingredientForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        // reset previous meal selection, and clear recipe display area
+        setSelectedRecipe(null);
+        recipeTitle.textContent = '';
+        ingredientList.textContent = '';
+        instructions.textContent = '';
 
         // when validation has passed route to backend
         if ( ingredient.checkValidity() ) {
@@ -42,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
 
                 container.innerHTML = ''; // clear previous
-                data.meals.slice(0, 4).forEach(meal => {
+                data.meals.slice(0, 10).forEach(meal => {
 
                     const card = document.createElement('div');
                     card.classList.add('meal-card');

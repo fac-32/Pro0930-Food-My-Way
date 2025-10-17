@@ -8,41 +8,49 @@
     </head>
 
     <body>
-        <h1>Food My Way</h1>
-        
-        <!-- Search Section -->
-        <form id="ingredient-form">
-            <label for="ingredient">search by ingredient</label>
-            <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
-            <button type="submit">go!</button>
-        </form>
+        <header>
+            <h1>Food My Way</h1>
+        </header>
 
-        <!-- Meal Results -->
-        <ul id="mealsContainer" class="meals-grid"></ul>
+         <main>
+        <!-- Forms and recipe sections -->
+            
+            <!-- Search Section -->
+            <form id="ingredient-form">
+                <label for="ingredient-input">Search recipes by main ingredient:</label>
+                <input type="text" id="ingredient-input" name="ingredient" placeholder="Enter ingredient" required>
+                <button type="submit">Get recipes!</button>
+            </form>
 
-        <!-- Recipe Display -->
-        <section id="recipe-container" class="recipe-display">
-            <div id="recipe-title"></div>
-            <ul id="recipe-ingredients"></ul>
-            <div id="recipe-instructions"></div>
-        </section>
+            <!-- Meal Results -->
+            <h2>Meal Results</h2>
+            <ul id="mealsContainer" class="meals-grid"></ul>
 
-         <!-- Substitution Section -->
-        <form id="substitute-form">
-            <select id="target-ingredient" name="target">
-                <option>-- target ingredient --</option>
-            </select>
-            <button type="submit">find substitute</button>
-        </form>
+            <!-- Recipe Display -->
+             <h2>Recipe Selected</h2>
+            <section id="recipe-container" class="recipe-display">
+                <div id="recipe-title"></div>
+                <ul id="recipe-ingredients"></ul>
+                <div id="recipe-instructions"></div>
+            </section>
 
-        <!-- New Recipe Display -->
-        <section id="new-recipe-container" class="recipe-display">
-            <div id="new-recipe-title"></div>
-            <div id="substitution-reasoning"></div>
-            <ul id="new-recipe-ingredients"></ul>
-            <div id="new-recipe-instructions"></div>
-        </section>
-             
+            <!-- Substitution Section -->
+            <form id="substitute-form">
+                <select id="target-ingredient" name="target">
+                    <option>-- target ingredient --</option>
+                </select>
+                <button type="submit">Get substituted recipe</button>
+            </form>
+
+            <!-- New Recipe Display -->
+            <section id="new-recipe-container" class="recipe-display">
+                <div id="new-recipe-title"></div>
+                <div id="substitution-reasoning"></div>
+                <ul id="new-recipe-ingredients"></ul>
+                <div id="new-recipe-instructions"></div>
+            </section>
+        </main>
+
         <!-- Load scripts as modules -->
         <script type="module" src="app.js"></script>
         <script type="module" src="recipeSubstitution.js"></script>

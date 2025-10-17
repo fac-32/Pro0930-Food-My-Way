@@ -28,3 +28,34 @@
   font-size: 1.1rem;
 } */
     
+/*
+Add Media Queries for Layout Adjustments
+Example adding padding and font size adjustments on smaller screens:
+*/
+@media (max-width: 600px) {
+  body {
+    padding: 0 10px;
+    font-size: 90%;
+  }
+
+  .meals-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  #recipe-container, #new-recipe-container {
+    padding: 10px;
+  }
+}
+
+/* Style buttons and inputs consistently
+Make Buttons and Inputs Larger for Touch including in phone screens */
+button, input, select {
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+button:hover, button:focus {
+  background-color: #ddd;
+  outline: none;
+}
