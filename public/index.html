@@ -26,6 +26,16 @@
             <h2>Meal Results</h2>
             <ul id="mealsContainer" class="meals-grid"></ul>
 
+             <!-- Substitution Section -->
+            <form id="substitute-form">
+                <select id="target-ingredient" name="target">
+                    <option>-- target ingredient --</option>
+                </select>
+                <button type="submit">Get substituted recipe</button>
+            </form>
+            
+            <!-- Recipe Panels Container: Flexbox container -->
+            <div id="recipe-panels-container">
             <!-- Recipe Display -->
              <h2>Recipe Selected</h2>
             <section id="recipe-container" class="recipe-display">
@@ -34,14 +44,6 @@
                 <div id="recipe-instructions"></div>
             </section>
 
-            <!-- Substitution Section -->
-            <form id="substitute-form">
-                <select id="target-ingredient" name="target">
-                    <option>-- target ingredient --</option>
-                </select>
-                <button type="submit">Get substituted recipe</button>
-            </form>
-
             <!-- New Recipe Display -->
             <section id="new-recipe-container" class="recipe-display">
                 <div id="new-recipe-title"></div>
@@ -49,6 +51,7 @@
                 <ul id="new-recipe-ingredients"></ul>
                 <div id="new-recipe-instructions"></div>
             </section>
+            </div>
         </main>
 
         <!-- Load scripts as modules -->

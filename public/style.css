@@ -1,11 +1,91 @@
 
+/* Set a unified font for the entire page */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center; /* Center text & inline elements horizontally */
+  background-color: #f9f9f9;
+  color: #333;
+}
 
+h1, h2, h3 {
+  font-weight: bold;
+  color: #222;
+  font-family: inherit;
+  margin-bottom: 0.5em;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+/* Normal text size */
+p, div, label, input, button, ul, li {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Flexbox container for the two recipe panels */
+#recipe-panels-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem auto;
+  max-width: 960px;
+}
+
+/* Style individual recipe panels */
+.recipe-display {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  flex: 1 1 400px;
+  min-width: 300px;
+  text-align: left;
+}
+
+/* Center forms and other blocks */
+form, #ingredient-form, #substitute-form, #mealsContainer {
+  margin: 1rem auto;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Buttons styling */
+button {
+  cursor: pointer;
+  padding: 0.6em 1.2em;
+  border-radius: 5px;
+  border: 1px solid #666;
+  background-color: #eee;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+button:hover, button:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Grid layout for meal cards */
 .meals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
   padding: 0 1rem;
+
+  max-width: 100%;          /* restrict width */
+  max-height: 400px;        /* example max height */
+  overflow-x: auto;         /* horizontal scrollbar if necessary */
+  overflow-y: hidden;       /* no vertical scroll */
+  white-space: nowrap;      /* prevent wrapping inside container */
+  grid-auto-flow: column;   /* arrange grid items in a row */
 }
+
 
 .meal-card {
   background: white;
