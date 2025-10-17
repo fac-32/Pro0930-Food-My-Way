@@ -121,13 +121,14 @@ function formatRecipe(unformatted) {
 
 // Display recipe in the UI
 // fill html containers with details from recipe object
-function displayRecipe(recipe, title, ingredients, instructions, dropdown="") {
+export function displayRecipe(recipe, title, ingredients, instructions, dropdown="") {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
-    // clear previous recipe and dropdown/selector options
-    dropdown.innerHTML = '<option>-- target ingredient --</option>';
+    // clear previous ingredients and dropdown/selector options
     ingredients.innerHTML = '';
+    if ( dropdown ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
+
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
         const amount = recipe.amounts[i];
