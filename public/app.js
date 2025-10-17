@@ -151,9 +151,6 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
 
     // if reasoning tag is provided, populate it with the openai's justification for the substitution
     if ( reasoning ) {
-        const justification = document.createElement("div");
-        justification.textContent = recipe.justification;
-
-        reasoning.appendChild(justification);
+        reasoning.textContent = recipe.justification; // clear previous
     }
 }
