@@ -19,9 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const saveForm = document.querySelector("#save-recipe-form");
 
-    // DOM element references for database.html
-    const savedRecipes = document.querySelector("#saved-recipes");
-
 
     // display validity error message while typing
     ingredient.addEventListener("input", () => {
@@ -129,16 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json();
         } catch ( error ) {
             console.error(`Error saving recipe: ${error}`);
-        }
-    });
-
-    document.querySelector("#db-recipes").addEventListener("click", async () => {
-        try {
-            const response = await fetch("/recipe/retrieve");
-            const data = await response.json();
-            console.log(data);
-        } catch ( error ) {
-            console.log(`Error fetching db recipes: ${error}`);
         }
     });
 });
