@@ -1,5 +1,5 @@
 import express from "express";
-import { createRecipe } from "../db/utils.js";
+import { createRecipe, retrieveRecipes } from "../db/utils.js";
 
 const router = express.Router();
 
@@ -12,6 +12,15 @@ router.post("/create", (req, res) => {
     instructions: instructions
   });
   res.json({ message: `Your recipe for ${saveTitle} has been saved!` });
+});
+
+router.get("/retrieve", async (req, res) => {
+  try {
+    const recipeCollection = await retrieveRecipes();
+    res.json(recipeCollection);
+  } catch ( error ) {
+    res.status(500).json({ error: "Error while fetching db recipes" });
+  }
 });
 
 // const recipe = {

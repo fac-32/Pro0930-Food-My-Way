@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const substituteForm = document.querySelector("#substitute-form");
 
     const saveForm = document.querySelector("#save-recipe-form");
-    const saveTitleInput = document.querySelector("#save-recipe-name");
 
 
     // display validity error message while typing
@@ -102,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.dispatchEvent(substitutionEvent);
     }); 
     
+    // save an original or generated recipe to db
     saveForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -127,7 +127,16 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch ( error ) {
             console.error(`Error saving recipe: ${error}`);
         }
+    });
 
+    document.querySelector("#db-recipes").addEventListener("click", async () => {
+        try {
+            const response = await fetch("/recipe/retrieve");
+            const data = await response.json();
+            console.log(data);
+        } catch ( error ) {
+            console.log(`Error fetching db recipes: ${error}`);
+        }
     });
 });
 
