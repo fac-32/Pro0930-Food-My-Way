@@ -4,20 +4,35 @@
 // Provides getter and setter functions
 
 // Module-level variable to hold the selected recipe
-let selectedRecipe = null;
+let original = null;
+let generated = null;
+
 
 // Export getter function
-export function getSelectedRecipe() {
-    return selectedRecipe;
+export function getOriginalRecipe() {
+    return original;
 }
 
 // Export setter function
-export function setSelectedRecipe(recipe) {
-    selectedRecipe = recipe;
-    console.log('Selected recipe updated:', recipe?.title);
+export function setOriginalRecipe(recipe) {
+    original = recipe;
+    console.log('Origial recipe updated:', recipe?.title);
 }
 
 // Export check function
-export function hasSelectedRecipe() {
-    return selectedRecipe !== null;
+export function hasOriginalRecipe() {
+    return original !== null;
+}
+
+export function getGeneratedRecipe() {
+    return generated;
+}
+
+export function setGeneratedRecipe(recipe) {
+    generated = recipe;
+    console.log('Generated recipe updated', recipe?.title);
+}
+
+export function hasGeneratedRecipe() {
+    return generated !== null;
 }

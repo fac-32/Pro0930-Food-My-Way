@@ -17,6 +17,6 @@ const client = new MongoClient(uri, {
 });
 
 // 'testing' is the name of my database within the cluster I have connected to
-const db = client.db("testing");
+const db = client.db("food-my-way");
 
 export { client, db };
