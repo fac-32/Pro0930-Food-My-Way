@@ -1,5 +1,5 @@
 import express from "express";
-import { createRecipe, retrieveRecipes, findRecipe } from "../db/utils.js";
+import { createRecipe, retrieveRecipes, findRecipe, deleteRecipe } from "../db/utils.js";
 
 const router = express.Router();
 
@@ -29,6 +29,15 @@ router.get("/select", async (req, res) => {
     res.json(recipe);
   } catch ( error ) {
     res.status(500).json({ error: "Error while fetching the selected recipe from db" });
+  }
+});
+
+router.delete("/delete", async (req, res) => {
+  const id = req.query.id;
+  try {
+    await deleteRecipe(id);
+  } catch ( error ) {
+    res.status(500).json({ error: "Error while deleting recipe" });
   }
 });
 
