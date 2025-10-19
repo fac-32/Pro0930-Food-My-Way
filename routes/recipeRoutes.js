@@ -3,15 +3,22 @@ import { createRecipe, retrieveRecipes, findRecipe } from "../db/utils.js";
 
 const router = express.Router();
 
-router.post("/create", (req, res) => {
-  const { title, amounts, ingredients, instructions } = req.body;
-  createRecipe({
-    title: title,
-    amounts: amounts,
-    ingredients: ingredients,
-    instructions: instructions
-  });
-  res.json({ message: `Your recipe for ${saveTitle} has been saved!` });
+router.post("/create", async (req, res) => {
+  try {
+    const { title, amounts, ingredients, instructions } = req.body;
+    
+    await createRecipe({
+      title,
+      amounts,
+      ingredients,
+      instructions
+    });
+
+    res.status(201).json({ message: `Your recipe for ${title} has been saved!` }); // Fixed saveTitle
+  } catch (error) {
+    console.error("Error inserting recipe:", error);
+    res.status(500).json({ error: "Failed to save recipe", details: error.message });
+  }
 });
 
 router.get("/retrieve", async (req, res) => {

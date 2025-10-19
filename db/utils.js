@@ -7,12 +7,17 @@ const recipes = db.collection("recipes");
 // insert recipe into mongodb
 const createRecipe = async (recipe) => {
   try {
-    await recipes.insertOne(recipe);
+    const result = await recipes.insertOne(recipe);
     console.log("recipe successfully added!");
-  } catch ( error ) {
+    return result;  // ✅ This is the important part
+  } catch (error) {
     console.error(`Error inserting recipe: ${error}`);
+    throw error; // ✅ Also rethrow the error so the route handler can catch it
   }
 };
+
+
+
 
 // return ids and titles from mongodb
 const retrieveRecipes = async () => {

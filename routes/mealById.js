@@ -10,7 +10,13 @@ router.get('/:id', async (req, res) => {
     try {
         const mealId = req.params.id;
         const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
-        const data = await response.json();
+        if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
         res.json(data);
     } catch (error) {
         console.error('Error fetching meal by ID:', error);

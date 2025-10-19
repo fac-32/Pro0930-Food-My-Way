@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // display validity error message while typing
+    if ( ingredient ) {
     ingredient.addEventListener("input", () => {
         const inputIngredient = ingredient.value.trim();
         
@@ -32,8 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ingredient.setCustomValidity("Your ingredient should contain only letters.")
         }
     });
+    }
 
     // Search for meals if passed validation
+    if ( ingredientForm ) {
     ingredientForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -41,7 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if ( ingredient.checkValidity() ) {
             try {
                 const response = await fetch(`/api/meals?ingredient=${encodeURIComponent(ingredient.value)}`); // calls backend
-                const data = await response.json();
+                if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
 
                 container.innerHTML = ''; // clear previous
                 data.meals.slice(0, 4).forEach(meal => {
@@ -74,9 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
             ingredient.reportValidity();
         }
     });
+    }
 
     // Handle substitution request
     // pass the selected recipe and ingredient to openai_api route -> routing to the backend which calls OpenAI
+    if ( substituteForm ) { 
     substituteForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -100,8 +111,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         document.dispatchEvent(substitutionEvent);
     }); 
-    
+    }
     // save an original or generated recipe to db
+    if ( saveForm ) {
     saveForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -123,11 +135,18 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify( event.submitter.value === "original" ? getOriginalRecipe() : getGeneratedRecipe()),
                 headers: { "Content-Type": "application/json" }
             });
-            const data = await response.json();
+            if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
         } catch ( error ) {
             console.error(`Error saving recipe: ${error}`);
         }
     });
+    }
 });
 
 // Format recipe data from API response
@@ -151,13 +170,13 @@ function formatRecipe(unformatted) {
 
 // Display recipe in the UI
 // fill html containers with details from recipe object
-export function displayRecipe(recipe, title, ingredients, instructions, dropdown=undefined, reasoning=undefined) {
+export function displayRecipe(recipe, title, ingredients, instructions, dropdown="", reasoning="") {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
     // clear previous ingredients and dropdown/selector options
     ingredients.innerHTML = '';
-    if ( typeof dropdown !== "undefined" ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
+    if ( dropdown ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
 
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
@@ -170,7 +189,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
         ingredients.appendChild(ingredientItem);
 
         // if drop-down tag is provided, populate it with ingredient options
-        if ( typeof dropdown !== "undefined" ) {
+        if ( dropdown ) {
             // add ingredient name to dropdown selector tag
             const ingredientOption = document.createElement("option");
             ingredientOption.setAttribute("value", name);
@@ -180,7 +199,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
     }
 
     // if reasoning tag is provided, populate it with the openai's justification for the substitution
-    if ( typeof reasoning !== "undefined" ) {
+    if ( reasoning ) {
         const justification = document.createElement("div");
         justification.textContent = recipe.justification;
 

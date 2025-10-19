@@ -59,7 +59,13 @@ async function generateSubstitutedRecipe(recipe, ingredientToSubstitute, substit
             })
         });
         
-        const data = await response.json();
+        if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
         
         if (response.ok) {
             setGeneratedRecipe(JSON.parse(data.newRecipe));
