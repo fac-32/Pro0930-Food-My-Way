@@ -1,10 +1,10 @@
 "use strict";
 
 // Import state management functions
-import { setSelectedRecipe, getSelectedRecipe, hasSelectedRecipe } from './recipeState.js';
+import { getOriginalRecipe, setOriginalRecipe, hasOriginalRecipe, getGeneratedRecipe, hasGeneratedRecipe } from './recipeState.js';
 
 document.addEventListener("DOMContentLoaded", () => {
-    // DOM element references
+    // DOM element references for index.html
     const ingredientForm = document.querySelector("#ingredient-form");
     const ingredient = document.querySelector("#ingredient-input");
 
@@ -17,8 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const ingredientDropdown = document.querySelector("#target-ingredient");
     const substituteForm = document.querySelector("#substitute-form");
 
+    const saveForm = document.querySelector("#save-recipe-form");
+
 
     // display validity error message while typing
+    if ( ingredient ) {
     ingredient.addEventListener("input", () => {
         const inputIngredient = ingredient.value.trim();
         
@@ -30,8 +33,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ingredient.setCustomValidity("Your ingredient should contain only letters.")
         }
     });
+    }
 
     // Search for meals if passed validation
+    if ( ingredientForm ) {
     ingredientForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         // reset previous meal selection, and clear recipe display area
@@ -44,7 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if ( ingredient.checkValidity() ) {
             try {
                 const response = await fetch(`/api/meals?ingredient=${encodeURIComponent(ingredient.value)}`); // calls backend
-                const data = await response.json();
+                if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
 
                 container.innerHTML = ''; // clear previous
                 data.meals.slice(0, 10).forEach(meal => {
@@ -62,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const recipeData = await recipeResponse.json();
                         const recipe = formatRecipe(recipeData);
                         // Store in shared state module
-                        setSelectedRecipe(recipe);
+                        setOriginalRecipe(recipe);
                         displayRecipe(recipe, recipeTitle, ingredientList, instructions, ingredientDropdown);
                     });
                     
@@ -77,14 +88,16 @@ document.addEventListener("DOMContentLoaded", () => {
             ingredient.reportValidity();
         }
     });
+    }
 
     // Handle substitution request
     // pass the selected recipe and ingredient to openai_api route -> routing to the backend which calls OpenAI
+    if ( substituteForm ) { 
     substituteForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
         // Check recipe selected and valid ingredient chosen
-        if (!hasSelectedRecipe()) {
+        if (!hasOriginalRecipe()) {
             alert('Please select a recipe first');
             return;
         }
@@ -97,12 +110,48 @@ document.addEventListener("DOMContentLoaded", () => {
         // Dispatch event for other modules to handle
         const substitutionEvent = new CustomEvent('recipe-substitution-requested', {
             detail: {
-                recipe: getSelectedRecipe(),
+                recipe: getOriginalRecipe(),
                 targetIngredient: targetIngredient
             }
         });
         document.dispatchEvent(substitutionEvent);
-    });   
+    }); 
+    }
+    // save an original or generated recipe to db
+    if ( saveForm ) {
+    saveForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        if ( event.submitter.value === "original" ) {
+            if ( !hasOriginalRecipe() ) {
+                alert("You need to select a recipe to save");
+                return;
+            }
+        } else {
+            if ( !hasGeneratedRecipe() ) {
+                alert("You need to generate a recipe to save");
+                return;
+            }
+        }
+        
+        try {
+            const response = await fetch("/recipe/create", {
+                method: "POST",
+                body: JSON.stringify( event.submitter.value === "original" ? getOriginalRecipe() : getGeneratedRecipe()),
+                headers: { "Content-Type": "application/json" }
+            });
+            if (!response.ok) {
+    const errText = await response.text();
+    throw new Error("Server returned error: " + errText);
+}
+
+const data = await response.json();
+
+        } catch ( error ) {
+            console.error(`Error saving recipe: ${error}`);
+        }
+    });
+    }
 });
 
 // Format recipe data from API response

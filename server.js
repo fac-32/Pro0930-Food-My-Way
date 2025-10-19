@@ -12,6 +12,7 @@ import {} from "dotenv/config";
 
 // Example in your main server file:
 import { client } from './db/client.js';
+import { recipeRoutes } from './routes/recipeRoutes.js';
 
 await client.connect();
 console.log('Connected to MongoDB!');
@@ -32,6 +33,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Middleware to serve static files from "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get("/saved", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "saved.html"));
+});
 
 // Search meals by ingredient: Fetch meals from MealDB API
 app.get('/api/meals', async (req, res) => {
@@ -67,6 +72,7 @@ app.get('/api/meals', async (req, res) => {
 // Import and use routes
 app.use('/api/meals', mealByIdRoutes);  // Mount the meal by ID route
 app.use('/api/openai', openaiRoutes);
+app.use('/recipe',recipeRoutes);
 
 async function startServer() {
   try {
@@ -74,7 +80,7 @@ async function startServer() {
     await client.connect();
     console.log("Connected to MongoDB!");
     // Send a ping to confirm a successful connection
-    await client.db("testing").command({ ping: 1 });
+    await client.db("food-my-way").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!",
     );
