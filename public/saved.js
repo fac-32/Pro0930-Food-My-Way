@@ -16,12 +16,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
         const response = await fetch("/recipe/retrieve");
         if (!response.ok) {
-    const errText = await response.text();
-    throw new Error("Server returned error: " + errText);
-}
-
-const data = await response.json();
-
+            const errText = await response.text();
+            throw new Error("Server returned error: " + errText);
+        }
+        const data = await response.json();
         displayTitles(data, savedRecipes);
     } catch ( error ) {
         console.log(`Error fetching db recipes: ${error}`);
@@ -35,13 +33,12 @@ const data = await response.json();
             try {
                 const response = await fetch(`/recipe/select?id=${targetRecipe.getAttribute("data-id")}`);
                 if (!response.ok) {
-    const errText = await response.text();
-    throw new Error("Server returned error: " + errText);
-}
+                    const errText = await response.text();
+                    throw new Error("Server returned error: " + errText);
+                }
 
-const data = await response.json();
-
-                displaySelected(data, selectedRecipeTitle, selectedIngredientList, selectedInstructions, recipeContainer);
+            const data = await response.json();
+            displaySelected(data, selectedRecipeTitle, selectedIngredientList, selectedInstructions, recipeContainer);
             } catch ( error ) {
                 console.error(`Error finding recipe: ${error}`);
             }
