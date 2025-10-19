@@ -1,8 +1,14 @@
 "use strict";
 
+import { displayRecipe } from "./app.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
-    // DOM element references for database.html
+    // DOM element references for saved.html
     const savedRecipes = document.querySelector("#saved-recipes");
+
+    const selectedRecipeTitle = document.querySelector("#selected-recipe-title");
+    const selectedIngredientList = document.querySelector("#selected-recipe-ingredients");
+    const selectedInstructions = document.querySelector("#selected-recipe-instructions");
 
     // on load, try to get recipes from db and display in list
     try {
@@ -12,6 +18,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch ( error ) {
         console.log(`Error fetching db recipes: ${error}`);
     }
+
+    savedRecipes.addEventListener("click", async (event) => {
+        let targetRecipe = event.target;
+        if ( targetRecipe.id !== "savedRecipes" ) {
+            try {
+                const response = await fetch(`/recipe/select?id=${targetRecipe.getAttribute("data-id")}`);
+                const data = await response.json();
+                displaySelected(data, selectedRecipeTitle, selectedIngredientList, selectedInstructions);
+            } catch ( error ) {
+                console.error(`Error finding recipe: ${error}`);
+            }
+            // import and call displayRecipe function with stuff from db response
+        }
+    });
 });
 
 // populate html unordered list with saved recipe titles and their db ids as data attributes
@@ -23,5 +43,9 @@ function displayTitles(recipes, recipeContainer) {
 
         recipeContainer.appendChild(recipe);
     }
-    console.log(recipes[0]);
+}
+
+function displaySelected(recipe, title, ingredients, instructions) {
+    displayRecipe(recipe, title, ingredients, instructions, undefined, undefined);
+
 }

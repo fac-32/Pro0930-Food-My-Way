@@ -72,7 +72,7 @@ app.get('/api/meals', async (req, res) => {
 // Import and use routes
 app.use('/api/meals', mealByIdRoutes);  // Mount the meal by ID route
 app.use('/api/openai', openaiRoutes);
-app.use('/recipe',recipeRoutes)
+app.use('/recipe',recipeRoutes);
 
 async function startServer() {
   try {

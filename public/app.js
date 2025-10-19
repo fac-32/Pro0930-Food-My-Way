@@ -151,13 +151,13 @@ function formatRecipe(unformatted) {
 
 // Display recipe in the UI
 // fill html containers with details from recipe object
-export function displayRecipe(recipe, title, ingredients, instructions, dropdown="", reasoning="") {
+export function displayRecipe(recipe, title, ingredients, instructions, dropdown=undefined, reasoning=undefined) {
     title.textContent = recipe.title;
     instructions.textContent = recipe.instructions;
 
     // clear previous ingredients and dropdown/selector options
     ingredients.innerHTML = '';
-    if ( dropdown ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
+    if ( typeof dropdown !== "undefined" ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
 
 
     for ( let i = 0; i < recipe.ingredients.length; i++ ) {
@@ -170,7 +170,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
         ingredients.appendChild(ingredientItem);
 
         // if drop-down tag is provided, populate it with ingredient options
-        if ( dropdown ) {
+        if ( typeof dropdown !== "undefined" ) {
             // add ingredient name to dropdown selector tag
             const ingredientOption = document.createElement("option");
             ingredientOption.setAttribute("value", name);
@@ -180,7 +180,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
     }
 
     // if reasoning tag is provided, populate it with the openai's justification for the substitution
-    if ( reasoning ) {
+    if ( typeof reasoning !== "undefined" ) {
         const justification = document.createElement("div");
         justification.textContent = recipe.justification;
 

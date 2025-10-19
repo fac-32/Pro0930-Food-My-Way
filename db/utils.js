@@ -1,4 +1,5 @@
 // utils.js
+import { ObjectId } from "mongodb";
 import { db } from "./client.js";
 
 const recipes = db.collection("recipes");
@@ -24,4 +25,13 @@ const retrieveRecipes = async () => {
   }
 };
 
-export { createRecipe, retrieveRecipes }
+const findRecipe =  async (id) => {
+  try {
+    const cursor = recipes.findOne({ _id: new ObjectId(id) }, { projection: { title: 1, amounts: 1, ingredients: 1, instructions: 1 } });
+    return cursor;
+  } catch ( error ) {
+    console.log(`Error finding recipe with this id: ${error}`);
+  }
+};
+
+export { createRecipe, retrieveRecipes, findRecipe }
