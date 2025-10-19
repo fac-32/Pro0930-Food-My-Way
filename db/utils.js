@@ -1,5 +1,5 @@
 // utils.js
-import { ObjectId } from "mongodb";
+import { ObjectId } from "bson";
 import { db } from "./client.js";
 
 const recipes = db.collection("recipes");
@@ -30,13 +30,21 @@ const retrieveRecipes = async () => {
   }
 };
 
-const findRecipe =  async (id) => {
+const findRecipe = async (id) => {
   try {
     const cursor = recipes.findOne({ _id: new ObjectId(id) }, { projection: { title: 1, amounts: 1, ingredients: 1, instructions: 1 } });
     return cursor;
   } catch ( error ) {
-    console.log(`Error finding recipe with this id: ${error}`);
+    console.error(`Error finding recipe with this id: ${error}`);
   }
 };
 
-export { createRecipe, retrieveRecipes, findRecipe }
+const deleteRecipe = async (id) => {
+  try {
+    recipes.deleteOne({ _id: new ObjectId(id) });
+  } catch ( error ) {
+    console.error(`Error deleting recipe: ${error}`);
+  }
+};
+
+export { createRecipe, retrieveRecipes, findRecipe, deleteRecipe }
