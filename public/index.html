@@ -3,12 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Food My Way</title>
+        <title>Food My Way: recipes</title>
         <link rel="stylesheet" href="style.css">
     </head>
 
     <body>
         <h1>Food My Way</h1>
+        <a href="/saved">database: view saved recipes</a>
         
         <!-- Search Section -->
         <form id="ingredient-form">
@@ -25,7 +26,11 @@
             <div id="recipe-title"></div>
             <ul id="recipe-ingredients"></ul>
             <div id="recipe-instructions"></div>
+            <button form="save-recipe-form" type="submit" value="original">save original</button>
         </section>
+
+        <!-- Save Recipes -->
+        <form id="save-recipe-form"></form>
 
          <!-- Substitution Section -->
         <form id="substitute-form">
@@ -41,6 +46,7 @@
             <div id="substitution-reasoning"></div>
             <ul id="new-recipe-ingredients"></ul>
             <div id="new-recipe-instructions"></div>
+            <button form="save-recipe-form" type="submit" value="generated">save generated</button>
         </section>
              
         <!-- Load scripts as modules -->
