@@ -34,6 +34,10 @@ app.use(express.urlencoded({ extended: true }));
 // Middleware to serve static files from "public" folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.get("/saved", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "saved.html"));
+});
+
 // Search meals by ingredient: Fetch meals from MealDB API
 app.get('/api/meals', async (req, res) => {
   try {
