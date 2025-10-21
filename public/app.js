@@ -220,10 +220,10 @@ export function displayRecipe(
 
   // set recipe data
   title.textContent = recipe.title;
-  console.log(instructions);
+  console.log(instructions.textContent);
   console.log(recipe.instructions);
   instructions.textContent = recipe.instructions;
-  console.log(instructions)
+  console.log(instructions.textContent)
   // add image if exists
 
   // Keep previous image if new recipe has no image

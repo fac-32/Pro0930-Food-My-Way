@@ -62,11 +62,18 @@ function displayTitles(recipes, recipeContainer) {
 function displaySelected(recipe, title, ingredients, instructions, container) {
     // display using standard function: show title, ingredients list, and instructions
     displayRecipe(recipe, title, ingredients, instructions, undefined, undefined);
+    
+    container.classList.add("recipe-display");
+
+    const oldButton = container.querySelector("button");
+    if ( oldButton ) oldButton.remove();
+
     // create delete additional button
     const button = document.createElement("button");
     button.setAttribute("type", "button");
     button.setAttribute("value", recipe._id);
     button.textContent = "DELETE";
+    button.classList.add("delete-btn");
 
     // on button click, send delete request to remove element with same id from the database
     button.addEventListener("click", async (event) => {
@@ -80,13 +87,12 @@ function displaySelected(recipe, title, ingredients, instructions, container) {
                 title.textContent = "";
                 ingredients.textContent = "";
                 instructions.textContent = "";
-                button.style.visibility = "hidden";
+                button.remove()
             }
         } catch ( error ) {
             console.error(`Error deleting recipe: ${error}`);
         }
     });
 
-    // replace previous recipe button so they don't pile up
-    container.replaceChild(button, container.lastElementChild);
+    container.appendChild(button);
 }
