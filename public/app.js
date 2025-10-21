@@ -198,6 +198,8 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
         }
     }
 
+  getNutritionInfo(recipe)
+
     // if reasoning tag is provided, populate it with the openai's justification for the substitution
     if ( reasoning ) {
         const justification = document.createElement("div");
@@ -205,4 +207,29 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
 
         reasoning.appendChild(justification);
     }
+}
+
+function constructIngredientsString(recipe) {
+  let ingredientsArray = [];
+  for (let i = 0; i < recipe.ingredients.length; i++) {
+    // console.log(`Ingredient: ${amounts[i]} ${ingredients[i]} `);
+    ingredientsArray.push(` ${recipe.amounts[i]} ${recipe.ingredients[i]}`);
+  }
+  // console.log(...ingredientsArray);
+  return [...ingredientsArray];
+}
+
+// function to call nutrition API
+async function getNutritionInfo(recipe) {
+  const ingredients = constructIngredientsString(recipe)
+  try {
+    const response = await fetch(
+      `/api/nutrition?ingredientList=${encodeURIComponent(ingredients)}`,
+    );
+    const data = await response.json();
+
+    console.log(JSON.stringify(data));
+  } catch (error) {
+    console.error("getNutritionInfo call error in app.js", error);
+  }
 }
