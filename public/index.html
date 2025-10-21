@@ -63,7 +63,44 @@
           <select id="target-ingredient" name="target" class="custom-select">
             <option>-- target ingredient --</option>
           </select>
-          <button type="submit">Get substituted recipe</button>
+
+            <!-- Dietary optios selection -->
+          <!-- <form id="recipe-options-form"> -->
+            <label for="dietary-tags">Dietary preferences (select one or more):</label><br>
+            <select id="dietary-tags" name="dietaryTags" multiple size="4">
+                <option value="vegetarian">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="gluten-free">Gluten-Free</option>
+                <option value="dairy-free">Dairy-Free</option>
+            </select>
+            <br><br>
+            <!-- Single Food Group Goal Selector -->
+            <label>Adjust food group:</label>
+            <select id="food-group-select" name="foodGroup">
+                <option value="">-- Select food group --</option>
+                <option value="protein">Protein</option>
+                <option value="fat">Fat</option>
+                <option value="carbs">Carbohydrates</option>
+            </select>
+            <label>
+                <input type="radio" name="adjustment" value="increase" checked> Increase
+            </label>
+            <label>
+                <input type="radio" name="adjustment" value="decrease"> Decrease
+            </label>
+            
+            <!-- Display Selected Options -->
+  <!--           <button type="button" id="add-food-goal">Add Food Goal</button>
+            <label>Current recipe criteria:</label>
+            <textarea id="prompt-display" rows="6" readonly></textarea>
+            <br>
+          <select id="target-ingredient" name="target">
+            <option>-- target ingredient --</option>
+          </select>
+          <button type="submit" id="generate-recipe">Generate recipe</button> -->
+            <br><br>
+        <!-- </form> -->
+          <button type="submit" id="generate-recipe">Get substituted recipe</button>
         </form>
 
         <!-- Recipe Panels Container: Flexbox container -->
@@ -81,48 +118,6 @@
 
           <!-- Save Recipes -->
           <form id="save-recipe-form"></form>
-
-          <!-- Substitution Section -->
-          <form id="recipe-options-form">
-        <!--<form id="substitute-form"> -->
-            <label for="dietary-tags">Dietary preferences (select one or more):</label><br>
-            <select id="dietary-tags" name="dietaryTags" multiple size="4">
-                <option value="vegetarian">Vegetarian</option>
-                <option value="vegan">Vegan</option>
-                <option value="gluten-free">Gluten-Free</option>
-                <option value="dairy-free">Dairy-Free</option>
-            </select>
-
-            <br><br>
-
-            <!-- Single Food Group Goal Selector -->
-            <label>Adjust food group:</label>
-            <select id="food-group-select" name="foodGroup">
-                <option value="">-- Select food group --</option>
-                <option value="protein">Protein</option>
-                <option value="fat">Fat</option>
-                <option value="carbs">Carbohydrates</option>
-            </select>
-
-            <label>
-                <input type="radio" name="adjustment" value="increase" checked> Increase
-            </label>
-            <label>
-                <input type="radio" name="adjustment" value="decrease"> Decrease
-            </label>
-            <!-- Display Selected Options -->
-            <button type="button" id="add-food-goal">Add Food Goal</button>
-            <label>Current recipe criteria:</label>
-            <textarea id="prompt-display" rows="6" readonly></textarea>
-
-            <br>
-          <select id="target-ingredient" name="target">
-            <option>-- target ingredient --</option>
-          </select>
-          <button type="submit" id="generate-recipe">Generate recipe</button>
-
-            <br><br>
-        </form>
 
           <!-- New Recipe Display -->
           <section

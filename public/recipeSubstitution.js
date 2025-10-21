@@ -11,11 +11,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const foodGroupSelect = document.getElementById("food-group-select");
     const adjustmentRadios = document.getElementsByName("adjustment");
     const ingredientDropdown = document.getElementById("target-ingredient");
-    const addFoodGoalBtn = document.getElementById("add-food-goal")
+    // const addFoodGoalBtn = document.getElementById("add-food-goal")
     // Recipe generation elements
     const generateRecipeBtn = document.getElementById("generate-recipe");
-    const promptDisplay = document.getElementById("prompt-display");
-    const recipeOptionsForm = document.getElementById("recipe-options-form");
+    // const promptDisplay = document.getElementById("prompt-display");
+    const recipeOptionsForm = document.getElementById('substitute-form');//("recipe-options-form");
     const newRecipeTitle = document.querySelector("#new-recipe-title");
     const substitutionReasoning = document.querySelector("#substitution-reasoning");
     const newIngredientList = document.querySelector("#new-recipe-ingredients");
@@ -26,10 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dietarySelect,
         foodGroupSelect,
         adjustmentRadios,
-        addFoodGoalBtn,
         targetIngredientSelect: ingredientDropdown,
-        generateRecipeBtn,
-        promptDisplay
+        generateRecipeBtn
     });
 
     // Handle substitution request

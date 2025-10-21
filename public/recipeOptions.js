@@ -5,18 +5,16 @@ export class RecipeOptionsManager {
     dietarySelect,
     foodGroupSelect,
     adjustmentRadios,
-    addFoodGoalBtn,
     targetIngredientSelect,
-    generateRecipeBtn,
-    promptDisplay
+    generateRecipeBtn
   }) {
     this.dietarySelect = dietarySelect;
     this.foodGroupSelect = foodGroupSelect;
     this.adjustmentRadios = adjustmentRadios;
-    this.addFoodGoalBtn = addFoodGoalBtn;
+    //this.addFoodGoalBtn = addFoodGoalBtn;
     this.targetIngredientSelect = targetIngredientSelect;
     this.generateRecipeBtn = generateRecipeBtn;
-    this.promptDisplay = promptDisplay;
+    //this.promptDisplay = promptDisplay;
 
     this.promptCriteria = {
       dietary: [],
@@ -31,10 +29,10 @@ export class RecipeOptionsManager {
     this.dietarySelect.addEventListener("change", () => {
       const selected = Array.from(this.dietarySelect.selectedOptions).map(opt => opt.value);
       this.promptCriteria.dietary = selected;
-      this._updatePromptDisplay();
+      //this._updatePromptDisplay();
     });
 
-  this.addFoodGoalBtn.addEventListener("click", () => {
+/*   this.addFoodGoalBtn.addEventListener("click", () => {
       const foodGroup = this.foodGroupSelect.value;
       if (!foodGroup) {
         alert("Please select a food group.");
@@ -43,7 +41,7 @@ export class RecipeOptionsManager {
       const adjustment = Array.from(this.adjustmentRadios).find(r => r.checked)?.value ?? "increase";
       this.promptCriteria.foodGoal = (adjustment === "increase" ? "Increase" : "Decrease") + " " + foodGroup;
       this._updatePromptDisplay();
-  }); 
+  });  */
 
     this.generateRecipeBtn.addEventListener("click", () => {
       const ingredient = this.targetIngredientSelect.value;
@@ -52,11 +50,11 @@ export class RecipeOptionsManager {
         return;
       }
       this.promptCriteria.substitution = ingredient;
-      this._updatePromptDisplay();
+      //this._updatePromptDisplay();
     });
   }
 
-  _updatePromptDisplay() {
+/*   _updatePromptDisplay() {
     const parts = [];
     if (this.promptCriteria.dietary.length > 0) {
       parts.push("Dietary: " + this.promptCriteria.dietary.join(", "));
@@ -68,7 +66,7 @@ export class RecipeOptionsManager {
       parts.push("Substitution: " + this.promptCriteria.substitution);
     }
     this.promptDisplay.value = parts.join("\n");
-  }
+  } */
 
   getCriteria() {
     return this.promptCriteria;
