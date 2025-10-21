@@ -39,11 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
             alert('Please select a recipe first');
             return;
         }
-        const targetIngredient = ingredientDropdown.value;
+ /*        const targetIngredient = ingredientDropdown.value;
         if (!targetIngredient || targetIngredient === '-- target ingredient --') {
             alert('Please select an ingredient to substitute');
             return;
-        }
+        } */
 
         // Gather criteria from the modular manager
         const criteria = optionsManager.getCriteria();
@@ -58,16 +58,13 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
         }
         const selectedRecipe = getOriginalRecipe();
-        console.log('Selected recipe for substitution:', selectedRecipe);
+        //console.log('Selected recipe for substitution:', selectedRecipe);
 
-/*         // Dispatch event for other modules to handle
-        await generateSubstitutedRecipe(selectedRecipe, targetIngredient, '');    */
         // Clear previous text on substitution display areas
-    /* newRecipeTitle.textContent = 'Loading...';
+    newRecipeTitle.textContent = 'Loading...';
     substitutionReasoning.textContent = '';
     newIngredientList.textContent = '';
     newInstructions.textContent = '';
-        newRecipeTitle.textContent = 'Loading...';*/
     
     try {
         const response = await fetch('/api/openai/substitute', {
@@ -81,7 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 allIngredients: selectedRecipe.ingredients.map((ing, i) => 
                     `${selectedRecipe.amounts[i]} ${ing}`
                 ),
-                //ingredientToSubstitute: targetIngredient,
                 substitutionIngredient: '',
                 ingredientToSubstitute: criteria.substitution || '',
                 substitutionIngredient: '', // You may extend this in future

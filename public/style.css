@@ -55,6 +55,10 @@ form, #ingredient-form, #substitute-form, #mealsContainer {
   text-align: center;
 }
 
+/* #substitute-form {
+  display: flex;
+} */
+
 /* Buttons styling */
 button {
   cursor: pointer;
@@ -70,22 +74,6 @@ button:hover, button:focus {
   background-color: #ddd;
   outline: none;
 }
-
-/* Grid layout for meal cards */
-/* .meals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-  padding: 0 1rem;
-
-  max-width: 100%;          /* restrict width */
-  max-height: 400px;        /* example max height */
-  overflow-x: auto;         /* horizontal scrollbar if necessary */
-  overflow-y: hidden;       /* no vertical scroll */
-  white-space: nowrap;      /* prevent wrapping inside container */
-  grid-auto-flow: column;   /* arrange grid items in a row */
-} */
-
 
 .meal-card {
   background: white;
