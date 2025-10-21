@@ -1,24 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Food My Way: database</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food My Way: Saved Recipes</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/styles/style-nav.css" />
+    <link rel="stylesheet" href="/styles/style-saved.css" />
+  </head>
 
-    <body>
-        <h1>Food My Way</h1>
-        <a href="/">recipes: search for and generate new recipes</a>
-    
-        <ul id="saved-recipes"></ul>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/"
+          ><img src="images/High-Resolution-Color-Logo.png" alt="MySite Logo"
+        /></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/saved">Saved Recipes</a></li>
+      </ul>
+    </nav>
 
-        <section id="recipe-container">
-            <div id="selected-recipe-title"></div>
-            <ul id="selected-recipe-ingredients"></ul>
-            <div id="selected-recipe-instructions"></div>
-        </section>
+    <main>
+      <section id="saved-header" class="saved-header">
+        <h1>Saved Recipes</h1>
+        <p class="cta">
+          Browse your saved recipes or
+          <a href="/">search for and generate new ones</a>
+        </p>
+      </section>
 
-        <script type="module" src="./saved.js"></script>
-    </body>
+      <!-- Saved Recipes List -->
+      <ul id="saved-recipes" class="meals-list"></ul>
+
+      <!-- Selected Recipe Panel -->
+      <section id="recipe-container" class="recipe-display">
+        <div id="selected-recipe-title" class="recipe-title"></div>
+        <ul id="selected-recipe-ingredients" class="recipe-ingredients"></ul>
+        <div
+          id="selected-recipe-instructions"
+          class="recipe-instructions"
+        ></div>
+        <!-- DELETE button will be appended here by JS -->
+      </section>
+    </main>
+
+    <script type="module" src="./saved.js"></script>
+  </body>
 </html>
