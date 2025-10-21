@@ -1,12 +1,13 @@
 // public/recipeSubstitution.js
 //  Client-side JavaScript to interact with the OpenAI API via the backend
 
-import { displayRecipe } from "./app.js";
-import { setGeneratedRecipe } from "./recipeState.js";
+import { displayRecipe, getNutritionInfo } from "./app.js";
+import { getGeneratedRecipe, setGeneratedRecipe } from "./recipeState.js";
 
 const newRecipeTitle = document.querySelector("#new-recipe-title");
 const substitutionReasoning = document.querySelector("#substitution-reasoning");
 const newIngredientList = document.querySelector("#new-recipe-ingredients");
+const newNutritionList = document.querySelector("#new-recipe-nutrition");
 const newInstructions = document.querySelector("#new-recipe-instructions");
 
 // Listen for substitution requests from app.js
@@ -75,6 +76,7 @@ const data = await response.json();
         if (response.ok) {
             setGeneratedRecipe(JSON.parse(data.newRecipe));
             displayRecipe(JSON.parse(data.newRecipe), newRecipeTitle, newIngredientList, newInstructions, undefined, substitutionReasoning);
+            getNutritionInfo(getGeneratedRecipe(), newNutritionList)
         } else {
             recipeOutput.textContent = `Error: ${data.error}`;
         }

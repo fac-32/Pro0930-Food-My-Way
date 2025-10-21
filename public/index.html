@@ -18,9 +18,14 @@
         <a href="/saved">database: view saved recipes</a> -->
     <nav class="navbar">
       <div class="logo">
-        <a href="/"
-          ><img src="images//High-Resolution-Color-Logo.png" alt="MySite Logo"
-        /></a>
+        <a href="/">
+          <img
+            src="images/High-Resolution-Color-Logo.png"
+            alt="MySite Logo"
+            class="full-logo"
+          />
+          <img src="images/favicon.png" alt="MySite Logo" class="small-logo" />
+        </a>
       </div>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
@@ -73,6 +78,7 @@
             <img id="recipe-image" alt="Recipe image" />
             <div id="recipe-title"></div>
             <ul id="recipe-ingredients"></ul>
+            <ul id="recipe-nutrition"></ul>
             <div id="recipe-instructions"></div>
             <button form="save-recipe-form" type="submit" value="original">
               save original
@@ -98,6 +104,7 @@
             <h2 id="new-recipe-title"></h2>
             <p id="substitution-reasoning"></p>
             <ul id="new-recipe-ingredients"></ul>
+            <ul id="new-recipe-nutrition"></ul>
             <div id="new-recipe-instructions"></div>
             <button form="save-recipe-form" type="submit" value="generated">
               Save Generated
