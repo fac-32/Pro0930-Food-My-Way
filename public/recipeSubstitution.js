@@ -40,8 +40,13 @@ generateRecipeBtn.addEventListener('click', async () => {
 
 // Call OpenAI API for recipe substitution
 async function generateSubstitutedRecipe(recipe, ingredientToSubstitute, substitutionIngredient) {
-    newRecipeTitle.textContent = 'Loading...';
     
+    // Clear previous text on substitution display areas
+    newRecipeTitle.textContent = 'Loading...';
+    substitutionReasoning.textContent = '';
+    newIngredientList.textContent = '';
+    newInstructions.textContent = '';
+
     try {
         const response = await fetch('/api/openai/substitute', {
             method: 'POST',
