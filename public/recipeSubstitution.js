@@ -2,7 +2,7 @@
 //  Client-side JavaScript to interact with the OpenAI API via the backend
 
 import { displayRecipe } from "./app.js";
-import { setSelectedRecipe, getSelectedRecipe, hasSelectedRecipe } from './recipeState.js';
+import { getOriginalRecipe, hasOriginalRecipe } from './recipeState.js';
 import { RecipeOptionsManager } from "./recipeOptions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const foodGroupSelect = document.getElementById("food-group-select");
     const adjustmentRadios = document.getElementsByName("adjustment");
     const ingredientDropdown = document.getElementById("target-ingredient");
-
+    const addFoodGoalBtn = document.getElementById("add-food-goal")
     // Recipe generation elements
     const generateRecipeBtn = document.getElementById("generate-recipe");
     const promptDisplay = document.getElementById("prompt-display");
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dietarySelect,
         foodGroupSelect,
         adjustmentRadios,
-        //addFoodGoalBtn: document.getElementById("add-food-goal"),
+        addFoodGoalBtn,
         targetIngredientSelect: ingredientDropdown,
         generateRecipeBtn,
         promptDisplay
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
         // Check recipe selected and valid ingredient chosen
-        if (!hasSelectedRecipe()) {
+        if (!hasOriginalRecipe()) {
             alert('Please select a recipe first');
             return;
         }
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert('Please select at least one option (ingredient substitution, dietary preferences, or food goals) to generate a recipe');
         return;
         }
-        const selectedRecipe = getSelectedRecipe();
+        const selectedRecipe = getOriginalRecipe();
         console.log('Selected recipe for substitution:', selectedRecipe);
 
 /*         // Dispatch event for other modules to handle

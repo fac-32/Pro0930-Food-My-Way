@@ -34,7 +34,7 @@ export class RecipeOptionsManager {
       this._updatePromptDisplay();
     });
 
-/*     this.addFoodGoalBtn.addEventListener("click", () => {
+  this.addFoodGoalBtn.addEventListener("click", () => {
       const foodGroup = this.foodGroupSelect.value;
       if (!foodGroup) {
         alert("Please select a food group.");
@@ -43,7 +43,7 @@ export class RecipeOptionsManager {
       const adjustment = Array.from(this.adjustmentRadios).find(r => r.checked)?.value ?? "increase";
       this.promptCriteria.foodGoal = (adjustment === "increase" ? "Increase" : "Decrease") + " " + foodGroup;
       this._updatePromptDisplay();
-    }); */
+  }); 
 
     this.generateRecipeBtn.addEventListener("click", () => {
       const ingredient = this.targetIngredientSelect.value;

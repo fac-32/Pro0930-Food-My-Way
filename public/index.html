@@ -60,15 +60,17 @@
             <label>
                 <input type="radio" name="adjustment" value="decrease"> Decrease
             </label>
-        <br>
+            <!-- Display Selected Options -->
+            <button type="button" id="add-food-goal">Add Food Goal</button>
+            <label>Current recipe criteria:</label>
+            <textarea id="prompt-display" rows="6" readonly></textarea>
+
+            <br>
             <select id="target-ingredient" name="target">
                 <option>-- target ingredient --</option>
             </select>
             <button type="submit" id="generate-recipe">Generate recipe</button>
 
-            <!-- Display Selected Options -->
-            <label>Current recipe criteria:</label>
-            <textarea id="prompt-display" rows="6" readonly></textarea>
             <br><br>
         </form>
 
