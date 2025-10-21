@@ -210,40 +210,43 @@ export function displayRecipe(
   title,
   ingredients,
   instructions,
-  dropdown = '',
-  reasoning = ''
+  dropdown=undefined,
+  reasoning=undefined
 ) {
   // get the image element
-  const recipeImage = document.querySelector('#recipe-image')
+  const recipeImage = document.querySelector('#recipe-image');
 
   // set recipe data
-  title.textContent = recipe.title
-  instructions.textContent = recipe.instructions
-
+  title.textContent = recipe.title;
+  console.log(instructions);
+  console.log(recipe.instructions);
+  instructions.textContent = recipe.instructions;
+  console.log(instructions)
   // add image if exists
 
   // Keep previous image if new recipe has no image
-  if (recipe.image) {
-    recipeImage.src = recipe.image
-    recipeImage.style.display = 'block'
-  } else if (!recipeImage.src) {
-    // only hide it if there was no image before
-    recipeImage.style.display = 'none'
-  }
+  if ( typeof recipe.image !== "undefined" ) {
+    recipeImage.src = recipe.image;
+    recipeImage.style.display = 'block';
+  } 
+//   else if (!recipeImage.src) {
+//     // only hide it if there was no image before
+//     recipeImage.style.display = 'none'
+//   }
 
   // clear previous ingredients and dropdown/selector options
-  ingredients.innerHTML = ''
-  if (dropdown) dropdown.innerHTML = '<option>-- target ingredient --</option>'
+  ingredients.textContent = '';
+  if ( typeof dropdown !== "undefined" ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
 
   for (let i = 0; i < recipe.ingredients.length; i++) {
-    const amount = recipe.amounts[i]
-    const name = recipe.ingredients[i]
+    const amount = recipe.amounts[i];
+    const name = recipe.ingredients[i];
 
-    const ingredientItem = document.createElement('li')
-    ingredientItem.textContent = `${amount} ${name}`
-    ingredients.appendChild(ingredientItem)
+    const ingredientItem = document.createElement('li');
+    ingredientItem.textContent = `${amount} ${name}`;
+    ingredients.appendChild(ingredientItem);
 
-    if (dropdown) {
+    if ( typeof dropdown !== "undefined") {
       const ingredientOption = document.createElement('option')
       ingredientOption.value = name
       ingredientOption.textContent = name
@@ -252,7 +255,7 @@ export function displayRecipe(
   }
 
   // if reasoning tag is provided, populate it with the openai's justification for the substitution
-  if (reasoning) {
+  if ( typeof reasoning !== "undefined" ) {
     reasoning.textContent = recipe.justification // clear previous
   }
 }
