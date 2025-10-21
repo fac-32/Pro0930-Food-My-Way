@@ -198,7 +198,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
         }
     }
 
-  getNutritionInfo(recipe)
+    getNutritionInfo(recipe)
 
     // if reasoning tag is provided, populate it with the openai's justification for the substitution
     if ( reasoning ) {
@@ -209,6 +209,7 @@ export function displayRecipe(recipe, title, ingredients, instructions, dropdown
     }
 }
 
+// Take ingredients and amounts in recipe and output as a single string
 function constructIngredientsString(recipe) {
   let ingredientsArray = [];
   for (let i = 0; i < recipe.ingredients.length; i++) {
@@ -219,7 +220,7 @@ function constructIngredientsString(recipe) {
   return [...ingredientsArray];
 }
 
-// function to call nutrition API
+// Call nutrition API
 async function getNutritionInfo(recipe) {
   const ingredients = constructIngredientsString(recipe)
   try {
@@ -228,8 +229,51 @@ async function getNutritionInfo(recipe) {
     );
     const data = await response.json();
 
-    console.log(JSON.stringify(data));
+    displayNutrition(data)
   } catch (error) {
     console.error("getNutritionInfo call error in app.js", error);
+  }
+}
+
+// Display nutrition information in the UI
+function displayNutrition(data) {
+  const nutritionElement = document.querySelector('#recipe-nutrition')
+  nutritionElement.innerHTML = ''
+
+  const nutritionInfo = {
+    serving_size_g: 0,
+    calories: 0,
+    fat_total_g: 0,
+    fiber_g: 0,
+    protein_g: 0,
+    sodium_mg: 0,
+    sugar_g: 0
+  }
+
+  // console.log(data.items)
+
+  data.items.forEach(ingredient => {
+    nutritionInfo.serving_size_g += ingredient.serving_size_g
+    nutritionInfo.calories += ingredient.calories
+    nutritionInfo.fat_total_g += ingredient.fat_total_g
+    nutritionInfo.fiber_g += ingredient.fiber_g
+    nutritionInfo.protein_g += ingredient.protein_g
+    nutritionInfo.sodium_mg += ingredient.sodium_mg
+    nutritionInfo.sugar_g += ingredient.sugar_g
+  });
+
+  nutritionInfo.serving_size_g = 'Serving size: ' + Math.round(nutritionInfo.serving_size_g * 10) / 10 + 'g'
+  nutritionInfo.calories = 'Calories: ' + Math.round(nutritionInfo.calories * 10) / 10
+  nutritionInfo.fat_total_g = 'Total fat: ' + Math.round(nutritionInfo.fat_total_g * 10) / 10 + 'g'
+  nutritionInfo.fiber_g = 'Fibre: ' + Math.round(nutritionInfo.fiber_g * 10) / 10 + 'g'
+  nutritionInfo.protein_g = 'Protein: ' + Math.round(nutritionInfo.protein_g * 10) / 10 + 'g'
+  nutritionInfo.sodium_mg = 'Sodium: ' + Math.round(nutritionInfo.sodium_mg * 10) / 10 + 'mg'
+  nutritionInfo.sugar_g = 'Sugar: ' + Math.round(nutritionInfo.sugar_g * 10) / 10 + 'g'
+
+  for (const nutrient in nutritionInfo) {
+    // console.log(nutritionInfo[nutrient])
+    const nutritionItem = document.createElement("li");
+    nutritionItem.textContent = nutritionInfo[nutrient];
+    nutritionElement.appendChild(nutritionItem);
   }
 }
