@@ -24,7 +24,7 @@ router.post("/create", async (req, res) => {
 router.get("/retrieve", async (req, res) => {
   try {
     const recipeCollection = await retrieveRecipes();
-    res.json(recipeCollection);
+    res.status(200).json(recipeCollection);
   } catch ( error ) {
     res.status(500).json({ error: "Error while fetching db recipes" });
   }
@@ -33,7 +33,7 @@ router.get("/retrieve", async (req, res) => {
 router.get("/select", async (req, res) => {
   try {
     const recipe = await findRecipe(req.query.id);
-    res.json(recipe);
+    res.status(200).json(recipe);
   } catch ( error ) {
     res.status(500).json({ error: "Error while fetching the selected recipe from db" });
   }
@@ -43,6 +43,7 @@ router.delete("/delete", async (req, res) => {
   const id = req.query.id;
   try {
     await deleteRecipe(id);
+    res.status(200).json({ message: "Recipe deleted successfully" });
   } catch ( error ) {
     res.status(500).json({ error: "Error while deleting recipe" });
   }

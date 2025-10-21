@@ -70,11 +70,19 @@ function displaySelected(recipe, title, ingredients, instructions, container) {
     button.textContent = "DELETE";
 
     // on button click, send delete request to remove element with same id from the database
-    button.addEventListener("click", async () => {
+    button.addEventListener("click", async (event) => {
         try {
             const response = await fetch(`/recipe/delete?id=${recipe._id}`, { method: "DELETE" });
-            const data = await response.json();
-            console.log(data);
+            // if item deleted successfully
+            if ( response.status === 200 ) {
+                // clear it from the list
+                document.querySelector(`[data-id="${recipe._id}"]`).remove();
+                // clear displayed recipe
+                title.textContent = "";
+                ingredients.textContent = "";
+                instructions.textContent = "";
+                button.style.visibility = "hidden";
+            }
         } catch ( error ) {
             console.error(`Error deleting recipe: ${error}`);
         }
