@@ -64,7 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /*         // Dispatch event for other modules to handle
         await generateSubstitutedRecipe(selectedRecipe, targetIngredient, '');    */
-        newRecipeTitle.textContent = 'Loading...';
+        // Clear previous text on substitution display areas
+    /* newRecipeTitle.textContent = 'Loading...';
+    substitutionReasoning.textContent = '';
+    newIngredientList.textContent = '';
+    newInstructions.textContent = '';
+        newRecipeTitle.textContent = 'Loading...';*/
     
     try {
         const response = await fetch('/api/openai/substitute', {
@@ -102,9 +107,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Call OpenAI API for recipe substitution
 async function generateSubstitutedRecipe(recipe, ingredientToSubstitute, substitutionIngredient) {
+    
+    // Clear previous text on substitution display areas
     console.log('Module NOT in use - delete later');
     /* newRecipeTitle.textContent = 'Loading...';
-    
+    substitutionReasoning.textContent = '';
+    newIngredientList.textContent = '';
+    newInstructions.textContent = '';
+
     try {
         const response = await fetch('/api/openai/substitute', {
             method: 'POST',
