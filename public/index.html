@@ -1,58 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Food My Way: recipes</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food My Way: recipes</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/styles/style-nav.css" />
+    <link rel="stylesheet" href="/styles/style-slider.css" />
+    <link rel="icon" href="images/favicon.png" type="image/png" />
+  </head>
 
-    <body>
+  <body>
+    <!-- <header>
+            <h1>Food My Way</h1>
+        </header>
         <h1>Food My Way</h1>
-        <a href="/saved">database: view saved recipes</a>
-        
-        <!-- Search Section -->
-        <form id="ingredient-form">
+        <a href="/saved">database: view saved recipes</a> -->
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/"
+          ><img src="images//High-Resolution-Color-Logo.png" alt="MySite Logo"
+        /></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/saved">Recipes</a></li>
+      </ul>
+    </nav>
+
+    <!-- Search Section -->
+    <!-- <form id="ingredient-form">
             <label for="ingredient">search by ingredient</label>
             <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
             <button type="submit">go!</button>
+        </form> -->
+
+    <main>
+      <!-- Forms and recipe sections -->
+
+      <!-- Search Section -->
+      <form id="ingredient-form" class="search-form">
+        <label for="ingredient-input">Search recipes by main ingredient:</label>
+        <div class="input-group">
+          <input
+            type="text"
+            id="ingredient-input"
+            name="ingredient"
+            placeholder="Enter ingredient"
+            required
+          />
+          <button type="submit">Get Recipes!</button>
+        </div>
+      </form>
+
+      <!-- Meal Results -->
+      <!-- <h2>Meal Results</h2> -->
+      <!-- <ul id="mealsContainer" class="meals-grid"></ul> -->
+      <div id="mealsContainer" class="meals-row"></div>
+      <div id="recipe-section" style="display: none">
+        <!-- Substitution Section -->
+        <form id="substitute-form" class="search-form">
+          <select id="target-ingredient" name="target" class="custom-select">
+            <option>-- target ingredient --</option>
+          </select>
+          <button type="submit">Get substituted recipe</button>
         </form>
 
-        <!-- Meal Results -->
-        <ul id="mealsContainer" class="meals-grid"></ul>
-
-        <!-- Recipe Display -->
-        <section id="recipe-container" class="recipe-display">
+        <!-- Recipe Panels Container: Flexbox container -->
+        <div id="recipe-panels-container">
+          <!-- Recipe Display -->
+          <section id="recipe-container" class="recipe-display">
+            <img id="recipe-image" alt="Recipe image" />
             <div id="recipe-title"></div>
             <ul id="recipe-ingredients"></ul>
             <ul id="recipe-nutrition"></ul>
             <div id="recipe-instructions"></div>
-            <button form="save-recipe-form" type="submit" value="original">save original</button>
-        </section>
+            <button form="save-recipe-form" type="submit" value="original">
+              save original
+            </button>
+          </section>
 
-        <!-- Save Recipes -->
-        <form id="save-recipe-form"></form>
+          <!-- Save Recipes -->
+          <form id="save-recipe-form"></form>
 
-         <!-- Substitution Section -->
-        <form id="substitute-form">
-            <select id="target-ingredient" name="target">
-                <option>-- target ingredient --</option>
-            </select>
-            <button type="submit">find substitute</button>
-        </form>
+          <!-- Substitution Section -->
+          <!-- <form id="substitute-form">
+          <select id="target-ingredient" name="target">
+            <option>-- target ingredient --</option>
+          </select>
+          <button type="submit">find substitute</button>
+        </form> -->
 
-        <!-- New Recipe Display -->
-        <section id="new-recipe-container" class="recipe-display">
-            <div id="new-recipe-title"></div>
-            <div id="substitution-reasoning"></div>
+          <!-- New Recipe Display -->
+          <section
+            id="new-recipe-container"
+            class="recipe-display recipe-generated"
+          >
+            <h2 id="new-recipe-title"></h2>
+            <p id="substitution-reasoning"></p>
             <ul id="new-recipe-ingredients"></ul>
             <ul id="new-recipe-nutrition"></ul>
             <div id="new-recipe-instructions"></div>
-            <button form="save-recipe-form" type="submit" value="generated">save generated</button>
-        </section>
-             
-        <!-- Load scripts as modules -->
-        <script type="module" src="app.js"></script>
-        <script type="module" src="recipeSubstitution.js"></script>
-    </body>
+            <button form="save-recipe-form" type="submit" value="generated">
+              Save Generated
+            </button>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- Load scripts as modules -->
+    <script type="module" src="app.js"></script>
+    <script type="module" src="recipeSubstitution.js"></script>
+  </body>
 </html>
