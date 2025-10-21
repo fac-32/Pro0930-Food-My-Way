@@ -1,0 +1,52 @@
+.meals-row {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto; /* horizontal scroll if needed */
+  padding: 20px;
+  white-space: nowrap; /* keep items in one line */
+  scrollbar-width: thin; /* thin scrollbar for Firefox */
+}
+
+.meals-row::-webkit-scrollbar {
+  height: 8px; /* scrollbar height for Chrome/Safari */
+}
+
+.meals-row::-webkit-scrollbar-thumb {
+  background: rgba(200, 200, 200, 0.7);
+  border-radius: 4px;
+}
+
+.meal-card {
+  flex: 0 0 auto; /* prevent shrinking */
+  width: 200px;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.meal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.meal-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.meal-card h3 {
+  font-size: 1.1rem;
+  padding: 12px;
+  color: #333;
+
+  display: -webkit-box; /* needed for line clamp */
+  -webkit-line-clamp: 2; /* limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
