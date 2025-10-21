@@ -43,7 +43,7 @@ export class RecipeOptionsManager {
       this._updatePromptDisplay();
   });  */
 
-    this.generateRecipeBtn.addEventListener("click", () => {
+/*     this.generateRecipeBtn.addEventListener("click", () => {
       const ingredient = this.targetIngredientSelect.value;
       if (!ingredient || ingredient === "-- target ingredient --") {
         alert("Please select an ingredient to substitute.");
@@ -51,7 +51,7 @@ export class RecipeOptionsManager {
       }
       this.promptCriteria.substitution = ingredient;
       //this._updatePromptDisplay();
-    });
+    }); */
   }
 
 /*   _updatePromptDisplay() {
