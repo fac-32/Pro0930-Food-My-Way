@@ -37,3 +37,44 @@
   color: #e63946; /* red hover */
   border-bottom: 2px solid #e63946;
 }
+
+/* Navbar base */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+
+  flex-wrap: wrap; /* allow wrapping on small screens */
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap; /* wrap links if needed */
+}
+
+.logo img {
+  height: 50px;
+}
+
+/* Hide small logo by default */
+.small-logo {
+  display: none;
+}
+
+/* Show small logo and hide full logo on small screens */
+@media screen and (max-width: 600px) {
+  .full-logo {
+    display: none;
+  }
+  .small-logo {
+    display: block;
+    height: 40px;
+  }
+
+  .nav-links {
+    gap: 10px;
+    font-size: 14px;
+  }
+}
