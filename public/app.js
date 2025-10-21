@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const instructions = document.querySelector("#recipe-instructions");
     
     const ingredientDropdown = document.querySelector("#target-ingredient");
-    const substituteForm = document.querySelector("#substitute-form");
+    //const substituteForm = document.querySelector("#substitute-form");
 
 
     // display validity error message while typing
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Handle substitution request
+/*     // Handle substitution request
     // pass the selected recipe and ingredient to openai_api route -> routing to the backend which calls OpenAI
     substituteForm.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
         document.dispatchEvent(substitutionEvent);
-    });   
+    });    */
 });
 
 // Format recipe data from API response
