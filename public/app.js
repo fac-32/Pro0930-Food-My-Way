@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const recipeTitle = document.querySelector('#recipe-title')
   const ingredientList = document.querySelector('#recipe-ingredients')
   const instructions = document.querySelector('#recipe-instructions')
+  const nutritionElement = document.querySelector('#recipe-nutrition')
   const recipeImage = document.querySelector('#recipe-image')
 
   const ingredientDropdown = document.querySelector('#target-ingredient')
@@ -93,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   instructions,
                   ingredientDropdown
                 )
+                getNutritionInfo(getOriginalRecipe(), nutritionElement)
                 const recipeSection = document.getElementById('recipe-section')
                 recipeSection.style.display = 'block'
                 setTimeout(() => recipeSection.classList.add('visible'), 10)
@@ -251,8 +253,6 @@ export function displayRecipe(
     }
   }
 
-    getNutritionInfo(recipe)
-
   // if reasoning tag is provided, populate it with the openai's justification for the substitution
   if (reasoning) {
     reasoning.textContent = recipe.justification // clear previous
@@ -263,15 +263,13 @@ export function displayRecipe(
 function constructIngredientsString(recipe) {
   let ingredientsArray = [];
   for (let i = 0; i < recipe.ingredients.length; i++) {
-    // console.log(`Ingredient: ${amounts[i]} ${ingredients[i]} `);
     ingredientsArray.push(` ${recipe.amounts[i]} ${recipe.ingredients[i]}`);
   }
-  // console.log(...ingredientsArray);
   return [...ingredientsArray];
 }
 
 // Call nutrition API
-async function getNutritionInfo(recipe) {
+export async function getNutritionInfo(recipe, nutritionElement) {
   const ingredients = constructIngredientsString(recipe)
   try {
     const response = await fetch(
@@ -279,15 +277,14 @@ async function getNutritionInfo(recipe) {
     );
     const data = await response.json();
 
-    displayNutrition(data)
+    displayNutrition(data, nutritionElement)
   } catch (error) {
     console.error("getNutritionInfo call error in app.js", error);
   }
 }
 
 // Display nutrition information in the UI
-function displayNutrition(data) {
-  const nutritionElement = document.querySelector('#recipe-nutrition')
+function displayNutrition(data, nutritionElement) {
   nutritionElement.innerHTML = ''
 
   const nutritionInfo = {
@@ -299,8 +296,6 @@ function displayNutrition(data) {
     sodium_mg: 0,
     sugar_g: 0
   }
-
-  // console.log(data.items)
 
   data.items.forEach(ingredient => {
     nutritionInfo.serving_size_g += ingredient.serving_size_g
@@ -314,16 +309,16 @@ function displayNutrition(data) {
 
   nutritionInfo.serving_size_g = 'Serving size: ' + Math.round(nutritionInfo.serving_size_g * 10) / 10 + 'g'
   nutritionInfo.calories = 'Calories: ' + Math.round(nutritionInfo.calories * 10) / 10
-  nutritionInfo.fat_total_g = 'Total fat: ' + Math.round(nutritionInfo.fat_total_g * 10) / 10 + 'g'
+  nutritionInfo.fat_total_g = 'Fat: ' + Math.round(nutritionInfo.fat_total_g * 10) / 10 + 'g'
   nutritionInfo.fiber_g = 'Fibre: ' + Math.round(nutritionInfo.fiber_g * 10) / 10 + 'g'
   nutritionInfo.protein_g = 'Protein: ' + Math.round(nutritionInfo.protein_g * 10) / 10 + 'g'
   nutritionInfo.sodium_mg = 'Sodium: ' + Math.round(nutritionInfo.sodium_mg * 10) / 10 + 'mg'
   nutritionInfo.sugar_g = 'Sugar: ' + Math.round(nutritionInfo.sugar_g * 10) / 10 + 'g'
 
   for (const nutrient in nutritionInfo) {
-    // console.log(nutritionInfo[nutrient])
     const nutritionItem = document.createElement("li");
     nutritionItem.textContent = nutritionInfo[nutrient];
     nutritionElement.appendChild(nutritionItem);
   }
 }
+
