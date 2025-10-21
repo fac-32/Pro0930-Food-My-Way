@@ -1,16 +1,50 @@
 // utils.js
-import { client, db } from "./client.js";
+import { ObjectId } from "bson";
+import { db } from "./client.js";
 
-const users = db.collection("users");
+const recipes = db.collection("recipes");
 
-const createProfile = async (profile) => {
+// insert recipe into mongodb
+const createRecipe = async (recipe) => {
   try {
-    await users.insertOne(profile);
-    console.log("profile successfully added!");
-    
+    const result = await recipes.insertOne(recipe);
+    console.log("recipe successfully added!");
+    return result;  // ✅ This is the important part
   } catch (error) {
-    console.error(error);
+    console.error(`Error inserting recipe: ${error}`);
+    throw error; // ✅ Also rethrow the error so the route handler can catch it
   }
 };
 
-export { createProfile }
+
+
+
+// return ids and titles from mongodb
+const retrieveRecipes = async () => {
+  try {
+    const cursor = recipes.find({}, { projection: { title: 1 }});
+    const recipeCollection = await cursor.toArray();
+    return recipeCollection;
+  } catch (error) {
+    console.error(`Error finding recipes: ${error}`);
+  }
+};
+
+const findRecipe = async (id) => {
+  try {
+    const cursor = recipes.findOne({ _id: new ObjectId(id) }, { projection: { title: 1, amounts: 1, ingredients: 1, instructions: 1 } });
+    return cursor;
+  } catch ( error ) {
+    console.error(`Error finding recipe with this id: ${error}`);
+  }
+};
+
+const deleteRecipe = async (id) => {
+  try {
+    recipes.deleteOne({ _id: new ObjectId(id) });
+  } catch ( error ) {
+    console.error(`Error deleting recipe: ${error}`);
+  }
+};
+
+export { createRecipe, retrieveRecipes, findRecipe, deleteRecipe }
