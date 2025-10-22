@@ -212,43 +212,44 @@ export function displayRecipe(
   title,
   ingredients,
   instructions,
-  dropdown=undefined,
-  reasoning=undefined
+  dropdown = undefined,
+  reasoning = undefined
 ) {
   // get the image element
-  const recipeImage = document.querySelector('#recipe-image');
+  const recipeImage = document.querySelector('#recipe-image')
 
   // set recipe data
-  title.textContent = recipe.title;
-  console.log(instructions.textContent);
-  console.log(recipe.instructions);
-  instructions.textContent = recipe.instructions;
+  title.textContent = recipe.title
+  console.log(instructions.textContent)
+  console.log(recipe.instructions)
+  instructions.textContent = recipe.instructions
   console.log(instructions.textContent)
   // add image if exists
 
   // Keep previous image if new recipe has no image
-  if ( typeof recipe.image !== "undefined" ) {
-    recipeImage.src = recipe.image;
-    recipeImage.style.display = 'block';
-  } 
-//   else if (!recipeImage.src) {
-//     // only hide it if there was no image before
-//     recipeImage.style.display = 'none'
-//   }
+  if (typeof recipe.image !== 'undefined') {
+    recipeImage.src = recipe.image
+    recipeImage.style.display = 'block'
+  }
+  //   else if (!recipeImage.src) {
+  //     // only hide it if there was no image before
+  //     recipeImage.style.display = 'none'
+  //   }
 
   // clear previous ingredients and dropdown/selector options
-  ingredients.textContent = '';
-  if ( typeof dropdown !== "undefined" ) dropdown.innerHTML = '<option>-- target ingredient --</option>';
+  ingredients.textContent = ''
+  if (typeof dropdown !== 'undefined')
+    dropdown.innerHTML = '<option>-- target ingredient --</option>'
 
   for (let i = 0; i < recipe.ingredients.length; i++) {
-    const amount = recipe.amounts[i];
-    const name = recipe.ingredients[i];
+    const amount = recipe.amounts[i]
+    const name = recipe.ingredients[i]
 
-    const ingredientItem = document.createElement('li');
-    ingredientItem.textContent = `${amount} ${name}`;
-    ingredients.appendChild(ingredientItem);
+    const ingredientItem = document.createElement('li')
+    ingredientItem.textContent = `${amount} ${name}`
+    ingredients.appendChild(ingredientItem)
 
-    if ( typeof dropdown !== "undefined") {
+    if (typeof dropdown !== 'undefined') {
       const ingredientOption = document.createElement('option')
       ingredientOption.value = name
       ingredientOption.textContent = name
@@ -257,18 +258,18 @@ export function displayRecipe(
   }
 
   // if reasoning tag is provided, populate it with the openai's justification for the substitution
-  if ( typeof reasoning !== "undefined" ) {
+  if (typeof reasoning !== 'undefined') {
     reasoning.textContent = recipe.justification // clear previous
   }
 }
 
 // Take ingredients and amounts in recipe and output as a single string
 function constructIngredientsString(recipe) {
-  let ingredientsArray = [];
+  let ingredientsArray = []
   for (let i = 0; i < recipe.ingredients.length; i++) {
-    ingredientsArray.push(` ${recipe.amounts[i]} ${recipe.ingredients[i]}`);
+    ingredientsArray.push(` ${recipe.amounts[i]} ${recipe.ingredients[i]}`)
   }
-  return [...ingredientsArray];
+  return [...ingredientsArray]
 }
 
 // Call nutrition API
@@ -276,13 +277,13 @@ export async function getNutritionInfo(recipe, nutritionElement) {
   const ingredients = constructIngredientsString(recipe)
   try {
     const response = await fetch(
-      `/api/nutrition?ingredientList=${encodeURIComponent(ingredients)}`,
-    );
-    const data = await response.json();
+      `/api/nutrition?ingredientList=${encodeURIComponent(ingredients)}`
+    )
+    const data = await response.json()
 
     displayNutrition(data, nutritionElement)
   } catch (error) {
-    console.error("getNutritionInfo call error in app.js", error);
+    console.error('getNutritionInfo call error in app.js', error)
   }
 }
 
@@ -297,10 +298,10 @@ function displayNutrition(data, nutritionElement) {
     fiber_g: 0,
     protein_g: 0,
     sodium_mg: 0,
-    sugar_g: 0
+    sugar_g: 0,
   }
 
-  data.items.forEach(ingredient => {
+  data.items.forEach((ingredient) => {
     nutritionInfo.serving_size_g += ingredient.serving_size_g
     nutritionInfo.calories += ingredient.calories
     nutritionInfo.fat_total_g += ingredient.fat_total_g
@@ -308,20 +309,54 @@ function displayNutrition(data, nutritionElement) {
     nutritionInfo.protein_g += ingredient.protein_g
     nutritionInfo.sodium_mg += ingredient.sodium_mg
     nutritionInfo.sugar_g += ingredient.sugar_g
-  });
+  })
 
-  nutritionInfo.serving_size_g = 'Serving size: ' + Math.round(nutritionInfo.serving_size_g * 10) / 10 + 'g'
-  nutritionInfo.calories = 'Calories: ' + Math.round(nutritionInfo.calories * 10) / 10
-  nutritionInfo.fat_total_g = 'Fat: ' + Math.round(nutritionInfo.fat_total_g * 10) / 10 + 'g'
-  nutritionInfo.fiber_g = 'Fibre: ' + Math.round(nutritionInfo.fiber_g * 10) / 10 + 'g'
-  nutritionInfo.protein_g = 'Protein: ' + Math.round(nutritionInfo.protein_g * 10) / 10 + 'g'
-  nutritionInfo.sodium_mg = 'Sodium: ' + Math.round(nutritionInfo.sodium_mg * 10) / 10 + 'mg'
-  nutritionInfo.sugar_g = 'Sugar: ' + Math.round(nutritionInfo.sugar_g * 10) / 10 + 'g'
+  nutritionInfo.serving_size_g =
+    'Serving size: ' + Math.round(nutritionInfo.serving_size_g * 10) / 10 + 'g'
+  nutritionInfo.calories =
+    'Calories: ' + Math.round(nutritionInfo.calories * 10) / 10
+  nutritionInfo.fat_total_g =
+    'Fat: ' + Math.round(nutritionInfo.fat_total_g * 10) / 10 + 'g'
+  nutritionInfo.fiber_g =
+    'Fibre: ' + Math.round(nutritionInfo.fiber_g * 10) / 10 + 'g'
+  nutritionInfo.protein_g =
+    'Protein: ' + Math.round(nutritionInfo.protein_g * 10) / 10 + 'g'
+  nutritionInfo.sodium_mg =
+    'Sodium: ' + Math.round(nutritionInfo.sodium_mg * 10) / 10 + 'mg'
+  nutritionInfo.sugar_g =
+    'Sugar: ' + Math.round(nutritionInfo.sugar_g * 10) / 10 + 'g'
 
   for (const nutrient in nutritionInfo) {
-    const nutritionItem = document.createElement("li");
-    nutritionItem.textContent = nutritionInfo[nutrient];
-    nutritionElement.appendChild(nutritionItem);
+    const nutritionItem = document.createElement('li')
+    nutritionItem.textContent = nutritionInfo[nutrient]
+    nutritionElement.appendChild(nutritionItem)
   }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  const tabGroups = document.querySelectorAll('.tab-buttons')
+
+  tabGroups.forEach((group) => {
+    const buttons = group.querySelectorAll('.tab-btn')
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.getAttribute('data-tab')
+        const container = group.closest('section')
+
+        // Remove active state within this section only
+        container
+          .querySelectorAll('.tab-btn')
+          .forEach((b) => b.classList.remove('active'))
+        container
+          .querySelectorAll('.tab-content')
+          .forEach((c) => c.classList.remove('active'))
+
+        // Activate selected tab and its content
+        btn.classList.add('active')
+        const targetTab = container.querySelector(`#${tabId}-tab`)
+        if (targetTab) targetTab.classList.add('active')
+      })
+    })
+  })
+})
