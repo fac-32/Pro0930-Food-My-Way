@@ -65,10 +65,78 @@
       <div id="recipe-section" style="display: none">
         <!-- Substitution Section -->
         <form id="substitute-form" class="search-form">
-          <select id="target-ingredient" name="target" class="custom-select">
-            <option>-- target ingredient --</option>
-          </select>
-          <button type="submit">Get substituted recipe</button>
+          <!-- Form Title -->
+          <h2>Find Ingredient Substitutions</h2>
+
+          <div class="form-row">
+            <!-- Target Ingredient: Ingredient to avoid -->
+            <div class="form-group">
+              <label for="target-ingredient">Ingredient to avoid:</label>
+              <select
+                id="target-ingredient"
+                name="target"
+                class="custom-select"
+              ></select>
+            </div>
+
+            <!-- Dietary Option -->
+            <div class="form-group">
+              <label for="dietary-tags">Dietary preference:</label>
+              <select
+                id="dietary-tags"
+                name="dietaryTags"
+                class="custom-select"
+              >
+                <option value="" disabled selected>Dietary preference</option>
+                <option value="vegetarian">Vegetarian</option>
+                <option value="vegan">Vegan</option>
+                <option value="gluten-free">Gluten-Free</option>
+                <option value="dairy-free">Dairy-Free</option>
+              </select>
+            </div>
+          </div>
+
+          <hr style="margin: 20px 0; border-color: #eee" />
+
+          <div class="form-row">
+            <!-- Food Group Adjustment -->
+            <div class="form-group">
+              <label for="food-group-select">Adjust food group:</label>
+
+              <select
+                id="food-group-select"
+                name="foodGroup"
+                class="custom-select"
+              >
+                <option value="" disabled selected>Food group</option>
+                <option value="protein">Protein</option>
+                <option value="fat">Fat</option>
+                <option value="carbs">Carbohydrates</option>
+              </select>
+            </div>
+
+            <!-- Adjustment Radio Buttons -->
+            <div class="form-group radio-group">
+              <label
+                ><input
+                  type="radio"
+                  name="adjustment"
+                  value="increase"
+                  checked
+                />
+                Increase</label
+              >
+              <label
+                ><input type="radio" name="adjustment" value="decrease" />
+                Decrease</label
+              >
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="generate-recipe">
+            Get substituted recipe
+          </button>
         </form>
 
         <!-- Recipe Panels Container: Flexbox container -->
@@ -105,14 +173,6 @@
 
           <!-- Save Recipes -->
           <form id="save-recipe-form"></form>
-
-          <!-- Substitution Section -->
-          <!-- <form id="substitute-form">
-          <select id="target-ingredient" name="target">
-            <option>-- target ingredient --</option>
-          </select>
-          <button type="submit">find substitute</button>
-        </form> -->
 
           <!-- New Recipe Display -->
           <section

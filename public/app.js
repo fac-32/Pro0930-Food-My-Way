@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const recipeImage = document.querySelector('#recipe-image')
 
   const ingredientDropdown = document.querySelector('#target-ingredient')
-  const substituteForm = document.querySelector('#substitute-form')
+  //const substituteForm = document.querySelector('#substitute-form')
 
   const saveForm = document.querySelector('#save-recipe-form')
 
@@ -50,11 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ingredientForm) {
     ingredientForm.addEventListener('submit', async (event) => {
       event.preventDefault()
-      // reset previous meal selection, and clear recipe display area
-      // setSelectedRecipe(null);
-      // recipeTitle.textContent = '';
-      // ingredientList.textContent = '';
-      // instructions.textContent = '';
+      /*       // reset previous meal selection, and clear recipe display area
+      setOriginalRecipe(null);
+      // -> TO DO: use displayRecipe to clear recipe display area but have error using cmd below
+      //displayRecipe(getOriginalRecipe, '','','',[]);
+      recipeTitle.textContent = '';
+      ingredientList.textContent = '';
+      instructions.textContent = ''; 
+      recipeImage.style.display = 'none'; */
 
       // when validation has passed route to backend
       if (ingredient.checkValidity()) {
@@ -114,36 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  // Handle substitution request
-  // pass the selected recipe and ingredient to openai_api route -> routing to the backend which calls OpenAI
-  if (substituteForm) {
-    substituteForm.addEventListener('submit', async (event) => {
-      event.preventDefault()
-
-      // Check recipe selected and valid ingredient chosen
-      if (!hasOriginalRecipe()) {
-        alert('Please select a recipe first')
-        return
-      }
-      const targetIngredient = ingredientDropdown.value
-      if (!targetIngredient || targetIngredient === '-- target ingredient --') {
-        alert('Please select an ingredient to substitute')
-        return
-      }
-      //console.log('Selected recipe for substitution:', selectedRecipe);
-      // Dispatch event for other modules to handle
-      const substitutionEvent = new CustomEvent(
-        'recipe-substitution-requested',
-        {
-          detail: {
-            recipe: getOriginalRecipe(),
-            targetIngredient: targetIngredient,
-          },
-        }
-      )
-      document.dispatchEvent(substitutionEvent)
-    })
-  }
   // save an original or generated recipe to db
   if (saveForm) {
     saveForm.addEventListener('submit', async (event) => {
@@ -239,7 +212,8 @@ export function displayRecipe(
   // clear previous ingredients and dropdown/selector options
   ingredients.textContent = ''
   if (typeof dropdown !== 'undefined')
-    dropdown.innerHTML = '<option>-- target ingredient --</option>'
+    dropdown.innerHTML =
+      '<option value="" disabled selected>Select ingredient</option>'
 
   for (let i = 0; i < recipe.ingredients.length; i++) {
     const amount = recipe.amounts[i]

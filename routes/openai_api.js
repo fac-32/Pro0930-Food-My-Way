@@ -11,5 +11,4 @@ import { generateRecipeSubstitution } from '../controllers/openaiController.js';
 //router.post('/openai_api', formatRecipePrompt, handleOpenAIRequest);
 router.post('/substitute', generateRecipeSubstitution);
 
-
 export default router;
