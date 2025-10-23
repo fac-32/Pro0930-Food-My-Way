@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (ingredientForm) {
     ingredientForm.addEventListener('submit', async (event) => {
       event.preventDefault()
-/*       // reset previous meal selection, and clear recipe display area
+      /*       // reset previous meal selection, and clear recipe display area
       setOriginalRecipe(null);
       // -> TO DO: use displayRecipe to clear recipe display area but have error using cmd below
       //displayRecipe(getOriginalRecipe, '','','',[]);
@@ -212,7 +212,8 @@ export function displayRecipe(
   // clear previous ingredients and dropdown/selector options
   ingredients.textContent = ''
   if (typeof dropdown !== 'undefined')
-    dropdown.innerHTML = '<option>-- target ingredient --</option>'
+    dropdown.innerHTML =
+      '<option value="" disabled selected>Select ingredient</option>'
 
   for (let i = 0; i < recipe.ingredients.length; i++) {
     const amount = recipe.amounts[i]

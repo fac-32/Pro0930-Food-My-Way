@@ -1,4 +1,3 @@
-
 /* Set a unified font for the entire page */
 body {
   font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -9,19 +8,33 @@ body {
   color: #333;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: bold;
   color: #222;
   font-family: inherit;
   margin-bottom: 0.5em;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
 
 /* Normal text size */
-p, div, label, input, button, ul, li {
+p,
+div,
+label,
+input,
+button,
+ul,
+li {
   font-size: 1rem;
   line-height: 1.5;
 }
@@ -41,7 +54,7 @@ p, div, label, input, button, ul, li {
 .recipe-display {
   background: white;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   flex: 1 1 400px;
   min-width: 300px;
@@ -49,7 +62,10 @@ p, div, label, input, button, ul, li {
 }
 
 /* Center forms and other blocks */
-form, #ingredient-form, #substitute-form, #mealsContainer {
+form,
+#ingredient-form,
+#substitute-form,
+#mealsContainer {
   margin: 1rem auto;
   max-width: 1000px;
   text-align: center;
@@ -70,7 +86,8 @@ button {
   font-size: 1rem;
 }
 
-button:hover, button:focus {
+button:hover,
+button:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -95,7 +112,7 @@ button:hover, button:focus {
   padding: 10px;
   font-size: 1.1rem;
 } */
-    
+
 /*
 Add Media Queries for Layout Adjustments
 Example adding padding and font size adjustments on smaller screens:
@@ -110,24 +127,27 @@ Example adding padding and font size adjustments on smaller screens:
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  #recipe-container, #new-recipe-container {
+  #recipe-container,
+  #new-recipe-container {
     padding: 10px;
   }
 }
 
 /* Style buttons and inputs consistently
 Make Buttons and Inputs Larger for Touch including in phone screens */
-button, input, select {
+button,
+input,
+select {
   padding: 0.75em 1em;
   font-size: 1rem;
   border-radius: 4px;
 }
 
-button:hover, button:focus {
+button:hover,
+button:focus {
   background-color: #ddd;
   outline: none;
 }
-
 
 .search-form {
   max-width: 600px;
@@ -135,7 +155,7 @@ button:hover, button:focus {
   padding: 20px;
   background-color: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -154,7 +174,7 @@ button:hover, button:focus {
   flex-wrap: wrap; /* responsive for small screens */
 }
 
-.search-form input[type="text"] {
+.search-form input[type='text'] {
   flex: 1 1 auto;
   padding: 12px 16px;
   border: 1px solid #ddd;
@@ -163,9 +183,9 @@ button:hover, button:focus {
   transition: border 0.3s ease, box-shadow 0.3s ease;
 }
 
-.search-form input[type="text"]:focus {
+.search-form input[type='text']:focus {
   outline: none;
-  border-color: #e53935;  /* red accent */
+  border-color: #e53935; /* red accent */
   box-shadow: 0 0 8px rgba(229, 57, 53, 0.3);
 }
 
@@ -189,34 +209,35 @@ button:hover, button:focus {
 .custom-select {
   width: 100%;
   max-width: 320px;
-  padding: 12px 16px;
+  padding: 12px 36px 12px 16px; /* right padding for arrow */
   border-radius: 14px;
   border: 1px solid #ccc;
   background-color: #fff;
   font-size: 1rem;
   color: #333;
   cursor: pointer;
-  appearance: none; /* remove default arrow */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   background-image: url('data:image/svg+xml;utf8,<svg fill="%23e53935" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 18px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-  transition: border 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  background-position: right 6px center;
+  background-size: 22 px;
+  white-space: nowrap; /* prevent wrapping */
+  overflow: hidden; /* hide overflow */
+  text-overflow: ellipsis; /* show "..." if too long */
 }
 
 .custom-select:hover {
   border-color: #e53935;
-  box-shadow: 0 6px 16px rgba(229,57,53,0.15);
+  box-shadow: 0 6px 16px rgba(229, 57, 53, 0.15);
   transform: translateY(-1px);
 }
 
 .custom-select:focus {
   outline: none;
   border-color: #e53935;
-  box-shadow: 0 0 10px rgba(229,57,53,0.3);
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
 }
 
 .custom-select option {
@@ -388,15 +409,15 @@ button:hover, button:focus {
 #recipe-panels-container {
   display: flex;
   justify-content: center; /* keep them centered as a group */
-  gap: 8px;               /* smaller gap between the two recipes */
+  gap: 8px; /* smaller gap between the two recipes */
   margin: 0 auto;
   flex-wrap: wrap;
   max-width: 1050px;
 }
 
 .recipe-display {
-  flex: 0 1 48%;          /* slightly less than half width */
-  padding: 25px;          /* reduce padding inside panels */
+  flex: 0 1 48%; /* slightly less than half width */
+  padding: 25px; /* reduce padding inside panels */
   box-sizing: border-box;
 }
 
@@ -427,4 +448,60 @@ button:hover, button:focus {
 
 .tab-content.active {
   display: block;
+}
+
+#substitute-form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: center;
+}
+
+.custom-select {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+#dietary-tags {
+  min-width: 160px;
+  height: auto;
+}
+
+.radio-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  gap: 5px;
+}
+
+#generate-recipe {
+  background-color: #ff8d79;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+#generate-recipe:hover {
+  background-color: #ff6f50;
 }
