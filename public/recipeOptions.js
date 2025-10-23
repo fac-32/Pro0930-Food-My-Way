@@ -25,12 +25,36 @@ export class RecipeOptionsManager {
     this._setupListeners();
   }
 
+  // add eventlisteners to form elements to update criteria
   _setupListeners() {
+    // Dietary selection
     this.dietarySelect.addEventListener("change", () => {
       const selected = Array.from(this.dietarySelect.selectedOptions).map(opt => opt.value);
       this.promptCriteria.dietary = selected;
-      //this._updatePromptDisplay();
     });
+    // Food goal selection
+    this.foodGroupSelect.addEventListener("change", () => {
+      const foodGroup = this.foodGroupSelect.value;
+      const adjustment = Array.from(this.adjustmentRadios).find(r => r.checked)?.value ?? "increase";
+      this.promptCriteria.foodGoal = (adjustment === "increase" ? "Increase" : "Decrease") + " " + foodGroup;
+    });
+    // Adjustment radio buttons
+    this.adjustmentRadios.forEach(radio =>
+    radio.addEventListener('change', () => {
+      const foodGroup = this.foodGroupSelect.value;
+      if (foodGroup) {
+        const adjustment = Array.from(this.adjustmentRadios).find(r => r.checked)?.value ?? "increase";
+        this.promptCriteria.foodGoal = (adjustment === "increase" ? "Increase" : "Decrease") + " " + foodGroup;
+        }
+      })
+  );
+    // Ingredient substitution selection
+    this.targetIngredientSelect.addEventListener("change", () => {
+      const ingredient = this.targetIngredientSelect.value;
+      this.promptCriteria.substitution = ingredient;
+    });
+  }
+
 
 /*   this.addFoodGoalBtn.addEventListener("click", () => {
       const foodGroup = this.foodGroupSelect.value;
@@ -52,7 +76,6 @@ export class RecipeOptionsManager {
       this.promptCriteria.substitution = ingredient;
       //this._updatePromptDisplay();
     }); */
-  }
 
 /*   _updatePromptDisplay() {
     const parts = [];
