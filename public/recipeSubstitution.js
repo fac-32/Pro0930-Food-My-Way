@@ -142,4 +142,17 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Substitution request failed:', error)
     }
   })
+  // Reset button handler
+  const resetBtn = document.getElementById('reset-options');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      ingredientDropdown.value = '';
+      dietarySelect.value = '';
+      foodGroupSelect.value = '';
+      adjustmentRadios.forEach(radio => radio.checked = false);
+      
+      // Reset internal promptCriteria state
+      optionsManager.resetCriteria(); 
+    });
+  }
 })

@@ -66,7 +66,7 @@
         <!-- Substitution Section -->
         <form id="substitute-form" class="search-form">
           <!-- Form Title -->
-          <h2>Find Ingredient Substitutions</h2>
+          <h2>Customise your recipe</h2>
 
           <div class="form-row">
             <!-- Target Ingredient: Ingredient to avoid -->
@@ -112,6 +112,7 @@
                 <option value="protein">Protein</option>
                 <option value="fat">Fat</option>
                 <option value="carbs">Carbohydrates</option>
+                <option value="fibre">Fibre</option>
               </select>
             </div>
 
@@ -131,11 +132,12 @@
                 Decrease</label
               >
             </div>
+            <button type="button" id="reset-options" class="small-button">Reset options</button>
           </div>
 
           <!-- Submit Button -->
           <button type="submit" id="generate-recipe">
-            Get substituted recipe
+            Generate new recipe
           </button>
         </form>
 
