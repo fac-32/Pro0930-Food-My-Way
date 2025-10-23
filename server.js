@@ -17,7 +17,7 @@ import { recipeRoutes } from './routes/recipeRoutes.js';
 await client.connect();
 console.log('Connected to MongoDB!');
 
-    
+
 // Load environment variables
 dotenv.config();
 
@@ -109,3 +109,22 @@ startServer();
 //   console.log(`Server running on http://localhost:${PORT}`);
 // });
 
+// Fetch nutrition information from nutrition API
+app.get("/api/nutrition", async (req, res) => {
+  try {
+    const ingredientList = req.query.ingredientList;
+    // console.log('This is the ingredient list sent to nutrition API: ' + ingredientList)
+    const ingredientResponse = await fetch(
+      `https://api.calorieninjas.com/v1/nutrition?query=${ingredientList}`,
+      {
+        method: "GET",
+        headers: { "X-Api-Key": process.env.CALORIENINJAS_API_KEY },
+      },
+    );
+    const ingredientData = await ingredientResponse.json();
+    // console.log(ingredientData)
+    res.json(ingredientData);
+  } catch (error) {
+    console.error("app.get /api/nutrition error in server.js", error);
+  }
+});

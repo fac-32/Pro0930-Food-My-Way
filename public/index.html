@@ -18,9 +18,14 @@
         <a href="/saved">database: view saved recipes</a> -->
     <nav class="navbar">
       <div class="logo">
-        <a href="/"
-          ><img src="images//High-Resolution-Color-Logo.png" alt="MySite Logo"
-        /></a>
+        <a href="/">
+          <img
+            src="images/High-Resolution-Color-Logo.png"
+            alt="MySite Logo"
+            class="full-logo"
+          />
+          <img src="images/favicon.png" alt="MySite Logo" class="small-logo" />
+        </a>
       </div>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
@@ -97,11 +102,30 @@
           <!-- Recipe Display -->
           <section id="recipe-container" class="recipe-display">
             <img id="recipe-image" alt="Recipe image" />
+
             <div id="recipe-title"></div>
-            <ul id="recipe-ingredients"></ul>
+
+            <!-- Tabs -->
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="ingredients">
+                Ingredients
+              </button>
+              <button class="tab-btn" data-tab="nutrition">Nutrition</button>
+            </div>
+
+            <!-- Tab content -->
+            <div class="tab-content active" id="ingredients-tab">
+              <ul id="recipe-ingredients"></ul>
+            </div>
+
+            <div class="tab-content" id="nutrition-tab">
+              <ul id="recipe-nutrition"></ul>
+            </div>
+
             <div id="recipe-instructions"></div>
+
             <button form="save-recipe-form" type="submit" value="original">
-              save original
+              Save Original
             </button>
           </section>
 
@@ -115,8 +139,28 @@
           >
             <h2 id="new-recipe-title"></h2>
             <p id="substitution-reasoning"></p>
-            <ul id="new-recipe-ingredients"></ul>
+
+            <!-- Tabs -->
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-tab="new-ingredients">
+                Ingredients
+              </button>
+              <button class="tab-btn" data-tab="new-nutrition">
+                Nutrition
+              </button>
+            </div>
+
+            <!-- Tab content -->
+            <div class="tab-content active" id="new-ingredients-tab">
+              <ul id="new-recipe-ingredients"></ul>
+            </div>
+
+            <div class="tab-content" id="new-nutrition-tab">
+              <ul id="new-recipe-nutrition"></ul>
+            </div>
+
             <div id="new-recipe-instructions"></div>
+
             <button form="save-recipe-form" type="submit" value="generated">
               Save Generated
             </button>

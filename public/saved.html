@@ -12,13 +12,18 @@
   <body>
     <nav class="navbar">
       <div class="logo">
-        <a href="/"
-          ><img src="images/High-Resolution-Color-Logo.png" alt="MySite Logo"
-        /></a>
+        <a href="/">
+          <img
+            src="images/High-Resolution-Color-Logo.png"
+            alt="MySite Logo"
+            class="full-logo"
+          />
+          <img src="images/favicon.png" alt="MySite Logo" class="small-logo" />
+        </a>
       </div>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
-        <li><a href="/saved">Saved Recipes</a></li>
+        <li><a href="/saved">Recipes</a></li>
       </ul>
     </nav>
 
@@ -38,10 +43,7 @@
       <section id="recipe-container" class="recipe-display">
         <div id="selected-recipe-title" class="recipe-title"></div>
         <ul id="selected-recipe-ingredients" class="recipe-ingredients"></ul>
-        <div
-          id="selected-recipe-instructions"
-          class="recipe-instructions"
-        ></div>
+        <div id="selected-recipe-instructions" class="recipe-instructions"></div>
         <!-- DELETE button will be appended here by JS -->
       </section>
     </main>
