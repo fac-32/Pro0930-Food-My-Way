@@ -15,7 +15,7 @@ async function generateRecipeSubstitution(req, res) {
       allIngredients,
       ingredientToSubstitute,
       substitutionIngredient,
-      dietaryTags = [],
+      dietaryTags = null,
       foodGoal = null,
     } = req.body;
 
@@ -33,9 +33,9 @@ async function generateRecipeSubstitution(req, res) {
       );
     }
 
-    if (dietaryTags.length > 0) {
+    if (dietaryTags && dietaryTags.trim() !== '') {
       conditions.push(
-        `Ensure the recipe adheres to: ${dietaryTags.join(", ")} dietary restrictions.`
+        `Ensure the recipe adheres to: ${dietaryTags} dietary restrictions.`
       );
     }
 

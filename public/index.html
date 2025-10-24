@@ -11,11 +11,6 @@
   </head>
 
   <body>
-    <!-- <header>
-            <h1>Food My Way</h1>
-        </header>
-        <h1>Food My Way</h1>
-        <a href="/saved">database: view saved recipes</a> -->
     <nav class="navbar">
       <div class="logo">
         <a href="/">
@@ -32,13 +27,6 @@
         <li><a href="/saved">Recipes</a></li>
       </ul>
     </nav>
-
-    <!-- Search Section -->
-    <!-- <form id="ingredient-form">
-            <label for="ingredient">search by ingredient</label>
-            <input type="text" id="ingredient-input" name="ingredient" placeholder="enter ingredient" required>
-            <button type="submit">go!</button>
-        </form> -->
 
     <main>
       <!-- Forms and recipe sections -->
@@ -59,15 +47,13 @@
       </form>
 
       <!-- Meal Results -->
-      <!-- <h2>Meal Results</h2> -->
-      <!-- <ul id="mealsContainer" class="meals-grid"></ul> -->
       <div id="mealsContainer" class="meals-row"></div>
       <div id="recipe-section" style="display: none">
+
         <!-- Substitution Section -->
         <form id="substitute-form" class="search-form">
           <!-- Form Title -->
           <h2>Customise your recipe</h2>
-
           <div class="form-row">
             <!-- Target Ingredient: Ingredient to avoid -->
             <div class="form-group">
@@ -94,11 +80,11 @@
                 <option value="dairy-free">Dairy-Free</option>
               </select>
             </div>
-          </div>
+          <!-- </div> -->
 
-          <hr style="margin: 20px 0; border-color: #eee" />
+          <!-- <hr style="margin: 20px 0; border-color: #eee" /> -->
 
-          <div class="form-row">
+          <!-- <div class="form-row"> -->
             <!-- Food Group Adjustment -->
             <div class="form-group">
               <label for="food-group-select">Adjust food group:</label>
@@ -133,12 +119,13 @@
               >
             </div>
             <button type="button" id="reset-options" class="small-button">Reset options</button>
-          </div>
+          <!-- </div> -->
 
           <!-- Submit Button -->
           <button type="submit" id="generate-recipe">
             Generate new recipe
           </button>
+          </div>
         </form>
 
         <!-- Recipe Panels Container: Flexbox container -->

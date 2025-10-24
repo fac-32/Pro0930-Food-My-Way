@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Allow submission if any of the options are selected
     if (
       (!criteria.substitution || criteria.substitution === '') &&
-      (!criteria.dietary || criteria.dietary.length === 0) &&
+      (!criteria.dietary || criteria.dietary === '') &&
       !criteria.foodGoal
     ) {
       alert(
@@ -149,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ingredientDropdown.value = '';
       dietarySelect.value = '';
       foodGroupSelect.value = '';
-      adjustmentRadios.forEach(radio => radio.checked = false);
       
       // Reset internal promptCriteria state
       optionsManager.resetCriteria(); 
