@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Allow submission if any of the options are selected
     if (
       (!criteria.substitution || criteria.substitution === '') &&
-      (!criteria.dietary || criteria.dietary.length === 0) &&
+      (!criteria.dietary || criteria.dietary === '') &&
       !criteria.foodGoal
     ) {
       alert(
@@ -142,4 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Substitution request failed:', error)
     }
   })
+  // Reset button handler
+  const resetBtn = document.getElementById('reset-options');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      ingredientDropdown.value = '';
+      dietarySelect.value = '';
+      foodGroupSelect.value = '';
+      
+      // Reset internal promptCriteria state
+      optionsManager.resetCriteria(); 
+    });
+  }
 })

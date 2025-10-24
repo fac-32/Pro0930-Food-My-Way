@@ -495,13 +495,56 @@ button:focus {
   background-color: #ff8d79;
   color: #fff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 5px;
+  padding: 12px 24px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
+  font-weight: 600;   
   transition: background 0.3s;
+  display: block;
+  margin: 0 auto; /* centers the button horizontally */
 }
 
 #generate-recipe:hover {
   background-color: #ff6f50;
+}
+
+/* Small button variant for less prominent actions */
+.small-button {
+  padding: 4px 8px !important;
+  font-size: 0.8rem !important;
+  border-radius: 3px !important;
+}
+
+/* Radio button group styling */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Show native radio but customize colors */
+.radio-group input[type="radio"] {
+  accent-color: #e53935; /* modern CSS property to color radio and checkbox (supported in modern browsers) */
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+/* Style labels for spacing and cursor */
+.radio-group label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  gap: 4px;
+}
+
+/* On hover, subtly highlight the label */
+.radio-group label:hover {
+  color: #d32f2f;
 }
