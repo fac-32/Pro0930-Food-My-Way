@@ -25,12 +25,12 @@ export class RecipeOptionsManager {
 
   // add eventlisteners to form elements to update criteria
   _setupListeners() {
-    // Dietary selection
+    // Dietary selection -> allow multiple selections
     this.dietarySelect.addEventListener("change", () => {
       const selected = Array.from(this.dietarySelect.selectedOptions).map(opt => opt.value);
       this.promptCriteria.dietary = selected.length > 0 ? selected : null;
     });
-    // Food goal selection
+    // Food goal selection -> single selection only
     this.foodGroupSelect.addEventListener("change", () => {
       const foodGroup = this.foodGroupSelect.value;
       if (!foodGroup) {
@@ -53,14 +53,10 @@ export class RecipeOptionsManager {
         this.promptCriteria.foodGoal = (adjustment === "increase" ? "Increase" : "Decrease") + " " + foodGroup;
       })
   );
-    // Ingredient substitution selection
+    // Ingredient substitution selection -> single select only
     this.targetIngredientSelect.addEventListener("change", () => {
       const ingredient = this.targetIngredientSelect.value;
-      if (!ingredient) {
-        this.promptCriteria.substitution = null;
-      } else {
-        this.promptCriteria.substitution = ingredient;
-      }
+      this.promptCriteria.substitution = ingredient ? ingredient : null;
     });
   }
 

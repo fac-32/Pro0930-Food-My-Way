@@ -33,7 +33,7 @@ async function generateRecipeSubstitution(req, res) {
       );
     }
 
-    if (dietaryTags && dietaryTags.trim() !== '') {
+    if (dietaryTags && dietaryTags.trim() !== "") {
       conditions.push(
         `Ensure the recipe adheres to: ${dietaryTags} dietary restrictions.`
       );
@@ -67,7 +67,7 @@ ${recipeConstraints}
 
 Generate a clear, structured recipe in JSON with the fields:
 "title", "ingredients" (array of strings), "amounts" (parallel array), and "instructions" (array of steps).
-If any substitutions or constraints are requested in "recipeConstraints", reflect those faithfully in the new recipe.
+If any substitutions or constraints are requested, reflect those faithfully in the new recipe.
 `;
     console.log("Prompt generated:", userPrompt);
 
@@ -139,51 +139,3 @@ If any substitutions or constraints are requested in "recipeConstraints", reflec
 }
 
 export { generateRecipeSubstitution };
-
-
-// async function handleOpenAIRequest(req, res) {
-//     const { prompt } = req.body;
-    
-//     try {
-//         // Make the API call to OpenAI
-//         const response = await post(
-//             'https://api.openai.com/v1/chat/completions',
-//             {
-//                 model: 'gpt-3.5-turbo',
-//                 messages: [
-//                     { role: 'system', content: 'You are a helpful assistant.' },
-//                     { role: 'user', content: prompt }
-//                 ],
-//                 max_tokens: 150,
-//                 temperature: 0.7
-//             },
-//             {
-//                 headers: {
-//                     'Content-Type': 'application/json',
-//                     'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-//                 }
-//             }
-//         );
-        
-//         // Extract and format the response
-//         const aiResponse = response.data.choices[0].message.content.trim();
-        
-//         // Send structured response back to frontend
-//         res.json({ 
-//             success: true,
-//             response: aiResponse,
-//             model: response.data.model,
-//             tokens: response.data.usage.total_tokens
-//         });
-        
-//     } catch (error) {
-//         console.error('Error calling OpenAI API:', error.response?.data || error.message);
-        
-//         res.status(500).json({ 
-//             error: 'An error occurred while processing your request',
-//             details: error.response?.data?.error?.message || error.message
-//         });
-//     }
-// }
-
-// export { handleOpenAIRequest };

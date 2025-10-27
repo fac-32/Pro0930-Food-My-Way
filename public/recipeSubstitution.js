@@ -86,10 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
             (ing, i) => `${selectedRecipe.amounts[i]} ${ing}`
           ),
           substitutionIngredient: '',
-          ingredientToSubstitute: criteria.substitution || '',
-          substitutionIngredient: '',
-          dietaryTags: criteria.dietary,
-          foodGoal: criteria.foodGoal,
+          // convert arrays to comma-separated strings when sending to backend
+          dietaryTags: toCommaSeparatedString(criteria.dietary),
+          ingredientToSubstitute: toCommaSeparatedString(criteria.substitution),
+          foodGoal: toCommaSeparatedString(criteria.foodGoal),
+          // ingredientToSubstitute: criteria.substitution || '',
+          // dietaryTags: criteria.dietary,
+          // foodGoal: criteria.foodGoal,
         }),
       })
 
@@ -155,3 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 })
+
+function toCommaSeparatedString(value) {
+  if (Array.isArray(value)) return value.join(', ');
+  if (typeof value === 'string') return value;
+  return ''; // or null
+}
