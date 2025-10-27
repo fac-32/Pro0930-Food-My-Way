@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Allow submission if any of the options are selected
     if (
       (!criteria.substitution || criteria.substitution === '') &&
-      (!criteria.dietary || criteria.dietary.length === 0) &&
+      (!criteria.dietary || criteria.dietary === '') &&
       !criteria.foodGoal
     ) {
       alert(
@@ -86,10 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
             (ing, i) => `${selectedRecipe.amounts[i]} ${ing}`
           ),
           substitutionIngredient: '',
-          ingredientToSubstitute: criteria.substitution || '',
-          substitutionIngredient: '',
-          dietaryTags: criteria.dietary,
-          foodGoal: criteria.foodGoal,
+          // convert arrays to comma-separated strings when sending to backend
+          dietaryTags: toCommaSeparatedString(criteria.dietary),
+          ingredientToSubstitute: toCommaSeparatedString(criteria.substitution),
+          foodGoal: toCommaSeparatedString(criteria.foodGoal),
+          // ingredientToSubstitute: criteria.substitution || '',
+          // dietaryTags: criteria.dietary,
+          // foodGoal: criteria.foodGoal,
         }),
       })
 
@@ -142,4 +145,22 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Substitution request failed:', error)
     }
   })
+  // Reset button handler
+  const resetBtn = document.getElementById('reset-options');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      ingredientDropdown.value = '';
+      dietarySelect.value = '';
+      foodGroupSelect.value = '';
+      
+      // Reset internal promptCriteria state
+      optionsManager.resetCriteria(); 
+    });
+  }
 })
+
+function toCommaSeparatedString(value) {
+  if (Array.isArray(value)) return value.join(', ');
+  if (typeof value === 'string') return value;
+  return ''; // or null
+}
