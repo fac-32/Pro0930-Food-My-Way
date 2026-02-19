@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="/styles/style-slider.css" />
     <link rel="icon" href="images/favicon.png" type="image/png" />
   </head>
-
   <body>
     <nav class="navbar">
       <div class="logo">
@@ -29,9 +28,6 @@
     </nav>
 
     <main>
-      <!-- Forms and recipe sections -->
-
-      <!-- Search Section -->
       <form id="ingredient-form" class="search-form">
         <label for="ingredient-input">Search recipes by main ingredient:</label>
         <div class="input-group">
@@ -46,33 +42,21 @@
         </div>
       </form>
 
-      <!-- Meal Results -->
       <div id="mealsContainer" class="meals-row"></div>
-      <div id="recipe-section" style="display: none">
 
-        <!-- Substitution Section -->
+      <div id="recipe-section" style="display: none">
         <form id="substitute-form" class="search-form">
-          <!-- Form Title -->
           <h2>Customise your recipe</h2>
+
           <div class="form-row">
-            <!-- Target Ingredient: Ingredient to avoid -->
             <div class="form-group">
               <label for="target-ingredient">Ingredient to avoid:</label>
-              <select
-                id="target-ingredient"
-                name="target"
-                class="custom-select"
-              ></select>
+              <select id="target-ingredient" name="target" class="custom-select"></select>
             </div>
 
-            <!-- Dietary Option -->
             <div class="form-group">
               <label for="dietary-tags">Dietary preference:</label>
-              <select
-                id="dietary-tags"
-                name="dietaryTags"
-                class="custom-select"
-              >
+              <select id="dietary-tags" name="dietaryTags" class="custom-select">
                 <option value="" disabled selected>Dietary preference</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
@@ -80,20 +64,10 @@
                 <option value="dairy-free">Dairy-Free</option>
               </select>
             </div>
-          <!-- </div> -->
 
-          <!-- <hr style="margin: 20px 0; border-color: #eee" /> -->
-
-          <!-- <div class="form-row"> -->
-            <!-- Food Group Adjustment -->
             <div class="form-group">
               <label for="food-group-select">Adjust food group:</label>
-
-              <select
-                id="food-group-select"
-                name="foodGroup"
-                class="custom-select"
-              >
+              <select id="food-group-select" name="foodGroup" class="custom-select">
                 <option value="" disabled selected>Food group</option>
                 <option value="protein">Protein</option>
                 <option value="fat">Fat</option>
@@ -102,53 +76,38 @@
               </select>
             </div>
 
-            <!-- Adjustment Radio Buttons -->
             <div class="form-group radio-group">
-              <label
-                ><input
-                  type="radio"
-                  name="adjustment"
-                  value="increase"
-                  checked
-                />
-                Increase</label
-              >
-              <label
-                ><input type="radio" name="adjustment" value="decrease" />
-                Decrease</label
-              >
+              <label>
+                <input type="radio" name="adjustment" value="increase" checked />
+                Increase
+              </label>
+              <label>
+                <input type="radio" name="adjustment" value="decrease" />
+                Decrease
+              </label>
             </div>
-            <button type="button" id="reset-options" class="small-button">Reset options</button>
-          <!-- </div> -->
 
-          <!-- Submit Button -->
-          <button type="submit" id="generate-recipe">
-            Generate new recipe
-          </button>
+            <button type="button" id="reset-options" class="small-button">
+              Reset options
+            </button>
+
+            <button type="submit" id="generate-recipe">Generate new recipe</button>
           </div>
         </form>
 
-        <!-- Recipe Panels Container: Flexbox container -->
         <div id="recipe-panels-container">
-          <!-- Recipe Display -->
           <section id="recipe-container" class="recipe-display">
             <img id="recipe-image" alt="Recipe image" />
-
             <div id="recipe-title"></div>
 
-            <!-- Tabs -->
             <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="ingredients">
-                Ingredients
-              </button>
+              <button class="tab-btn active" data-tab="ingredients">Ingredients</button>
               <button class="tab-btn" data-tab="nutrition">Nutrition</button>
             </div>
 
-            <!-- Tab content -->
             <div class="tab-content active" id="ingredients-tab">
               <ul id="recipe-ingredients"></ul>
             </div>
-
             <div class="tab-content" id="nutrition-tab">
               <ul id="recipe-nutrition"></ul>
             </div>
@@ -160,32 +119,20 @@
             </button>
           </section>
 
-          <!-- Save Recipes -->
           <form id="save-recipe-form"></form>
 
-          <!-- New Recipe Display -->
-          <section
-            id="new-recipe-container"
-            class="recipe-display recipe-generated"
-          >
+          <section id="new-recipe-container" class="recipe-display recipe-generated">
             <h2 id="new-recipe-title"></h2>
             <p id="substitution-reasoning"></p>
 
-            <!-- Tabs -->
             <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="new-ingredients">
-                Ingredients
-              </button>
-              <button class="tab-btn" data-tab="new-nutrition">
-                Nutrition
-              </button>
+              <button class="tab-btn active" data-tab="new-ingredients">Ingredients</button>
+              <button class="tab-btn" data-tab="new-nutrition">Nutrition</button>
             </div>
 
-            <!-- Tab content -->
             <div class="tab-content active" id="new-ingredients-tab">
               <ul id="new-recipe-ingredients"></ul>
             </div>
-
             <div class="tab-content" id="new-nutrition-tab">
               <ul id="new-recipe-nutrition"></ul>
             </div>
@@ -200,7 +147,6 @@
       </div>
     </main>
 
-    <!-- Load scripts as modules -->
     <script type="module" src="app.js"></script>
     <script type="module" src="recipeSubstitution.js"></script>
   </body>

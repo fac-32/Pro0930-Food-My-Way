@@ -1,73 +1,56 @@
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-  padding: 12px 40px;
-  border-bottom: 3px solid #e63946; /* bright red border */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 24px;
+  background-color: #ffffff;
+  border-bottom: 3px solid var(--primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .logo img {
-  height: 48px;
   width: auto;
+  height: 48px;
   cursor: pointer;
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
-  gap: 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+  list-style: none;
   margin: 0;
+  padding: 0;
 }
 
 .nav-links a {
-  color: #333;
+  color: var(--text);
   text-decoration: none;
   font-weight: 600;
   letter-spacing: 0.5px;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
   padding-bottom: 4px;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #e63946; /* red hover */
-  border-bottom: 2px solid #e63946;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
 }
 
-/* Navbar base */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-
-  flex-wrap: wrap; /* allow wrapping on small screens */
-}
-
-.nav-links {
-  display: flex;
-  gap: 15px;
-  flex-wrap: wrap; /* wrap links if needed */
-}
-
-.logo img {
-  height: 50px;
-}
-
-/* Hide small logo by default */
 .small-logo {
   display: none;
 }
 
-/* Show small logo and hide full logo on small screens */
 @media screen and (max-width: 600px) {
   .full-logo {
     display: none;
   }
+
   .small-logo {
     display: block;
     height: 40px;

@@ -16,7 +16,6 @@ export function getOriginalRecipe() {
 // Export setter function
 export function setOriginalRecipe(recipe) {
     original = recipe;
-    console.log('Origial recipe updated:', recipe?.title);
 }
 
 // Export check function
@@ -30,7 +29,6 @@ export function getGeneratedRecipe() {
 
 export function setGeneratedRecipe(recipe) {
     generated = recipe;
-    console.log('Generated recipe updated', recipe?.title);
 }
 
 export function hasGeneratedRecipe() {

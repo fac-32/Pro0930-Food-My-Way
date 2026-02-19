@@ -1,50 +1,53 @@
-// utils.js
 import { ObjectId } from "bson";
 import { db } from "./client.js";
 
 const recipes = db.collection("recipes");
 
-// insert recipe into mongodb
-const createRecipe = async (recipe) => {
+export async function createRecipe(recipe) {
   try {
-    const result = await recipes.insertOne(recipe);
-    console.log("recipe successfully added!");
-    return result;  // ✅ This is the important part
+    return await recipes.insertOne(recipe);
   } catch (error) {
     console.error(`Error inserting recipe: ${error}`);
-    throw error; // ✅ Also rethrow the error so the route handler can catch it
+    throw error;
   }
-};
+}
 
-
-
-
-// return ids and titles from mongodb
-const retrieveRecipes = async () => {
+export async function retrieveRecipes() {
   try {
-    const cursor = recipes.find({}, { projection: { title: 1 }});
-    const recipeCollection = await cursor.toArray();
-    return recipeCollection;
+    const cursor = recipes.find({}, { projection: { title: 1 } });
+    return await cursor.toArray();
   } catch (error) {
     console.error(`Error finding recipes: ${error}`);
+    throw error;
   }
-};
+}
 
-const findRecipe = async (id) => {
+export async function findRecipe(id) {
   try {
-    const cursor = recipes.findOne({ _id: new ObjectId(id) }, { projection: { title: 1, amounts: 1, ingredients: 1, instructions: 1 } });
-    return cursor;
-  } catch ( error ) {
+    return await recipes.findOne(
+      { _id: new ObjectId(id) },
+      {
+        projection: {
+          title: 1,
+          amounts: 1,
+          ingredients: 1,
+          instructions: 1,
+          image: 1,
+          justification: 1,
+        },
+      }
+    );
+  } catch (error) {
     console.error(`Error finding recipe with this id: ${error}`);
+    throw error;
   }
-};
+}
 
-const deleteRecipe = async (id) => {
+export async function deleteRecipe(id) {
   try {
-    recipes.deleteOne({ _id: new ObjectId(id) });
-  } catch ( error ) {
+    return await recipes.deleteOne({ _id: new ObjectId(id) });
+  } catch (error) {
     console.error(`Error deleting recipe: ${error}`);
+    throw error;
   }
-};
-
-export { createRecipe, retrieveRecipes, findRecipe, deleteRecipe }
+}
