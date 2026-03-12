@@ -1,14 +1,11 @@
-// client.js
 import { MongoClient, ServerApiVersion } from "mongodb";
-import dotenv from "dotenv";
+import { env } from "../config/env.js";
 
-dotenv.config();
+if (!env.MONGODB_URI) {
+  throw new Error("MONGODB_URI is not configured.");
+}
 
-// MONGODB_URI=mongodb+srv://[USER]:[PASSWORD]@[CLUSTER].abc123.mongodb.net/[DB NAME]
-const uri = process.env.MONGODB_URI;
-
-// Create a MongoClient
-const client = new MongoClient(uri, {
+const client = new MongoClient(env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -16,7 +13,6 @@ const client = new MongoClient(uri, {
   },
 });
 
-// 'testing' is the name of my database within the cluster I have connected to
 const db = client.db("food-my-way");
 
 export { client, db };

@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Food My Way: recipes</title>
+    <meta
+      name="description"
+      content="Search recipes by ingredient, customize substitutions, and save your favorites with nutrition details."
+    />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="/styles/style-nav.css" />
     <link rel="stylesheet" href="/styles/style-slider.css" />
     <link rel="icon" href="images/favicon.png" type="image/png" />
   </head>
-
   <body>
     <nav class="navbar">
       <div class="logo">
@@ -18,8 +21,18 @@
             src="images/High-Resolution-Color-Logo.png"
             alt="MySite Logo"
             class="full-logo"
+            width="954"
+            height="174"
+            decoding="async"
           />
-          <img src="images/favicon.png" alt="MySite Logo" class="small-logo" />
+          <img
+            src="images/favicon.png"
+            alt="MySite Logo"
+            class="small-logo"
+            width="157"
+            height="156"
+            decoding="async"
+          />
         </a>
       </div>
       <ul class="nav-links">
@@ -29,9 +42,6 @@
     </nav>
 
     <main>
-      <!-- Forms and recipe sections -->
-
-      <!-- Search Section -->
       <form id="ingredient-form" class="search-form">
         <label for="ingredient-input">Search recipes by main ingredient:</label>
         <div class="input-group">
@@ -46,33 +56,31 @@
         </div>
       </form>
 
-      <!-- Meal Results -->
-      <div id="mealsContainer" class="meals-row"></div>
-      <div id="recipe-section" style="display: none">
+      <div id="meals-loading" class="loading-state is-hidden" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Loading recipes...</span>
+      </div>
 
-        <!-- Substitution Section -->
+      <div id="mealsContainer" class="meals-row"></div>
+
+      <div id="meal-select-loading" class="loading-state is-hidden" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Loading recipe...</span>
+      </div>
+
+      <div id="recipe-section" style="display: none">
         <form id="substitute-form" class="search-form">
-          <!-- Form Title -->
           <h2>Customise your recipe</h2>
+
           <div class="form-row">
-            <!-- Target Ingredient: Ingredient to avoid -->
             <div class="form-group">
               <label for="target-ingredient">Ingredient to avoid:</label>
-              <select
-                id="target-ingredient"
-                name="target"
-                class="custom-select"
-              ></select>
+              <select id="target-ingredient" name="target" class="custom-select"></select>
             </div>
 
-            <!-- Dietary Option -->
             <div class="form-group">
               <label for="dietary-tags">Dietary preference:</label>
-              <select
-                id="dietary-tags"
-                name="dietaryTags"
-                class="custom-select"
-              >
+              <select id="dietary-tags" name="dietaryTags" class="custom-select">
                 <option value="" disabled selected>Dietary preference</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
@@ -80,20 +88,10 @@
                 <option value="dairy-free">Dairy-Free</option>
               </select>
             </div>
-          <!-- </div> -->
 
-          <!-- <hr style="margin: 20px 0; border-color: #eee" /> -->
-
-          <!-- <div class="form-row"> -->
-            <!-- Food Group Adjustment -->
             <div class="form-group">
               <label for="food-group-select">Adjust food group:</label>
-
-              <select
-                id="food-group-select"
-                name="foodGroup"
-                class="custom-select"
-              >
+              <select id="food-group-select" name="foodGroup" class="custom-select">
                 <option value="" disabled selected>Food group</option>
                 <option value="protein">Protein</option>
                 <option value="fat">Fat</option>
@@ -102,56 +100,42 @@
               </select>
             </div>
 
-            <!-- Adjustment Radio Buttons -->
             <div class="form-group radio-group">
-              <label
-                ><input
-                  type="radio"
-                  name="adjustment"
-                  value="increase"
-                  checked
-                />
-                Increase</label
-              >
-              <label
-                ><input type="radio" name="adjustment" value="decrease" />
-                Decrease</label
-              >
+              <label>
+                <input type="radio" name="adjustment" value="increase" checked />
+                Increase
+              </label>
+              <label>
+                <input type="radio" name="adjustment" value="decrease" />
+                Decrease
+              </label>
             </div>
-            <button type="button" id="reset-options" class="small-button">Reset options</button>
-          <!-- </div> -->
 
-          <!-- Submit Button -->
-          <button type="submit" id="generate-recipe">
-            Generate new recipe
-          </button>
+            <button type="button" id="reset-options" class="small-button">
+              Reset options
+            </button>
+
+            <button type="submit" id="generate-recipe">Generate new recipe</button>
           </div>
         </form>
 
-        <!-- Recipe Panels Container: Flexbox container -->
         <div id="recipe-panels-container">
-          <!-- Recipe Display -->
-          <section id="recipe-container" class="recipe-display">
-            <img id="recipe-image" alt="Recipe image" />
+          <section id="recipe-container" class="recipe-display recipe-theme-primary">
+            <img
+              id="recipe-image"
+              alt="Recipe image"
+              width="640"
+              height="480"
+              loading="lazy"
+              decoding="async"
+            />
+            <div id="recipe-title" class="recipe-title"></div>
 
-            <div id="recipe-title"></div>
-
-            <!-- Tabs -->
-            <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="ingredients">
-                Ingredients
-              </button>
-              <button class="tab-btn" data-tab="nutrition">Nutrition</button>
-            </div>
-
-            <!-- Tab content -->
-            <div class="tab-content active" id="ingredients-tab">
-              <ul id="recipe-ingredients"></ul>
-            </div>
-
-            <div class="tab-content" id="nutrition-tab">
-              <ul id="recipe-nutrition"></ul>
-            </div>
+            <div
+              class="recipe-tabs"
+              data-ingredients-id="recipe-ingredients"
+              data-nutrition-id="recipe-nutrition"
+            ></div>
 
             <div id="recipe-instructions"></div>
 
@@ -160,35 +144,30 @@
             </button>
           </section>
 
-          <!-- Save Recipes -->
           <form id="save-recipe-form"></form>
 
-          <!-- New Recipe Display -->
-          <section
-            id="new-recipe-container"
-            class="recipe-display recipe-generated"
-          >
-            <h2 id="new-recipe-title"></h2>
+          <section id="new-recipe-container" class="recipe-display recipe-generated is-empty">
+            <div id="new-recipe-image-loading" class="image-loading-placeholder" style="display: none">
+              <div class="image-loading-shimmer"></div>
+              <span>Generating image...</span>
+            </div>
+            <img
+              id="new-recipe-image"
+              alt="Generated recipe image"
+              width="640"
+              height="480"
+              loading="lazy"
+              decoding="async"
+              style="display: none"
+            />
+            <h2 id="new-recipe-title" class="recipe-title"></h2>
             <p id="substitution-reasoning"></p>
 
-            <!-- Tabs -->
-            <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="new-ingredients">
-                Ingredients
-              </button>
-              <button class="tab-btn" data-tab="new-nutrition">
-                Nutrition
-              </button>
-            </div>
-
-            <!-- Tab content -->
-            <div class="tab-content active" id="new-ingredients-tab">
-              <ul id="new-recipe-ingredients"></ul>
-            </div>
-
-            <div class="tab-content" id="new-nutrition-tab">
-              <ul id="new-recipe-nutrition"></ul>
-            </div>
+            <div
+              class="recipe-tabs"
+              data-ingredients-id="new-recipe-ingredients"
+              data-nutrition-id="new-recipe-nutrition"
+            ></div>
 
             <div id="new-recipe-instructions"></div>
 
@@ -200,7 +179,6 @@
       </div>
     </main>
 
-    <!-- Load scripts as modules -->
     <script type="module" src="app.js"></script>
     <script type="module" src="recipeSubstitution.js"></script>
   </body>

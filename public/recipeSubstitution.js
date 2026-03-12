@@ -1,6 +1,5 @@
-//  Client-side JavaScript to interact with the OpenAI API via the backend
-
-import { displayRecipe, getNutritionInfo } from './app.js'
+import { displayRecipe } from './features/recipes/recipeRenderer.js'
+import { getNutritionInfo } from './features/nutrition/nutrition.js'
 import {
   getOriginalRecipe,
   hasOriginalRecipe,
@@ -8,29 +7,181 @@ import {
   setGeneratedRecipe,
 } from './recipeState.js'
 import { RecipeOptionsManager } from './recipeOptions.js'
+import { fetchJson } from './utils/api.js'
+
+function toCommaSeparatedString(value) {
+  if (Array.isArray(value)) return value.join(', ')
+  if (typeof value === 'string') return value
+  return ''
+}
+
+function hasAtLeastOneCriterion(criteria) {
+  return Boolean(criteria.substitution || criteria.dietary || criteria.foodGoal)
+}
+
+function clearGeneratedRecipeUI({
+  newRecipeTitle,
+  substitutionReasoning,
+  newIngredientList,
+  newInstructions,
+  newNutritionList,
+  newRecipeImage,
+  newRecipeImageLoading,
+  newRecipeContainer,
+}) {
+  if (newRecipeTitle) newRecipeTitle.textContent = 'Loading...'
+  if (substitutionReasoning) substitutionReasoning.textContent = ''
+  if (newIngredientList) newIngredientList.textContent = ''
+  if (newInstructions) newInstructions.textContent = ''
+  if (newNutritionList) newNutritionList.textContent = ''
+  if (newRecipeContainer) newRecipeContainer.classList.add('is-empty')
+
+  if (newRecipeImage) {
+    newRecipeImage.removeAttribute('src')
+    newRecipeImage.style.display = 'none'
+    newRecipeImage.classList.remove('image-loaded')
+  }
+
+  if (newRecipeImageLoading) {
+    newRecipeImageLoading.style.display = 'none'
+  }
+}
+
+function setImageGeneratingState({ newRecipeImage, newRecipeImageLoading, isGenerating }) {
+  if (newRecipeImageLoading) {
+    newRecipeImageLoading.style.display = isGenerating ? 'block' : 'none'
+  }
+
+  if (newRecipeImage && isGenerating) {
+    newRecipeImage.style.display = 'none'
+    newRecipeImage.classList.remove('image-loaded')
+  }
+}
+
+function buildSubstitutionPayload(selectedRecipe, criteria) {
+  return {
+    originalRecipe: selectedRecipe.instructions,
+    recipeTitle: selectedRecipe.title,
+    allIngredients: selectedRecipe.ingredients.map(
+      (ing, i) => `${selectedRecipe.amounts[i]} ${ing}`
+    ),
+    substitutionIngredient: '',
+    dietaryTags: toCommaSeparatedString(criteria.dietary),
+    ingredientToSubstitute: toCommaSeparatedString(criteria.substitution),
+    foodGoal: toCommaSeparatedString(criteria.foodGoal),
+  }
+}
+
+function applyResetHandler({
+  resetBtn,
+  ingredientDropdown,
+  dietarySelect,
+  foodGroupSelect,
+  optionsManager,
+}) {
+  if (!resetBtn) return
+
+  resetBtn.addEventListener('click', () => {
+    ingredientDropdown.value = ''
+    dietarySelect.value = ''
+    foodGroupSelect.value = ''
+    optionsManager.resetCriteria()
+  })
+}
+
+async function renderGeneratedRecipe({
+  parsedRecipe,
+  newRecipeTitle,
+  newIngredientList,
+  newInstructions,
+  substitutionReasoning,
+  newNutritionList,
+  newRecipeImage,
+  newRecipeContainer,
+}) {
+  displayRecipe(
+    parsedRecipe,
+    newRecipeTitle,
+    newIngredientList,
+    newInstructions,
+    undefined,
+    substitutionReasoning,
+    newRecipeImage
+  )
+  if (newRecipeContainer) newRecipeContainer.classList.remove('is-empty')
+
+  const recipeForNutrition = getGeneratedRecipe() || parsedRecipe
+  if (newNutritionList) {
+    try {
+      const nutritionSummary = await getNutritionInfo(recipeForNutrition, newNutritionList)
+      if (nutritionSummary) {
+        setGeneratedRecipe({ ...recipeForNutrition, nutrition: nutritionSummary })
+      }
+    } catch (error) {
+      console.warn('getNutritionInfo failed:', error)
+    }
+  }
+}
+
+async function requestGeneratedRecipeImage({
+  parsedRecipe,
+  newRecipeImage,
+  newRecipeImageLoading,
+}) {
+  if (!newRecipeImage) return
+
+  setImageGeneratingState({ newRecipeImage, newRecipeImageLoading, isGenerating: true })
+
+  try {
+    const imageData = await fetchJson('/api/openai/recipe-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ recipe: parsedRecipe }),
+    })
+
+    if (imageData?.imageUrl) {
+      newRecipeImage.src = imageData.imageUrl
+      newRecipeImage.style.display = 'block'
+      newRecipeImage.classList.add('image-loaded')
+
+      const currentRecipe = getGeneratedRecipe() || parsedRecipe
+      setGeneratedRecipe({
+        ...currentRecipe,
+        image: imageData.imageUrl,
+        imagePublicId: imageData.imagePublicId || null,
+      })
+    }
+  } catch (error) {
+    console.warn('Generated recipe image request failed:', error)
+  } finally {
+    setImageGeneratingState({
+      newRecipeImage,
+      newRecipeImageLoading,
+      isGenerating: false,
+    })
+  }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Imports from HEAD/main merged correctly ---
-  // Food preference and substitution selection elements
   const dietarySelect = document.getElementById('dietary-tags')
   const foodGroupSelect = document.getElementById('food-group-select')
   const adjustmentRadios = document.getElementsByName('adjustment')
   const ingredientDropdown = document.getElementById('target-ingredient')
 
-  // Recipe generation elements
   const generateRecipeBtn = document.getElementById('generate-recipe')
   const recipeOptionsForm = document.getElementById('substitute-form')
 
-  // Recipe display elements
   const newRecipeTitle = document.querySelector('#new-recipe-title')
-  const substitutionReasoning = document.querySelector(
-    '#substitution-reasoning'
-  )
+  const substitutionReasoning = document.querySelector('#substitution-reasoning')
   const newIngredientList = document.querySelector('#new-recipe-ingredients')
   const newNutritionList = document.querySelector('#new-recipe-nutrition')
   const newInstructions = document.querySelector('#new-recipe-instructions')
+  const newRecipeImage = document.querySelector('#new-recipe-image')
+  const newRecipeImageLoading = document.querySelector('#new-recipe-image-loading')
+  const newRecipeContainer = document.querySelector('#new-recipe-container')
 
-  // Initialize the options manager
   const optionsManager = new RecipeOptionsManager({
     dietarySelect,
     foodGroupSelect,
@@ -39,25 +190,16 @@ document.addEventListener('DOMContentLoaded', () => {
     generateRecipeBtn,
   })
 
-  // Handle substitution request
   recipeOptionsForm.addEventListener('submit', async (event) => {
     event.preventDefault()
 
-    // Check recipe selected and valid ingredient chosen
     if (!hasOriginalRecipe()) {
       alert('Please select a recipe first')
       return
     }
 
-    // Gather criteria from the modular manager
     const criteria = optionsManager.getCriteria()
-
-    // Allow submission if any of the options are selected
-    if (
-      (!criteria.substitution || criteria.substitution === '') &&
-      (!criteria.dietary || criteria.dietary === '') &&
-      !criteria.foodGoal
-    ) {
+    if (!hasAtLeastOneCriterion(criteria)) {
       alert(
         'Please select at least one option (ingredient substitution, dietary preferences, or food goals) to generate a recipe'
       )
@@ -66,101 +208,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const selectedRecipe = getOriginalRecipe()
 
-    // Clear previous text on substitution display areas
-    if (newRecipeTitle) newRecipeTitle.textContent = 'Loading...'
-    if (substitutionReasoning) substitutionReasoning.textContent = ''
-    if (newIngredientList) newIngredientList.textContent = ''
-    if (newInstructions) newInstructions.textContent = ''
-    if (newNutritionList) newNutritionList.textContent = ''
+    clearGeneratedRecipeUI({
+      newRecipeTitle,
+      substitutionReasoning,
+      newIngredientList,
+      newInstructions,
+      newNutritionList,
+      newRecipeImage,
+      newRecipeImageLoading,
+      newRecipeContainer,
+    })
 
     try {
-      const response = await fetch('/api/openai/substitute', {
+      const data = await fetchJson('/api/openai/substitute', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          originalRecipe: selectedRecipe.instructions,
-          recipeTitle: selectedRecipe.title,
-          allIngredients: selectedRecipe.ingredients.map(
-            (ing, i) => `${selectedRecipe.amounts[i]} ${ing}`
-          ),
-          substitutionIngredient: '',
-          // convert arrays to comma-separated strings when sending to backend
-          dietaryTags: toCommaSeparatedString(criteria.dietary),
-          ingredientToSubstitute: toCommaSeparatedString(criteria.substitution),
-          foodGoal: toCommaSeparatedString(criteria.foodGoal),
-          // ingredientToSubstitute: criteria.substitution || '',
-          // dietaryTags: criteria.dietary,
-          // foodGoal: criteria.foodGoal,
-        }),
+        body: JSON.stringify(buildSubstitutionPayload(selectedRecipe, criteria)),
       })
 
-      const data = await response.json()
+      const parsed = JSON.parse(data.newRecipe)
+      setGeneratedRecipe(parsed)
 
-      if (response.ok) {
-        // data.newRecipe expected to be a JSON string (based on original code)
-        const parsed = JSON.parse(data.newRecipe)
+      await renderGeneratedRecipe({
+        parsedRecipe: parsed,
+        newRecipeTitle,
+        newIngredientList,
+        newInstructions,
+        substitutionReasoning,
+        newNutritionList,
+        newRecipeImage,
+        newRecipeContainer,
+      })
 
-        // Update generated recipe state if available
-        if (typeof setGeneratedRecipe === 'function') {
-          try {
-            setGeneratedRecipe(parsed)
-          } catch (e) {
-            // silently continue if recipeState doesn't implement setGeneratedRecipe exactly like this
-            console.warn('setGeneratedRecipe failed:', e)
-          }
-        }
-
-        // Display the parsed recipe (uses your existing displayRecipe signature)
-        displayRecipe(
-          parsed,
-          newRecipeTitle,
-          newIngredientList,
-          newInstructions,
-          undefined,
-          substitutionReasoning
-        )
-
-        // Fetch & display nutrition info — use getGeneratedRecipe() if available,
-        // otherwise use the parsed recipe directly.
-        const recipeForNutrition =
-          (typeof getGeneratedRecipe === 'function' && getGeneratedRecipe()) ||
-          parsed
-
-        if (typeof getNutritionInfo === 'function' && newNutritionList) {
-          try {
-            // getNutritionInfo may expect (recipe, element) as in original code
-            await getNutritionInfo(recipeForNutrition, newNutritionList)
-          } catch (e) {
-            console.warn('getNutritionInfo failed:', e)
-          }
-        }
-      } else {
-        if (newRecipeTitle) newRecipeTitle.textContent = `Error: ${data.error}`
-      }
+      requestGeneratedRecipeImage({
+        parsedRecipe: parsed,
+        newRecipeImage,
+        newRecipeImageLoading,
+      })
     } catch (error) {
-      if (newRecipeTitle)
+      if (newRecipeTitle) {
         newRecipeTitle.textContent = `Request failed: ${error.message}`
+      }
       console.error('Substitution request failed:', error)
     }
   })
-  // Reset button handler
-  const resetBtn = document.getElementById('reset-options');
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      ingredientDropdown.value = '';
-      dietarySelect.value = '';
-      foodGroupSelect.value = '';
-      
-      // Reset internal promptCriteria state
-      optionsManager.resetCriteria(); 
-    });
-  }
-})
 
-function toCommaSeparatedString(value) {
-  if (Array.isArray(value)) return value.join(', ');
-  if (typeof value === 'string') return value;
-  return ''; // or null
-}
+  const resetBtn = document.getElementById('reset-options')
+  applyResetHandler({
+    resetBtn,
+    ingredientDropdown,
+    dietarySelect,
+    foodGroupSelect,
+    optionsManager,
+  })
+})
