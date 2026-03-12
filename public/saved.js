@@ -7,6 +7,7 @@ import {
 } from "./features/nutrition/nutrition.js";
 import { initTabGroups } from "./features/ui/tabs.js";
 import { initRecipeTabs } from "./features/ui/recipeTabs.js";
+import { getOptimizedImageUrl } from "./utils/image.js";
 import { fetchJson } from "./utils/api.js";
 
 function clearRecipeDisplay(
@@ -37,8 +38,15 @@ function renderRecipeTitles(recipes, recipeContainer) {
     const item = document.createElement("li");
     if (recipe.image) {
       const image = document.createElement("img");
-      image.src = recipe.image;
+      image.src = getOptimizedImageUrl(recipe.image, {
+        width: 144,
+        height: 144,
+      });
       image.alt = recipe.title;
+      image.loading = "lazy";
+      image.decoding = "async";
+      image.width = 72;
+      image.height = 72;
       item.appendChild(image);
     }
 

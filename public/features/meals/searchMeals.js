@@ -32,7 +32,7 @@ function renderMealCards(meals, container, onMealSelect) {
     const card = document.createElement("div");
     card.classList.add("meal-card");
     card.innerHTML = `
-      <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+      <img src="${meal.strMealThumb}" alt="${meal.strMeal}" loading="lazy" decoding="async" width="240" height="180">
       <h3>${meal.strMeal}</h3>
     `;
 

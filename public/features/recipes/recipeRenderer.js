@@ -1,3 +1,5 @@
+import { getOptimizedImageUrl } from "../../utils/image.js";
+
 export function displayRecipe(
   recipe,
   title,
@@ -13,7 +15,10 @@ export function displayRecipe(
   instructions.textContent = recipe.instructions;
 
   if (typeof recipe.image !== "undefined" && recipeImage) {
-    recipeImage.src = recipe.image;
+    recipeImage.src = getOptimizedImageUrl(recipe.image, {
+      width: 800,
+      height: 600,
+    });
     recipeImage.style.display = "block";
   }
 
