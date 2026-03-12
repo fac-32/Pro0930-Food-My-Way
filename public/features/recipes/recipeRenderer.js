@@ -4,9 +4,10 @@ export function displayRecipe(
   ingredients,
   instructions,
   dropdown = undefined,
-  reasoning = undefined
+  reasoning = undefined,
+  imageElement = undefined
 ) {
-  const recipeImage = document.querySelector("#recipe-image");
+  const recipeImage = imageElement || document.querySelector("#recipe-image");
 
   title.textContent = recipe.title;
   instructions.textContent = recipe.instructions;

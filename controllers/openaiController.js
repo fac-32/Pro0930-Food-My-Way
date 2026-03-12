@@ -1,12 +1,17 @@
 import OpenAI from "openai";
 import { env } from "../config/env.js";
+import { uploadImageToCloudinary } from "../services/cloudinaryService.js";
 
 const client = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 const DEFAULT_TITLE = "Untitled Recipe";
 const FALLBACK_SUBSTITUTION = "No direct substitution selected";
 const OPENAI_FAILURE_MESSAGE = "Failed to generate recipe substitution";
+const OPENAI_IMAGE_FAILURE_MESSAGE = "Failed to generate recipe image";
 const SYSTEM_PROMPT =
   "You are a professional chef specializing in recipe adaptation and ingredient substitutions. Always return valid JSON only.";
+const IMAGE_MODEL = env.OPENAI_IMAGE_MODEL;
+const IMAGE_SIZE = "1024x1024";
+const IMAGE_QUALITY = "medium";
 
 function asTrimmedString(value) {
   return typeof value === "string" ? value.trim() : "";
@@ -147,6 +152,27 @@ function normalizeGeneratedRecipe(parsed, fallbackTitle) {
   return normalized;
 }
 
+function buildImagePrompt(recipe) {
+  const title = asTrimmedString(recipe?.title) || DEFAULT_TITLE;
+  const ingredients = Array.isArray(recipe?.ingredients)
+    ? recipe.ingredients.slice(0, 8).join(", ")
+    : "";
+  return `Professional food photography of "${title}". ${
+    ingredients ? `Main ingredients: ${ingredients}.` : ""
+  } Plated meal, realistic lighting, appetizing composition, no text, no watermark.`;
+}
+
+function extractImageData(response) {
+  const imageResult = response?.data?.[0];
+  if (!imageResult) return null;
+
+  if (imageResult.url) return imageResult.url;
+  if (imageResult.b64_json) {
+    return `data:image/png;base64,${imageResult.b64_json}`;
+  }
+  return null;
+}
+
 export async function generateRecipeSubstitution(req, res) {
   try {
     if (!env.OPENAI_API_KEY) {
@@ -226,6 +252,65 @@ export async function generateRecipeSubstitution(req, res) {
       success: false,
       error: OPENAI_FAILURE_MESSAGE,
       details: error?.message || "Unknown OpenAI API error",
+    });
+  }
+}
+
+export async function generateRecipeImage(req, res) {
+  try {
+    if (!env.OPENAI_API_KEY) {
+      res.status(500).json({
+        success: false,
+        error: OPENAI_IMAGE_FAILURE_MESSAGE,
+        details:
+          "OPENAI_API_KEY is not configured. Add it to your environment and restart the server.",
+      });
+      return;
+    }
+
+    const recipe = req.body?.recipe;
+    if (!recipe || typeof recipe !== "object") {
+      res.status(400).json({
+        success: false,
+        error: OPENAI_IMAGE_FAILURE_MESSAGE,
+        details: "Missing recipe payload for image generation.",
+      });
+      return;
+    }
+
+    const response = await client.images.generate({
+      model: IMAGE_MODEL,
+      prompt: buildImagePrompt(recipe),
+      size: IMAGE_SIZE,
+      quality: IMAGE_QUALITY,
+    });
+
+    const image = extractImageData(response);
+    if (!image) {
+      res.status(500).json({
+        success: false,
+        error: OPENAI_IMAGE_FAILURE_MESSAGE,
+        details: "No image was returned by the image generation API.",
+      });
+      return;
+    }
+
+    const uploaded = await uploadImageToCloudinary({
+      file: image,
+      title: recipe?.title || DEFAULT_TITLE,
+    });
+
+    res.json({
+      success: true,
+      imageUrl: uploaded.imageUrl,
+      imagePublicId: uploaded.imagePublicId,
+    });
+  } catch (error) {
+    console.error("Error generating recipe image:", error);
+    res.status(500).json({
+      success: false,
+      error: OPENAI_IMAGE_FAILURE_MESSAGE,
+      details: error?.message || "Unknown OpenAI image API error",
     });
   }
 }

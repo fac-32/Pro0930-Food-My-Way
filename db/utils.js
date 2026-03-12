@@ -14,7 +14,7 @@ export async function createRecipe(recipe) {
 
 export async function retrieveRecipes() {
   try {
-    const cursor = recipes.find({}, { projection: { title: 1 } });
+    const cursor = recipes.find({}, { projection: { title: 1, image: 1 } });
     return await cursor.toArray();
   } catch (error) {
     console.error(`Error finding recipes: ${error}`);
@@ -33,6 +33,7 @@ export async function findRecipe(id) {
           ingredients: 1,
           instructions: 1,
           image: 1,
+          imagePublicId: 1,
           justification: 1,
         },
       }
@@ -45,7 +46,7 @@ export async function findRecipe(id) {
 
 export async function deleteRecipe(id) {
   try {
-    return await recipes.deleteOne({ _id: new ObjectId(id) });
+    return await recipes.findOneAndDelete({ _id: new ObjectId(id) });
   } catch (error) {
     console.error(`Error deleting recipe: ${error}`);
     throw error;

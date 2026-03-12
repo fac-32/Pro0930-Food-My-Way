@@ -3,10 +3,14 @@
 import { displayRecipe } from "./features/recipes/recipeRenderer.js";
 import { fetchJson } from "./utils/api.js";
 
-function clearRecipeDisplay(title, ingredients, instructions, button) {
+function clearRecipeDisplay(title, ingredients, instructions, image, button) {
   title.textContent = "";
   ingredients.textContent = "";
   instructions.textContent = "";
+  if (image) {
+    image.removeAttribute("src");
+    image.style.display = "none";
+  }
   if (button) button.remove();
 }
 
@@ -15,7 +19,17 @@ function renderRecipeTitles(recipes, recipeContainer) {
 
   recipes.forEach((recipe) => {
     const item = document.createElement("li");
-    item.textContent = recipe.title;
+    if (recipe.image) {
+      const image = document.createElement("img");
+      image.src = recipe.image;
+      image.alt = recipe.title;
+      item.appendChild(image);
+    }
+
+    const title = document.createElement("h3");
+    title.textContent = recipe.title;
+    item.appendChild(title);
+
     item.setAttribute("data-id", recipe._id);
     recipeContainer.appendChild(item);
   });
@@ -36,13 +50,14 @@ function attachDeleteHandler({
   title,
   ingredients,
   instructions,
+  image,
 }) {
   button.addEventListener("click", async () => {
     try {
       await fetchJson(`/recipe/delete?id=${recipeId}`, { method: "DELETE" });
       const listItem = document.querySelector(`[data-id="${recipeId}"]`);
       if (listItem) listItem.remove();
-      clearRecipeDisplay(title, ingredients, instructions, button);
+      clearRecipeDisplay(title, ingredients, instructions, image, button);
     } catch (error) {
       console.error(`Error deleting recipe: ${error}`);
     }
@@ -54,9 +69,18 @@ function renderSelectedRecipe({
   title,
   ingredients,
   instructions,
+  image,
   container,
 }) {
-  displayRecipe(recipe, title, ingredients, instructions, undefined, undefined);
+  displayRecipe(
+    recipe,
+    title,
+    ingredients,
+    instructions,
+    undefined,
+    undefined,
+    image
+  );
   container.classList.add("recipe-display");
 
   const existingButton = container.querySelector("button");
@@ -69,6 +93,7 @@ function renderSelectedRecipe({
     title,
     ingredients,
     instructions,
+    image,
   });
   container.appendChild(deleteButton);
 }
@@ -76,7 +101,11 @@ function renderSelectedRecipe({
 function getClickedRecipeId(target, rootContainer) {
   if (!target || target === rootContainer) return null;
   if (!(target instanceof HTMLElement)) return null;
-  return target.getAttribute("data-id");
+
+  const recipeListItem = target.closest("li[data-id]");
+  if (!recipeListItem || !rootContainer.contains(recipeListItem)) return null;
+
+  return recipeListItem.getAttribute("data-id");
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -88,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const selectedInstructions = document.querySelector(
     "#selected-recipe-instructions"
   );
+  const selectedRecipeImage = document.querySelector("#selected-recipe-image");
   const recipeContainer = document.querySelector("#recipe-container");
 
   try {
@@ -108,6 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         title: selectedRecipeTitle,
         ingredients: selectedIngredientList,
         instructions: selectedInstructions,
+        image: selectedRecipeImage,
         container: recipeContainer,
       });
     } catch (error) {

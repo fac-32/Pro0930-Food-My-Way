@@ -25,13 +25,35 @@ function clearGeneratedRecipeUI({
   newIngredientList,
   newInstructions,
   newNutritionList,
+  newRecipeImage,
+  newRecipeImageLoading,
 }) {
-  // Clear previous generated state immediately so users see fresh request feedback.
   if (newRecipeTitle) newRecipeTitle.textContent = 'Loading...'
   if (substitutionReasoning) substitutionReasoning.textContent = ''
   if (newIngredientList) newIngredientList.textContent = ''
   if (newInstructions) newInstructions.textContent = ''
   if (newNutritionList) newNutritionList.textContent = ''
+
+  if (newRecipeImage) {
+    newRecipeImage.removeAttribute('src')
+    newRecipeImage.style.display = 'none'
+    newRecipeImage.classList.remove('image-loaded')
+  }
+
+  if (newRecipeImageLoading) {
+    newRecipeImageLoading.style.display = 'none'
+  }
+}
+
+function setImageGeneratingState({ newRecipeImage, newRecipeImageLoading, isGenerating }) {
+  if (newRecipeImageLoading) {
+    newRecipeImageLoading.style.display = isGenerating ? 'block' : 'none'
+  }
+
+  if (newRecipeImage && isGenerating) {
+    newRecipeImage.style.display = 'none'
+    newRecipeImage.classList.remove('image-loaded')
+  }
 }
 
 function buildSubstitutionPayload(selectedRecipe, criteria) {
@@ -72,6 +94,7 @@ async function renderGeneratedRecipe({
   newInstructions,
   substitutionReasoning,
   newNutritionList,
+  newRecipeImage,
 }) {
   displayRecipe(
     parsedRecipe,
@@ -79,7 +102,8 @@ async function renderGeneratedRecipe({
     newIngredientList,
     newInstructions,
     undefined,
-    substitutionReasoning
+    substitutionReasoning,
+    newRecipeImage
   )
 
   const recipeForNutrition = getGeneratedRecipe() || parsedRecipe
@@ -89,6 +113,46 @@ async function renderGeneratedRecipe({
     } catch (error) {
       console.warn('getNutritionInfo failed:', error)
     }
+  }
+}
+
+async function requestGeneratedRecipeImage({
+  parsedRecipe,
+  newRecipeImage,
+  newRecipeImageLoading,
+}) {
+  if (!newRecipeImage) return
+
+  setImageGeneratingState({ newRecipeImage, newRecipeImageLoading, isGenerating: true })
+
+  try {
+    const imageData = await fetchJson('/api/openai/recipe-image', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ recipe: parsedRecipe }),
+    })
+
+    if (imageData?.imageUrl) {
+      newRecipeImage.src = imageData.imageUrl
+      newRecipeImage.style.display = 'block'
+      newRecipeImage.classList.add('image-loaded')
+
+      setGeneratedRecipe({
+        ...parsedRecipe,
+        image: imageData.imageUrl,
+        imagePublicId: imageData.imagePublicId || null,
+      })
+    }
+  } catch (error) {
+    console.warn('Generated recipe image request failed:', error)
+  } finally {
+    setImageGeneratingState({
+      newRecipeImage,
+      newRecipeImageLoading,
+      isGenerating: false,
+    })
   }
 }
 
@@ -106,6 +170,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const newIngredientList = document.querySelector('#new-recipe-ingredients')
   const newNutritionList = document.querySelector('#new-recipe-nutrition')
   const newInstructions = document.querySelector('#new-recipe-instructions')
+  const newRecipeImage = document.querySelector('#new-recipe-image')
+  const newRecipeImageLoading = document.querySelector('#new-recipe-image-loading')
 
   const optionsManager = new RecipeOptionsManager({
     dietarySelect,
@@ -139,6 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
       newIngredientList,
       newInstructions,
       newNutritionList,
+      newRecipeImage,
+      newRecipeImageLoading,
     })
 
     try {
@@ -160,6 +228,13 @@ document.addEventListener('DOMContentLoaded', () => {
         newInstructions,
         substitutionReasoning,
         newNutritionList,
+        newRecipeImage,
+      })
+
+      requestGeneratedRecipeImage({
+        parsedRecipe: parsed,
+        newRecipeImage,
+        newRecipeImageLoading,
       })
     } catch (error) {
       if (newRecipeTitle) {

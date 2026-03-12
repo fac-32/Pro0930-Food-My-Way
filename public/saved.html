@@ -36,15 +36,26 @@
         </p>
       </section>
 
-      <!-- Saved Recipes List -->
-      <ul id="saved-recipes" class="meals-list"></ul>
+      <section class="saved-layout">
+        <!-- Saved Recipes List -->
+        <ul id="saved-recipes" class="meals-list"></ul>
 
-      <!-- Selected Recipe Panel -->
-      <section id="recipe-container" class="recipe-display">
-        <div id="selected-recipe-title" class="recipe-title"></div>
-        <ul id="selected-recipe-ingredients" class="recipe-ingredients"></ul>
-        <div id="selected-recipe-instructions" class="recipe-instructions"></div>
-        <!-- DELETE button will be appended here by JS -->
+        <!-- Selected Recipe Panel -->
+        <section id="recipe-container" class="recipe-display">
+          <img
+            id="selected-recipe-image"
+            class="recipe-image"
+            alt="Saved recipe image"
+            style="display: none"
+          />
+          <div id="selected-recipe-title" class="recipe-title"></div>
+          <ul id="selected-recipe-ingredients" class="recipe-ingredients"></ul>
+          <div
+            id="selected-recipe-instructions"
+            class="recipe-instructions"
+          ></div>
+          <!-- DELETE button will be appended here by JS -->
+        </section>
       </section>
     </main>
 

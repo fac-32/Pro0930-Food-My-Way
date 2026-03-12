@@ -5,6 +5,7 @@ import {
   findRecipe,
   deleteRecipe,
 } from "../db/utils.js";
+import { deleteImageFromCloudinary } from "../services/cloudinaryService.js";
 
 const router = express.Router();
 
@@ -42,7 +43,15 @@ router.post("/create", async (req, res) => {
       return;
     }
 
-    const { title, amounts, ingredients, instructions, image, justification } =
+    const {
+      title,
+      amounts,
+      ingredients,
+      instructions,
+      image,
+      imagePublicId,
+      justification,
+    } =
       req.body;
 
     await createRecipe({
@@ -51,6 +60,7 @@ router.post("/create", async (req, res) => {
       ingredients,
       instructions: instructions.trim(),
       ...(image ? { image } : {}),
+      ...(imagePublicId ? { imagePublicId } : {}),
       ...(justification ? { justification } : {}),
     });
 
@@ -97,10 +107,26 @@ router.delete("/delete", async (req, res) => {
       return;
     }
 
-    const result = await deleteRecipe(id);
-    if (!result?.deletedCount) {
+    const deletedRecipeResult = await deleteRecipe(id);
+    const deletedRecipe = deletedRecipeResult?.value ?? deletedRecipeResult;
+    if (!deletedRecipe) {
       res.status(404).json({ error: "Recipe not found" });
       return;
+    }
+
+    const imagePublicId = deletedRecipe.imagePublicId;
+    if (imagePublicId) {
+      try {
+        await deleteImageFromCloudinary(imagePublicId);
+      } catch (cloudinaryError) {
+        console.error("Cloudinary cleanup failed:", cloudinaryError);
+        res.status(200).json({
+          message: "Recipe deleted successfully",
+          warning:
+            "Recipe deleted, but image cleanup failed. You can remove it manually in Cloudinary.",
+        });
+        return;
+      }
     }
 
     res.status(200).json({ message: "Recipe deleted successfully" });
