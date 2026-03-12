@@ -37,25 +37,38 @@
       </section>
 
       <section class="saved-layout">
-        <!-- Saved Recipes List -->
-        <ul id="saved-recipes" class="meals-list"></ul>
+        <div class="saved-left">
+          <div id="saved-loading" class="loading-state" aria-live="polite">
+            <div class="spinner" aria-hidden="true"></div>
+            <span>Loading recipes...</span>
+          </div>
+          <!-- Saved Recipes List -->
+          <ul id="saved-recipes" class="meals-list"></ul>
+        </div>
 
         <!-- Selected Recipe Panel -->
-        <section id="recipe-container" class="recipe-display">
+        <section
+          id="recipe-container"
+          class="recipe-display recipe-theme-primary is-empty"
+        >
           <img
             id="selected-recipe-image"
             class="recipe-image"
             alt="Saved recipe image"
             style="display: none"
           />
-          <div id="selected-recipe-title" class="recipe-title"></div>
-          <ul id="selected-recipe-ingredients" class="recipe-ingredients"></ul>
+        <div id="selected-recipe-title" class="recipe-title"></div>
+        <div class="recipe-details">
           <div
-            id="selected-recipe-instructions"
-            class="recipe-instructions"
+            class="recipe-tabs"
+            data-ingredients-id="selected-recipe-ingredients"
+            data-nutrition-id="selected-recipe-nutrition"
           ></div>
-          <!-- DELETE button will be appended here by JS -->
-        </section>
+
+          <div id="selected-recipe-instructions" class="recipe-instructions"></div>
+        </div>
+        <!-- DELETE button will be appended here by JS -->
+      </section>
       </section>
     </main>
 

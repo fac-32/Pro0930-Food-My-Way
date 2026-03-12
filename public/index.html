@@ -42,7 +42,17 @@
         </div>
       </form>
 
+      <div id="meals-loading" class="loading-state is-hidden" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Loading recipes...</span>
+      </div>
+
       <div id="mealsContainer" class="meals-row"></div>
+
+      <div id="meal-select-loading" class="loading-state is-hidden" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <span>Loading recipe...</span>
+      </div>
 
       <div id="recipe-section" style="display: none">
         <form id="substitute-form" class="search-form">
@@ -96,21 +106,15 @@
         </form>
 
         <div id="recipe-panels-container">
-          <section id="recipe-container" class="recipe-display">
+          <section id="recipe-container" class="recipe-display recipe-theme-primary">
             <img id="recipe-image" alt="Recipe image" />
-            <div id="recipe-title"></div>
+            <div id="recipe-title" class="recipe-title"></div>
 
-            <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="ingredients">Ingredients</button>
-              <button class="tab-btn" data-tab="nutrition">Nutrition</button>
-            </div>
-
-            <div class="tab-content active" id="ingredients-tab">
-              <ul id="recipe-ingredients"></ul>
-            </div>
-            <div class="tab-content" id="nutrition-tab">
-              <ul id="recipe-nutrition"></ul>
-            </div>
+            <div
+              class="recipe-tabs"
+              data-ingredients-id="recipe-ingredients"
+              data-nutrition-id="recipe-nutrition"
+            ></div>
 
             <div id="recipe-instructions"></div>
 
@@ -121,26 +125,20 @@
 
           <form id="save-recipe-form"></form>
 
-          <section id="new-recipe-container" class="recipe-display recipe-generated">
+          <section id="new-recipe-container" class="recipe-display recipe-generated is-empty">
             <div id="new-recipe-image-loading" class="image-loading-placeholder" style="display: none">
               <div class="image-loading-shimmer"></div>
               <span>Generating image...</span>
             </div>
             <img id="new-recipe-image" alt="Generated recipe image" style="display: none" />
-            <h2 id="new-recipe-title"></h2>
+            <h2 id="new-recipe-title" class="recipe-title"></h2>
             <p id="substitution-reasoning"></p>
 
-            <div class="tab-buttons">
-              <button class="tab-btn active" data-tab="new-ingredients">Ingredients</button>
-              <button class="tab-btn" data-tab="new-nutrition">Nutrition</button>
-            </div>
-
-            <div class="tab-content active" id="new-ingredients-tab">
-              <ul id="new-recipe-ingredients"></ul>
-            </div>
-            <div class="tab-content" id="new-nutrition-tab">
-              <ul id="new-recipe-nutrition"></ul>
-            </div>
+            <div
+              class="recipe-tabs"
+              data-ingredients-id="new-recipe-ingredients"
+              data-nutrition-id="new-recipe-nutrition"
+            ></div>
 
             <div id="new-recipe-instructions"></div>
 

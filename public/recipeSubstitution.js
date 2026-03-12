@@ -27,12 +27,14 @@ function clearGeneratedRecipeUI({
   newNutritionList,
   newRecipeImage,
   newRecipeImageLoading,
+  newRecipeContainer,
 }) {
   if (newRecipeTitle) newRecipeTitle.textContent = 'Loading...'
   if (substitutionReasoning) substitutionReasoning.textContent = ''
   if (newIngredientList) newIngredientList.textContent = ''
   if (newInstructions) newInstructions.textContent = ''
   if (newNutritionList) newNutritionList.textContent = ''
+  if (newRecipeContainer) newRecipeContainer.classList.add('is-empty')
 
   if (newRecipeImage) {
     newRecipeImage.removeAttribute('src')
@@ -95,6 +97,7 @@ async function renderGeneratedRecipe({
   substitutionReasoning,
   newNutritionList,
   newRecipeImage,
+  newRecipeContainer,
 }) {
   displayRecipe(
     parsedRecipe,
@@ -105,11 +108,15 @@ async function renderGeneratedRecipe({
     substitutionReasoning,
     newRecipeImage
   )
+  if (newRecipeContainer) newRecipeContainer.classList.remove('is-empty')
 
   const recipeForNutrition = getGeneratedRecipe() || parsedRecipe
   if (newNutritionList) {
     try {
-      await getNutritionInfo(recipeForNutrition, newNutritionList)
+      const nutritionSummary = await getNutritionInfo(recipeForNutrition, newNutritionList)
+      if (nutritionSummary) {
+        setGeneratedRecipe({ ...recipeForNutrition, nutrition: nutritionSummary })
+      }
     } catch (error) {
       console.warn('getNutritionInfo failed:', error)
     }
@@ -139,8 +146,9 @@ async function requestGeneratedRecipeImage({
       newRecipeImage.style.display = 'block'
       newRecipeImage.classList.add('image-loaded')
 
+      const currentRecipe = getGeneratedRecipe() || parsedRecipe
       setGeneratedRecipe({
-        ...parsedRecipe,
+        ...currentRecipe,
         image: imageData.imageUrl,
         imagePublicId: imageData.imagePublicId || null,
       })
@@ -172,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const newInstructions = document.querySelector('#new-recipe-instructions')
   const newRecipeImage = document.querySelector('#new-recipe-image')
   const newRecipeImageLoading = document.querySelector('#new-recipe-image-loading')
+  const newRecipeContainer = document.querySelector('#new-recipe-container')
 
   const optionsManager = new RecipeOptionsManager({
     dietarySelect,
@@ -207,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       newNutritionList,
       newRecipeImage,
       newRecipeImageLoading,
+      newRecipeContainer,
     })
 
     try {
@@ -229,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         substitutionReasoning,
         newNutritionList,
         newRecipeImage,
+        newRecipeContainer,
       })
 
       requestGeneratedRecipeImage({

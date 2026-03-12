@@ -35,6 +35,7 @@ export async function findRecipe(id) {
           image: 1,
           imagePublicId: 1,
           justification: 1,
+          nutrition: 1,
         },
       }
     );

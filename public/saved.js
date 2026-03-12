@@ -1,17 +1,33 @@
 "use strict";
 
 import { displayRecipe } from "./features/recipes/recipeRenderer.js";
+import {
+  getNutritionInfo,
+  renderNutritionSummary,
+} from "./features/nutrition/nutrition.js";
+import { initTabGroups } from "./features/ui/tabs.js";
+import { initRecipeTabs } from "./features/ui/recipeTabs.js";
 import { fetchJson } from "./utils/api.js";
 
-function clearRecipeDisplay(title, ingredients, instructions, image, button) {
+function clearRecipeDisplay(
+  title,
+  ingredients,
+  nutrition,
+  instructions,
+  image,
+  button,
+  container
+) {
   title.textContent = "";
   ingredients.textContent = "";
+  nutrition.textContent = "";
   instructions.textContent = "";
   if (image) {
     image.removeAttribute("src");
     image.style.display = "none";
   }
   if (button) button.remove();
+  if (container) container.classList.add("is-empty");
 }
 
 function renderRecipeTitles(recipes, recipeContainer) {
@@ -49,15 +65,25 @@ function attachDeleteHandler({
   recipeId,
   title,
   ingredients,
+  nutrition,
   instructions,
   image,
+  container,
 }) {
   button.addEventListener("click", async () => {
     try {
       await fetchJson(`/recipe/delete?id=${recipeId}`, { method: "DELETE" });
       const listItem = document.querySelector(`[data-id="${recipeId}"]`);
       if (listItem) listItem.remove();
-      clearRecipeDisplay(title, ingredients, instructions, image, button);
+      clearRecipeDisplay(
+        title,
+        ingredients,
+        nutrition,
+        instructions,
+        image,
+        button,
+        container
+      );
     } catch (error) {
       console.error(`Error deleting recipe: ${error}`);
     }
@@ -68,6 +94,7 @@ function renderSelectedRecipe({
   recipe,
   title,
   ingredients,
+  nutrition,
   instructions,
   image,
   container,
@@ -81,10 +108,27 @@ function renderSelectedRecipe({
     undefined,
     image
   );
+  if (recipe?.nutrition) {
+    renderNutritionSummary(recipe.nutrition, nutrition);
+  } else {
+    getNutritionInfo(recipe, nutrition);
+  }
   container.classList.add("recipe-display");
+  container.classList.remove("is-empty");
 
-  const existingButton = container.querySelector("button");
-  if (existingButton) existingButton.remove();
+  const existingDeleteButton = container.querySelector(".delete-btn");
+  if (existingDeleteButton) existingDeleteButton.remove();
+
+  const tabButtons = container.querySelectorAll(".tab-btn");
+  const tabContents = container.querySelectorAll(".tab-content");
+  tabButtons.forEach((btn) => btn.classList.remove("active"));
+  tabContents.forEach((content) => content.classList.remove("active"));
+  const ingredientsButton = container.querySelector(
+    `.tab-btn[data-tab="${ingredients.id}"]`
+  );
+  const ingredientsTab = container.querySelector(`#${ingredients.id}-tab`);
+  if (ingredientsButton) ingredientsButton.classList.add("active");
+  if (ingredientsTab) ingredientsTab.classList.add("active");
 
   const deleteButton = createDeleteButton(recipe._id);
   attachDeleteHandler({
@@ -92,8 +136,10 @@ function renderSelectedRecipe({
     recipeId: recipe._id,
     title,
     ingredients,
+    nutrition,
     instructions,
     image,
+    container,
   });
   container.appendChild(deleteButton);
 }
@@ -109,10 +155,15 @@ function getClickedRecipeId(target, rootContainer) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+  initRecipeTabs();
   const savedRecipes = document.querySelector("#saved-recipes");
+  const loadingState = document.querySelector("#saved-loading");
   const selectedRecipeTitle = document.querySelector("#selected-recipe-title");
   const selectedIngredientList = document.querySelector(
     "#selected-recipe-ingredients"
+  );
+  const selectedNutritionList = document.querySelector(
+    "#selected-recipe-nutrition"
   );
   const selectedInstructions = document.querySelector(
     "#selected-recipe-instructions"
@@ -125,6 +176,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     renderRecipeTitles(data, savedRecipes);
   } catch (error) {
     console.error(`Error fetching db recipes: ${error}`);
+  } finally {
+    if (loadingState) loadingState.classList.add("is-hidden");
   }
 
   savedRecipes.addEventListener("click", async (event) => {
@@ -137,6 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         recipe,
         title: selectedRecipeTitle,
         ingredients: selectedIngredientList,
+        nutrition: selectedNutritionList,
         instructions: selectedInstructions,
         image: selectedRecipeImage,
         container: recipeContainer,
@@ -145,4 +199,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error(`Error finding recipe: ${error}`);
     }
   });
+
+  initTabGroups();
 });

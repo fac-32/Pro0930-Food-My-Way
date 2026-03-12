@@ -8,9 +8,7 @@ function constructIngredientsString(recipe) {
   return ingredientsArray;
 }
 
-function displayNutrition(data, nutritionElement) {
-  nutritionElement.innerHTML = "";
-
+function buildNutritionSummary(items) {
   const nutritionInfo = {
     serving_size_g: 0,
     calories: 0,
@@ -21,7 +19,7 @@ function displayNutrition(data, nutritionElement) {
     sugar_g: 0,
   };
 
-  data.items.forEach((ingredient) => {
+  items.forEach((ingredient) => {
     nutritionInfo.serving_size_g += ingredient.serving_size_g;
     nutritionInfo.calories += ingredient.calories;
     nutritionInfo.fat_total_g += ingredient.fat_total_g;
@@ -31,6 +29,10 @@ function displayNutrition(data, nutritionElement) {
     nutritionInfo.sugar_g += ingredient.sugar_g;
   });
 
+  return nutritionInfo;
+}
+
+function formatNutritionSummary(nutritionInfo) {
   nutritionInfo.serving_size_g =
     "Serving size: " + Math.round(nutritionInfo.serving_size_g * 10) / 10 + "g";
   nutritionInfo.calories =
@@ -46,9 +48,17 @@ function displayNutrition(data, nutritionElement) {
   nutritionInfo.sugar_g =
     "Sugar: " + Math.round(nutritionInfo.sugar_g * 10) / 10 + "g";
 
-  for (const nutrient in nutritionInfo) {
+  return nutritionInfo;
+}
+
+export function renderNutritionSummary(nutritionSummary, nutritionElement) {
+  if (!nutritionElement || !nutritionSummary) return;
+  nutritionElement.innerHTML = "";
+
+  const formatted = formatNutritionSummary({ ...nutritionSummary });
+  for (const nutrient in formatted) {
     const nutritionItem = document.createElement("li");
-    nutritionItem.textContent = nutritionInfo[nutrient];
+    nutritionItem.textContent = formatted[nutrient];
     nutritionElement.appendChild(nutritionItem);
   }
 }
@@ -59,8 +69,11 @@ export async function getNutritionInfo(recipe, nutritionElement) {
     const data = await fetchJson(
       `/api/nutrition?ingredientList=${encodeURIComponent(ingredients)}`
     );
-    displayNutrition(data, nutritionElement);
+    const nutritionSummary = buildNutritionSummary(data.items || []);
+    renderNutritionSummary(nutritionSummary, nutritionElement);
+    return nutritionSummary;
   } catch (error) {
     console.error("getNutritionInfo call error in nutrition.js", error);
+    return null;
   }
 }

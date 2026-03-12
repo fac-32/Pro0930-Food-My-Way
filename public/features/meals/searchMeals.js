@@ -22,6 +22,12 @@ function bindIngredientValidation(ingredientInput) {
 function renderMealCards(meals, container, onMealSelect) {
   container.innerHTML = "";
 
+  if (!meals || meals.length === 0) {
+    container.innerHTML =
+      "<p class=\"empty-meals\">No recipes found for that ingredient. Try another one.</p>";
+    return;
+  }
+
   meals.forEach((meal) => {
     const card = document.createElement("div");
     card.classList.add("meal-card");
@@ -31,9 +37,15 @@ function renderMealCards(meals, container, onMealSelect) {
     `;
 
     card.addEventListener("click", async () => {
-      const recipeData = await fetchJson(`/api/meals/${meal.idMeal}`);
-      const recipe = formatRecipe(recipeData);
-      if (recipe) onMealSelect(recipe);
+      const loadingState = document.querySelector("#meal-select-loading");
+      if (loadingState) loadingState.classList.remove("is-hidden");
+      try {
+        const recipeData = await fetchJson(`/api/meals/${meal.idMeal}`);
+        const recipe = formatRecipe(recipeData);
+        if (recipe) await onMealSelect(recipe);
+      } finally {
+        if (loadingState) loadingState.classList.add("is-hidden");
+      }
     });
 
     container.appendChild(card);
@@ -53,6 +65,10 @@ export function initMealSearch({ ingredientForm, ingredientInput, container, onM
       return;
     }
 
+    const loadingState = document.querySelector("#meals-loading");
+    container.innerHTML = "";
+    if (loadingState) loadingState.classList.remove("is-hidden");
+
     try {
       const data = await fetchJson(
         `/api/meals?ingredient=${encodeURIComponent(ingredientInput.value)}`
@@ -60,6 +76,8 @@ export function initMealSearch({ ingredientForm, ingredientInput, container, onM
       renderMealCards(data.meals || [], container, onMealSelect);
     } catch (error) {
       container.innerHTML = `<p>Error: ${error}</p>`;
+    } finally {
+      if (loadingState) loadingState.classList.add("is-hidden");
     }
   });
 }

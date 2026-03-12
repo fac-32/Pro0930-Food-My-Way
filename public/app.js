@@ -6,8 +6,10 @@ import { initSaveRecipeForm } from "./features/recipes/saveRecipe.js";
 import { displayRecipe } from "./features/recipes/recipeRenderer.js";
 import { getNutritionInfo } from "./features/nutrition/nutrition.js";
 import { initTabGroups } from "./features/ui/tabs.js";
+import { initRecipeTabs } from "./features/ui/recipeTabs.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+  initRecipeTabs();
   const ingredientForm = document.querySelector("#ingredient-form");
   const ingredientInput = document.querySelector("#ingredient-input");
   const mealsContainer = document.getElementById("mealsContainer");
@@ -34,7 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
         instructions,
         ingredientDropdown
       );
-      await getNutritionInfo(recipe, nutritionElement);
+      const nutritionSummary = await getNutritionInfo(recipe, nutritionElement);
+      if (nutritionSummary) {
+        setOriginalRecipe({ ...recipe, nutrition: nutritionSummary });
+      }
       recipeSection.style.display = "block";
       setTimeout(() => recipeSection.classList.add("visible"), 10);
     },

@@ -51,6 +51,7 @@ router.post("/create", async (req, res) => {
       image,
       imagePublicId,
       justification,
+      nutrition,
     } =
       req.body;
 
@@ -62,6 +63,7 @@ router.post("/create", async (req, res) => {
       ...(image ? { image } : {}),
       ...(imagePublicId ? { imagePublicId } : {}),
       ...(justification ? { justification } : {}),
+      ...(nutrition ? { nutrition } : {}),
     });
 
     res.status(201).json({ message: `Your recipe for ${title} has been saved!` });
